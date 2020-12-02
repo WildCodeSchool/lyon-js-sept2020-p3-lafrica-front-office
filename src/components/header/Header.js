@@ -1,19 +1,25 @@
 import React from 'react';
 import './header.css';
 import { slide as Menu } from 'react-burger-menu';
+import { BsFillPersonFill } from 'react-icons/bs';
 
 const Header = () => {
   return (
     <header>
       <Menu>
-        <a id='home' className='menu-item' href='/'>
-          Home
+        <div id='home' className='menu-item' href='/'>
+          <BsFillPersonFill size={150} color='white' />
+          <p>Bonjour Utilisateur</p>
+        </div>
+
+        <a id='user' className='menu-item' href='/about'>
+          COMPTE UTILISATEUR
         </a>
-        <a id='about' className='menu-item' href='/about'>
-          About
+        <a id='sms' className='menu-item' href='/contact'>
+          SMS
         </a>
-        <a id='contact' className='menu-item' href='/contact'>
-          Contact
+        <a id='voix' className='menu-item' href='/contact'>
+          VOIX
         </a>
       </Menu>
 

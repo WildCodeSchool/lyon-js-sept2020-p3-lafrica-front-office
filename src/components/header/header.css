@@ -28,8 +28,17 @@ header {
   color: black;
 }
 
+.menuBtn a:hover {
+  color: lightgrey;
+}
+
 .menuBtn ul:nth-child(2) a {
   background: #00bfff;
+}
+
+.menuBtn ul:nth-child(2) a:hover {
+  background: none;
+  color: lightgrey;
 }
 
 /* Position and sizing of burger button */
@@ -78,6 +87,11 @@ Note: Beware of modifying this element as it can break the animations - you shou
   font-size: 1.15em;
 }
 
+.bm-menu a {
+  text-decoration: none;
+  color: white;
+}
+
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
   fill: #373a47;
@@ -86,15 +100,29 @@ Note: Beware of modifying this element as it can break the animations - you shou
 /* Wrapper for item list */
 .bm-item-list {
   color: #b8b7ad;
-  padding: 0.8em;
 }
 
 /* Individual item */
 .bm-item {
   display: inline-block;
+  padding: 20px;
 }
 
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.bm-item:hover {
+  background-color: #337ab7;
+}
+
+#home {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+#react-burger-menu-btn a:focus {
+  border: none;
 }
