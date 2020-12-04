@@ -7,6 +7,8 @@ const Home = () => {
   return (
     <body>
       <div className='bodyContainer'>
+        <img src='./Logo_LAM_T2V.png' alt='LAM' />
+
         <nav>
           <ul>
             <li>

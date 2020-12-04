@@ -1,10 +1,10 @@
-import './App.css';
-import Footer from './footer/Footer';
-import Header from './header/Header';
-import SignIn from './login/SignIn';
-import Home from './home/Home';
-import SingUp from './login/SignUp';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import "./App.css";
+import Footer from "./footer/Footer";
+import Header from "./header/Header";
+import SignIn from "./login/SignIn";
+import Home from "./home/Home";
+import SingUp from "./login/SignUp";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -13,13 +13,13 @@ function App() {
         <Header />
 
         <Switch>
-          <Route exact path='/'>
+          <Route exact path="/">
             <Home />
           </Route>
-          <Route path='/signIn'>
+          <Route path="/signIn">
             <SignIn />
           </Route>
-          <Route path='/signUp'>
+          <Route path="/signUp">
             <SingUp />
           </Route>
         </Switch>

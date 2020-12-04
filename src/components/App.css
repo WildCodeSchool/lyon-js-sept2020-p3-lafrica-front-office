@@ -1,4 +1,10 @@
 body {
-  background-image: url("../images/BG-PRODUCT.png");
+  background-image: url('../images/BG-PRODUCT.png');
   height: 78vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

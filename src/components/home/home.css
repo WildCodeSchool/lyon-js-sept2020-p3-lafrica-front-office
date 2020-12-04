@@ -12,3 +12,14 @@
   text-align: center;
   padding: 40px;
 }
+
+.bodyContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bodyContainer img {
+  width: 250px;
+}
