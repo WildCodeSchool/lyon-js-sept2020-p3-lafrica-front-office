@@ -1,10 +1,14 @@
-import "./App.css";
-import CampaignDetail from "./CampaignDetails";
+import './App.css';
+import CampaignDetail from './CampaignDetails';
+import Footer from './footer/Footer';
+import Header from './header/Header';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
+      <Header />
       <CampaignDetail />
+      <Footer />
     </div>
   );
 }
