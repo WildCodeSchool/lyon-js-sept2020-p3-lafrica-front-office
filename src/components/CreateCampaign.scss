@@ -67,16 +67,23 @@
     .vocalization-frame {
       margin-bottom: 50px;
       border: solid lightgray 6px;
-      padding: 5px;
+      padding: 5px 16px;
       .text-download {
         display: flex;
         padding: 10px;
         width: 200px;
         justify-content: space-around;
+        .download-icon {
+          width: 35px;
+          height: inherit;
+        }
       }
       .text-to-vocalize {
-        width: 90%;
+        width: 100%;
         height: 100px;
+      }
+      .warning-message {
+        color: red;
       }
     }
   }
@@ -107,6 +114,10 @@
       display: flex;
       justify-content: space-around;
       margin-bottom: 50px;
+      .vocalization-action-icon {
+        width: 35px;
+        height: inherit;
+      }
       .vocalization-action-vocalize {
         display: flex;
         flex-direction: column;
@@ -139,9 +150,13 @@
       border: solid lightgray 6px;
       padding: 5px;
     }
-    .grid {
+    .broadcast-list-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      .broadcast-list-icon {
+        width: 35px;
+        height: inherit;
+      }
       .broadcast-list-import {
         display: flex;
         padding: 15px;

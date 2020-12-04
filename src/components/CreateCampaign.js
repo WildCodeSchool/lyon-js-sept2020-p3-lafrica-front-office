@@ -9,8 +9,6 @@ import './CreateCampaign.scss';
 import textToSpeechIcon from '../images/text_to_speech.png';
 
 const CreateCampaign = () => {
-  const [campaignName, setCampaignName] = useState('');
-
   return (
     <div className='create-campaign-body'>
       <div className='title-page'>
@@ -51,14 +49,16 @@ const CreateCampaign = () => {
         </h3>
         <div className='vocalization-frame'>
           <div className='text-download'>
-            <GrCloudDownload />
+            <GrCloudDownload className='download-icon' />
             <p>Importer un message</p>
           </div>
           <textarea
             className='text-to-vocalize'
             placeholder='Ecrivez votre message à vocaliser ici...'
           ></textarea>
-          <p>Message d'alerte en cas de dépassement de caractères</p>
+          <p className='warning-message'>
+            Message d'alerte en cas de dépassement de caractères
+          </p>
         </div>
       </div>
 
@@ -76,10 +76,9 @@ const CreateCampaign = () => {
             </div>
             <p>Vitesse de la voix</p>
             <Slider
-              defaultValue={0.00000005}
+              defaultValue={50}
               // getAriaValueText={valuetext}
               aria-labelledby='discrete-slider-small-steps'
-              marks
               min={0}
               max={100}
               valueLabelDisplay='auto'
@@ -94,10 +93,9 @@ const CreateCampaign = () => {
             </div>
             <p>Hauteur de la voix</p>
             <Slider
-              defaultValue={0.00000005}
+              defaultValue={50}
               // getAriaValueText={valuetext}
               aria-labelledby='discrete-slider-small-steps'
-              marks
               min={0}
               max={100}
               valueLabelDisplay='auto'
@@ -114,15 +112,15 @@ const CreateCampaign = () => {
         </div>
         <div className='vocalization-action'>
           <div className='vocalization-action-vocalize'>
-            <FaMicrophone />
+            <FaMicrophone className='vocalization-action-icon' />
             <p>Vocaliser votre message</p>
           </div>
           <div className='vocalization-action-test'>
-            <IoIosPlayCircle />
+            <IoIosPlayCircle className='vocalization-action-icon' />
             <p>Ecouter votre message</p>
           </div>
           <div className='vocalization-action-download'>
-            <ImFolderDownload />
+            <ImFolderDownload className='vocalization-action-icon' />
             <p>Télécharger le fichier audio</p>
           </div>
         </div>
@@ -131,17 +129,17 @@ const CreateCampaign = () => {
       <div className='broadcast-list-body'>
         <h3 className='broadcast-list-title'>Liste de diffusion</h3>
         <div className='broadcast-list-frame'>
-          <div className='grid'>
+          <div className='broadcast-list-grid'>
             <div className='broadcast-list-import'>
-              <AiOutlineImport />
+              <AiOutlineImport className='broadcast-list-icon' />
               <p>Importer une liste de diffusion</p>
             </div>
             <div className='broadcast-list-export'>
-              <AiOutlineExport />
+              <AiOutlineExport className='broadcast-list-icon' />
               <p>Importer une liste de diffusion</p>
             </div>
             <div className='broadcast-list-download'>
-              <FaPlusCircle />
+              <FaPlusCircle className='broadcast-list-icon' />
               <p>Télécharger le fichier audio</p>
             </div>
           </div>
