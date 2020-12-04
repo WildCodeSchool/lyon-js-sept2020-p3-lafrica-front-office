@@ -73,6 +73,7 @@
         width: 200px;
         justify-content: space-around;
         .download-icon {
+          cursor: pointer;
           width: 35px;
           height: inherit;
           color: rgb(98, 186, 227);
@@ -115,6 +116,7 @@
       justify-content: space-around;
       margin-bottom: 50px;
       .vocalization-action-icon {
+        cursor: pointer;
         width: 35px;
         height: inherit;
         color: rgb(98, 186, 227);
@@ -155,6 +157,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       .broadcast-list-icon {
+        cursor: pointer;
         width: 35px;
         height: inherit;
         color: rgb(98, 186, 227);
