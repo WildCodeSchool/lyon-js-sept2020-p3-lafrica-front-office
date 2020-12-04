@@ -4,9 +4,8 @@
 }
 
 .create-campaign-body {
-  margin: 20px auto;
+  margin: 50px auto;
   width: 80vw;
-  height: 80vh;
   align-self: center;
   display: flex;
   flex-direction: column;
@@ -76,6 +75,7 @@
         .download-icon {
           width: 35px;
           height: inherit;
+          color: rgb(98, 186, 227);
         }
       }
       .text-to-vocalize {
@@ -117,6 +117,7 @@
       .vocalization-action-icon {
         width: 35px;
         height: inherit;
+        color: rgb(98, 186, 227);
       }
       .vocalization-action-vocalize {
         display: flex;
@@ -156,6 +157,7 @@
       .broadcast-list-icon {
         width: 35px;
         height: inherit;
+        color: rgb(98, 186, 227);
       }
       .broadcast-list-import {
         display: flex;

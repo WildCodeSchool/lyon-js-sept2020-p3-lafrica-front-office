@@ -1,10 +1,14 @@
-import "./App.css";
-import CreateCampaign from "./CreateCampaign";
+import './App.css';
+import CreateCampaign from './create campaign/CreateCampaign';
+import Footer from './footer/Footer';
+import Header from './header/Header';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
+      <Header />
       <CreateCampaign />
+      <Footer />
     </div>
   );
 }
