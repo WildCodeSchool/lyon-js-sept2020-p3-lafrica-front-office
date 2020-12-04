@@ -1,11 +1,14 @@
 import "./App.css";
 import CampaignsView from "./CampaignsView";
+import Footer from "./footer/Footer";
+import Header from "./header/Header";
 
 function App() {
   return (
     <div className="App">
-      Wild P3
+      <Header />
       <CampaignsView />
+      <Footer />
     </div>
   );
 }
