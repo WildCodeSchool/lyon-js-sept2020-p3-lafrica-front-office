@@ -46,11 +46,7 @@ export const extractData = (res) => res.data;
 export const isCancelledError = (fetchRequestError) =>
   fetchRequestError && fetchRequestError.constructor.name === "CancelledError";
 
-export const getCollection = (
-  collectionName,
-  queryParams,
-  config = {}
-) =>
+export const getCollection = (collectionName, queryParams, config = {}) =>
   makeCancellable(
     "get",
     `/${collectionName}${
