@@ -47,7 +47,7 @@ const CampaignsView = () => {
           </div>
         </div>
       </article>
-      <article className="campaigns-list-container">
+      <article>
         <div className="campaigns-list">
           <div className="filter-container">
             <p>Voir pour système de filtre et de tri</p>
@@ -59,6 +59,7 @@ const CampaignsView = () => {
                 <th className="stylized-th">Nom</th>
                 <th className="stylized-th">Date d'envoi</th>
                 <th className="stylized-th">Statut</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -74,6 +75,7 @@ const CampaignsView = () => {
                       <span className="status finished-status"></span>
                       {campaign.status}
                     </td>
+                    <td className="same-width-than-search-icon"></td>
                   </tr>
                 );
               })}
