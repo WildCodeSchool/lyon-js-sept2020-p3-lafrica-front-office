@@ -121,7 +121,7 @@ const SingUp = () => {
           </Button>
           <Grid container justify='flex-end'>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link href='/signIn' variant='body2'>
                 Vous avez déja un compte ? Connectez-vous !
               </Link>
             </Grid>

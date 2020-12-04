@@ -12,9 +12,10 @@ const Header = () => {
           <BsFillPersonFill size={150} color='white' />
           <p>Bonjour Utilisateur</p>
         </div>
-
+        <Link to='/'>ACCUEIL</Link>
+        <Link to='/signIn'>S'IDENTIFIER</Link>
         <a id='user' className='menu-item' href='/about'>
-          COMPTE UTILISATEUR
+          ADMINISTRATION
         </a>
         <a id='sms' className='menu-item' href='/contact'>
           SMS

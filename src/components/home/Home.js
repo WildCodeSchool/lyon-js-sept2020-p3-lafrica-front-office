@@ -10,7 +10,7 @@ const Home = () => {
         <nav>
           <ul>
             <li>
-              <Link to='/singIn'>
+              <Link to='/signIn'>
                 <MdAssignmentInd size={150} color='black' />
                 <br />
                 S'identifier
