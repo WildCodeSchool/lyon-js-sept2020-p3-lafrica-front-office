@@ -1,0 +1,14 @@
+.bodyContainer ul li {
+  text-decoration: none;
+  list-style: none;
+}
+
+.bodyContainer ul {
+  display: flex;
+  justify-content: center;
+}
+
+.bodyContainer ul li {
+  text-align: center;
+  padding: 40px;
+}

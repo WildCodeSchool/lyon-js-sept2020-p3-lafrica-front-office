@@ -54,7 +54,7 @@ const SignIn = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Se connecter
+          S'identifier
         </Typography>
         <form className={form} noValidate>
           <TextField
@@ -90,7 +90,7 @@ const SignIn = () => {
             color='primary'
             className={submit}
           >
-            Connexion
+            S'identifier
           </Button>
           <Grid container>
             <Grid item xs>
