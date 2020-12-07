@@ -1,5 +1,5 @@
 import "./App.css";
-import CampaignsView from "./CampaignsView";
+import CampaignsView from "./campaignsView/CampaignsView";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
 
