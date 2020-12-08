@@ -5,6 +5,8 @@ header li {
 .menuBtn {
   display: flex;
   padding-right: 10px;
+  align-items: center;
+  justify-content: space-around;
 }
 
 header {
@@ -40,7 +42,9 @@ header {
   background: none;
   color: lightgrey;
 }
-
+.menuBtn ul {
+  padding: 10px;
+}
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
