@@ -1,0 +1,199 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.create-campaign-body {
+  margin: 50px auto;
+  width: 80vw;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+
+  .title-page {
+    margin-bottom: 50px;
+    border: solid lightgray 6px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    img {
+      width: 100px;
+      margin: 5px 20px;
+    }
+
+    .title-page-title {
+      display: inline-block;
+      padding: 0 5px;
+      color: rgb(98, 186, 227);
+    }
+    p {
+      display: inline-block;
+      color: rgb(98, 186, 227);
+    }
+  }
+
+  .vocal-campaign-body {
+    h3 {
+      font-size: 1.5em;
+      color: rgb(98, 186, 227);
+    }
+    .vocal-campaign-frame {
+      margin-bottom: 50px;
+      border: solid lightgray 6px;
+      padding: 5px;
+    }
+    .vocal-campaign-grid {
+      max-width: 400px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      p {
+        margin: 10px;
+      }
+      .vocal-campaign-name {
+        margin: 10px;
+      }
+      .vocal-campaign-date {
+        margin: 10px;
+      }
+    }
+  }
+
+  .vocalization-body {
+    h3 {
+      font-size: 1.5em;
+      color: rgb(98, 186, 227);
+    }
+    .vocalization-frame {
+      margin-bottom: 50px;
+      border: solid lightgray 6px;
+      padding: 5px 16px;
+      .text-download {
+        display: flex;
+        padding: 10px;
+        width: 200px;
+        justify-content: space-around;
+        .download-icon {
+          cursor: pointer;
+          width: 35px;
+          height: inherit;
+          color: rgb(98, 186, 227);
+        }
+      }
+      .text-to-vocalize {
+        width: 100%;
+        height: 100px;
+      }
+      .warning-message {
+        color: red;
+      }
+    }
+  }
+
+  .option-vocalization-body {
+    h3 {
+      font-size: 1.5em;
+      color: rgb(98, 186, 227);
+    }
+    .option-vocalization-frame {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      border: solid lightgray 6px;
+      padding: 5px;
+
+      .option-vocalization-grid {
+        max-width: 700px;
+        margin: 15px;
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+      }
+    }
+    .vocalization-action {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 50px;
+      .vocalization-action-icon {
+        cursor: pointer;
+        width: 35px;
+        height: inherit;
+        color: rgb(98, 186, 227);
+      }
+      .vocalization-action-vocalize {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .vocalization-action-test {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .vocalization-action-download {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+
+  .broadcast-list-body {
+    h3 {
+      font-size: 1.5em;
+      color: rgb(98, 186, 227);
+    }
+    .broadcast-list-frame {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      border: solid lightgray 6px;
+      padding: 5px;
+    }
+    .broadcast-list-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      .broadcast-list-icon {
+        cursor: pointer;
+        width: 35px;
+        height: inherit;
+        color: rgb(98, 186, 227);
+      }
+      .broadcast-list-import {
+        display: flex;
+        padding: 15px;
+        p {
+          padding-left: 20px;
+        }
+      }
+      .broadcast-list-export {
+        display: flex;
+        padding: 15px;
+        p {
+          padding-left: 20px;
+        }
+      }
+      .broadcast-list-download {
+        display: flex;
+        padding: 15px;
+        margin-bottom: 10px;
+        p {
+          padding-left: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .title-page {
+    flex-direction: column;
+  }
+  .option-vocalization-grid {
+    display: flex;
+    flex-direction: column;
+  }
+} ;
