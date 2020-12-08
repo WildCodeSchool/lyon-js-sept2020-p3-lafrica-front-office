@@ -2,6 +2,7 @@ import React from "react";
 import "./header.css";
 import { slide as Menu } from "react-burger-menu";
 import { BsFillPersonFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -11,7 +12,11 @@ const Header = () => {
           <BsFillPersonFill size={150} color="white" />
           <p>Bonjour Utilisateur</p>
         </div>
-
+        <Link to="/">ACCUEIL</Link>
+        <Link to="/signIn">S'IDENTIFIER</Link>
+        <a id="user" className="menu-item" href="/about">
+          ADMINISTRATION
+         </a>
         <a id="user" className="menu-item" href="/about">
           COMPTE UTILISATEUR
         </a>
@@ -26,7 +31,7 @@ const Header = () => {
       <div className="menuBtn">
         <ul>
           <li>
-            <a href="?">Accueil</a>
+            <Link to="/">Accueil</Link>
           </li>
         </ul>
         <ul>

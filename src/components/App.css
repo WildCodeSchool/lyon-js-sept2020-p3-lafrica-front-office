@@ -4,4 +4,11 @@ body {
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
+  height: 78vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
