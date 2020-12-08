@@ -4,13 +4,15 @@
 }
 
 .bodyContainer ul {
+  width: 50vw;
   display: flex;
   justify-content: center;
 }
 
 .bodyContainer ul li {
   text-align: center;
-  padding: 40px;
+  margin-top: 50px;
+  width: 50vw;
 }
 
 .bodyContainer {
@@ -22,4 +24,16 @@
 
 .bodyContainer img {
   width: 250px;
+}
+
+.login-register-logo {
+  width: 100px;
+  height: 100px;
+}
+
+@media screen and (min-width: 460px) {
+  .login-register-logo {
+    width: 150px;
+    height: 150px;
+  }
 }

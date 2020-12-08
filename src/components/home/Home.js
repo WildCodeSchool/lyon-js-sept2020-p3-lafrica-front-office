@@ -12,14 +12,14 @@ const Home = () => {
         <ul>
           <li>
             <Link to='/signIn'>
-              <MdAssignmentInd size={150} color='black' />
+              <MdAssignmentInd className='login-register-logo' color='black' />
               <br />
               S'identifier
             </Link>
           </li>
           <li>
             <Link to='/signUp'>
-              <MdAssignment size={150} color='black' />
+              <MdAssignment className='login-register-logo' color='black' />
               <br />
               S'enregistrer
             </Link>
