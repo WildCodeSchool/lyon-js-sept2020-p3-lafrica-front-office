@@ -25,7 +25,7 @@ function App() {
             <Route path='/signUp'>
               <SignUp />
             </Route>
-            <Route path='/user/:id/createCampaign'>
+            <Route path='/users/:user_id/createCampaign'>
               <CreateCampaign />
             </Route>
             <Route path='/users/:user_id/campaigns/:campaign_id'>
