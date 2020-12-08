@@ -187,3 +187,13 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .title-page {
+    flex-direction: column;
+  }
+  .option-vocalization-grid {
+    display: flex;
+    flex-direction: column;
+  }
+} ;
