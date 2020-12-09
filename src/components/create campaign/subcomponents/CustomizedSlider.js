@@ -1,12 +1,12 @@
-import React from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Slider from "@material-ui/core/Slider";
+import React from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Slider from '@material-ui/core/Slider';
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles(() => ({}));
 
 const CustomSlider = withStyles({
   root: {
-    color: "rgb(98, 186, 227)",
+    color: 'rgb(98, 186, 227)',
   },
 })(Slider);
 

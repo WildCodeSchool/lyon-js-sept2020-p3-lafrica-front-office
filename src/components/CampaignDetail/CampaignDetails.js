@@ -1,8 +1,8 @@
-import React from "react";
-import "./CampaignDetails.scss";
-import { FaMicrophone } from "react-icons/fa";
-import { BiExport } from "react-icons/bi";
-import { RiFileEditLine } from "react-icons/ri";
+import React from 'react';
+import './CampaignDetails.scss';
+import { FaMicrophone } from 'react-icons/fa';
+import { BiExport } from 'react-icons/bi';
+import { RiFileEditLine } from 'react-icons/ri';
 
 const CampaignDetail = () => {
   return (
