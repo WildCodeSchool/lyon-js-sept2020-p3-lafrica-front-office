@@ -1,8 +1,8 @@
-import React from "react";
-import "./header.css";
-import { slide as Menu } from "react-burger-menu";
-import { BsFillPersonFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import React from 'react';
+import './header.css';
+import { slide as Menu } from 'react-burger-menu';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (

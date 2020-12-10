@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { MdAssignmentInd, MdAssignment } from "react-icons/md";
-import "./home.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { MdAssignmentInd, MdAssignment } from 'react-icons/md';
+import './home.css';
 
 const Home = () => {
   return (

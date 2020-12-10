@@ -1,27 +1,27 @@
-import React from "react";
-import "./CampaignsView.css";
-import { FaMicrophone } from "react-icons/fa";
-import { GoMegaphone } from "react-icons/go";
-import { BiEdit, BiSearchAlt2 } from "react-icons/bi";
+import React from 'react';
+import './CampaignsView.css';
+import { FaMicrophone } from 'react-icons/fa';
+import { GoMegaphone } from 'react-icons/go';
+import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
 
 const campaignsList = [
   {
     id: 1,
-    name: "Campagne 1",
-    sendingDate: "02/05/2022",
-    status: "en cours",
+    name: 'Campagne 1',
+    sendingDate: '02/05/2022',
+    status: 'en cours',
   },
   {
     id: 2,
-    name: "Campagne 2",
-    sendingDate: "06/05/2024",
-    status: "en attente",
+    name: 'Campagne 2',
+    sendingDate: '06/05/2024',
+    status: 'en attente',
   },
   {
     id: 3,
-    name: "Campagne 3",
-    sendingDate: "19/01/2019",
-    status: "terminée",
+    name: 'Campagne 3',
+    sendingDate: '19/01/2019',
+    status: 'terminée',
   },
 ];
 
@@ -55,11 +55,11 @@ const CampaignsView = () => {
           <table>
             <thead>
               <tr>
-                <th></th>
+                <th /> {/* eslint-disable-line */}
                 <th className="stylized-th">Nom</th>
                 <th className="stylized-th">Date d'envoi</th>
                 <th className="stylized-th">Statut</th>
-                <th></th>
+                <th /> {/* eslint-disable-line */}
               </tr>
             </thead>
             <tbody>
@@ -72,10 +72,10 @@ const CampaignsView = () => {
                     <td className="stylized-td">{campaign.name}</td>
                     <td className="stylized-td">{campaign.sendingDate}</td>
                     <td className="stylized-td">
-                      <span className="status finished-status"></span>
+                      <span className="status finished-status" />
                       {campaign.status}
                     </td>
-                    <td className="same-width-than-search-icon"></td>
+                    <td className="same-width-than-search-icon" />
                   </tr>
                 );
               })}

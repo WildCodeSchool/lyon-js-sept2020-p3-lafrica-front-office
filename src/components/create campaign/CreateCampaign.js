@@ -1,24 +1,24 @@
-import { InputLabel, NativeSelect, Slider, TextField } from "@material-ui/core";
-import React, { useState } from "react";
-import { GrCloudDownload } from "react-icons/gr";
-import { FaMicrophone, FaPlusCircle } from "react-icons/fa";
-import { IoIosPlayCircle } from "react-icons/io";
-import { ImFolderDownload } from "react-icons/im";
-import { AiOutlineImport, AiOutlineExport } from "react-icons/ai";
-import "./CreateCampaign.scss";
-import textToSpeechIcon from "../../images/text_to_speech.png";
-import CustomizedSlider from "./subcomponents/CustomizedSlider";
-import Axios from "axios";
+import { InputLabel, NativeSelect, TextField } from '@material-ui/core';
+import React, { useState } from 'react';
+import { GrCloudDownload } from 'react-icons/gr';
+import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
+import { IoIosPlayCircle } from 'react-icons/io';
+import { ImFolderDownload } from 'react-icons/im';
+import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
+import './CreateCampaign.scss';
+import Axios from 'axios';
+import textToSpeechIcon from '../../images/text_to_speech.png';
+import CustomizedSlider from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = () => {
-  const [messageToVocalize, setMessageToVocalize] = useState("");
-  const [audioFilePath, setAudioFilePath] = useState("");
+  const [messageToVocalize, setMessageToVocalize] = useState('');
+  const [audioFilePath, setAudioFilePath] = useState('');
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
   };
   const sendToGTTS = () => {
-    Axios.post("http://localhost:5000/campaigns/TTS", {
+    Axios.post('http://localhost:5000/campaigns/TTS', {
       message: messageToVocalize,
     })
       .then((res) => {
@@ -31,13 +31,18 @@ const CreateCampaign = () => {
       });
   };
   const playAudioTest = () => {
-    return <audio controls src={audioFilePath}></audio>;
+    return (
+      <audio controls src={audioFilePath}>
+        <track default kind="captions" srcLang="fr" />
+      </audio>
+    );
+    // <audio controls src={audioFilePath} />;
   };
 
   return (
     <div className="create-campaign-body">
       <div className="title-page">
-        <img src={textToSpeechIcon} alt="push vocal icon"></img>
+        <img src={textToSpeechIcon} alt="push vocal icon" />
         <h2 className="title-page-title">PUSH VOCAL</h2>
         <p> : élargir votre audience en envoyant des messages vocaux </p>
       </div>
@@ -82,7 +87,7 @@ const CreateCampaign = () => {
             placeholder="Ecrivez votre message à vocaliser ici..."
             value={messageToVocalize}
             onChange={handleChange}
-          ></textarea>
+          />
           <p className="warning-message">
             Message d'alerte en cas de dépassement de caractères
           </p>
@@ -95,7 +100,7 @@ const CreateCampaign = () => {
           <div className="option-vocalization-grid">
             <p>Language</p>
             <div className="option-vocalization-language">
-              <InputLabel htmlFor="select"></InputLabel>
+              <InputLabel htmlFor="select" />
               <NativeSelect id="select">
                 <option value="10">Français</option>
                 <option value="20">Autre</option>
@@ -105,7 +110,7 @@ const CreateCampaign = () => {
             <CustomizedSlider />
             <p>Type de voix</p>
             <div className="option-vocalization-type">
-              <InputLabel htmlFor="select"></InputLabel>
+              <InputLabel htmlFor="select" />
               <NativeSelect id="select">
                 <option value="10">Homme</option>
                 <option value="20">Femme</option>
@@ -115,7 +120,7 @@ const CreateCampaign = () => {
             <CustomizedSlider />
             <p>Réalisme de la voix</p>
             <div className="option-vocalization-realism">
-              <InputLabel htmlFor="select"></InputLabel>
+              <InputLabel htmlFor="select" />
               <NativeSelect id="select">
                 <option value="10">Standard</option>
                 <option value="20">Réaliste</option>
