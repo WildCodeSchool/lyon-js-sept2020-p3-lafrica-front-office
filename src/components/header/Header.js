@@ -14,18 +14,16 @@ const Header = () => {
         </div>
         <Link to="/">ACCUEIL</Link>
         <Link to="/signIn">S'IDENTIFIER</Link>
-        <a id="user" className="menu-item" href="/about">
+        {/* <a id='user' className='menu-item' href='/about'>
           ADMINISTRATION
         </a>
-        <a id="user" className="menu-item" href="/about">
+        <a id='user' className='menu-item' href='/about'>
           COMPTE UTILISATEUR
         </a>
-        <a id="sms" className="menu-item" href="/contact">
+        <a id='sms' className='menu-item' href='/contact'>
           SMS
-        </a>
-        <a id="voix" className="menu-item" href="/contact">
-          VOIX
-        </a>
+        </a> */}
+        <Link to="/users/:user_id/createCampaign">CREER UNE CAMPAGNE</Link>
       </Menu>
 
       <div className="menuBtn">

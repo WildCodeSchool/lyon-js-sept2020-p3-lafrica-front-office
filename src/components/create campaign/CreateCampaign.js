@@ -1,15 +1,44 @@
 import { InputLabel, NativeSelect, TextField } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { GrCloudDownload } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
+import Axios from 'axios';
 import textToSpeechIcon from '../../images/text_to_speech.png';
 import CustomizedSlider from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = () => {
+  const [messageToVocalize, setMessageToVocalize] = useState('');
+  const [audioFilePath, setAudioFilePath] = useState('');
+
+  const handleChange = (e) => {
+    setMessageToVocalize(e.target.value);
+  };
+  const sendToGTTS = () => {
+    Axios.post('http://localhost:5000/campaigns/TTS', {
+      message: messageToVocalize,
+    })
+      .then((res) => {
+        setAudioFilePath(
+          `http://localhost:5000/campaigns/audio?audio=${res.data}`
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const playAudioTest = () => {
+    return (
+      <audio controls src={audioFilePath}>
+        <track default kind="captions" srcLang="fr" />
+      </audio>
+    );
+    // <audio controls src={audioFilePath} />;
+  };
+
   return (
     <div className="create-campaign-body">
       <div className="title-page">
@@ -56,6 +85,8 @@ const CreateCampaign = () => {
           <textarea
             className="text-to-vocalize"
             placeholder="Ecrivez votre message à vocaliser ici..."
+            value={messageToVocalize}
+            onChange={handleChange}
           />
           <p className="warning-message">
             Message d'alerte en cas de dépassement de caractères
@@ -99,12 +130,16 @@ const CreateCampaign = () => {
         </div>
         <div className="vocalization-action">
           <div className="vocalization-action-vocalize">
-            <FaMicrophone className="vocalization-action-icon" />
+            <FaMicrophone
+              className="vocalization-action-icon"
+              onClick={sendToGTTS}
+            />
             <p>Vocaliser votre message</p>
           </div>
           <div className="vocalization-action-test">
             <IoIosPlayCircle className="vocalization-action-icon" />
             <p>Ecouter votre message</p>
+            {playAudioTest()}
           </div>
           <div className="vocalization-action-download">
             <ImFolderDownload className="vocalization-action-icon" />
@@ -148,6 +183,11 @@ const CreateCampaign = () => {
           </table>
         </div>
       </div>
+
+      {/* permet d'envoyer tous les éléments du formulaire à a BDD */}
+      <button type="button" onClick={sendToGTTS}>
+        Vocaliser
+      </button>
     </div>
   );
 };
