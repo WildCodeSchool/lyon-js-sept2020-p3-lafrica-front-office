@@ -208,7 +208,7 @@ const SignUp = () => {
                 autoComplete="email"
                 value={userData.email}
                 error={errors.email}
-                helperText={errors.email && 'adresse email invalide'}
+                helperText={errors.email && 'Adresse email invalide'}
                 onChange={(e) => handleUserData(e)}
                 onBlur={(e) => handleUserErrors(e)}
               />
