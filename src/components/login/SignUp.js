@@ -50,6 +50,7 @@ const SignUp = () => {
     firstname: '',
     lastname: '',
     email: '',
+    phone_number: '',
     password: '',
     password_confirmation: '',
   };
@@ -58,6 +59,7 @@ const SignUp = () => {
   const [errors, setErrors] = useState({
     firstname: false,
     lastname: false,
+    phone_number: false,
     email: false,
     password: false,
     password_confirmation: false,
@@ -74,6 +76,19 @@ const SignUp = () => {
       setErrors((prevErrors) => {
         return { ...prevErrors, [e.target.name]: true };
       });
+    } else if (e.target.name === 'phone_number') {
+      // Besoin de vérifier la compatibilité des numéros africains
+      const regex = /^(\+|00)[0-9]?()[0-9](\s|\S)(\d[0-9]{8,12})$/;
+      const isPhoneNumberValid = regex.test(e.target.value);
+      if (!isPhoneNumberValid) {
+        setErrors((prevErrors) => {
+          return { ...prevErrors, [e.target.name]: true };
+        });
+      } else {
+        setErrors((prevErrors) => {
+          return { ...prevErrors, [e.target.name]: false };
+        });
+      }
     } else if (e.target.name === 'email') {
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -160,6 +175,24 @@ const SignUp = () => {
                 value={userData.lastname}
                 helperText={errors.lastname && 'Un nom est obligatoire'}
                 error={errors.lastname}
+                onChange={(e) => handleUserData(e)}
+                onBlur={(e) => handleUserErrors(e)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="phone_number"
+                label="Telephone"
+                name="phone_number"
+                autoComplete="lname"
+                value={userData.phone_number}
+                helperText={
+                  errors.phone_number && 'Un numéro valide est obligatoire'
+                }
+                error={errors.phone_number}
                 onChange={(e) => handleUserData(e)}
                 onBlur={(e) => handleUserErrors(e)}
               />
