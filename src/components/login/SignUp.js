@@ -17,6 +17,9 @@ import Container from '@material-ui/core/Container';
 import API from '../../services/API';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: '50px',
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -135,7 +138,7 @@ const SignUp = () => {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container className={classes.root} component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
