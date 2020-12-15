@@ -127,7 +127,7 @@ const SignUp = () => {
 
   const submitUserData = (e) => {
     e.preventDefault();
-    API.post('/register', userData)
+    API.post('/users/signUp', userData)
       .then(() => setUserData(initialState))
       .catch(console.error);
   };
