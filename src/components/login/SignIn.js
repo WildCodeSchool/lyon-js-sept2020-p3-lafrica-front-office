@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './login.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,38 +13,73 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import API from '../../services/API';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    background: 'white',
+    padding: '13px',
+    border: '1px solid  #bdc3c7',
+    borderRadius: '5px',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: '#5ebbea',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+
+  submit: {
+    '&:hover': {
+      backgroundColor: '#096490',
+      color: 'white',
+    },
+    margin: theme.spacing(3, 0, 2),
+    background: '#5ebbea',
+  },
+}));
+
 const SignIn = () => {
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      background: 'white',
-      padding: '13px',
-      border: '1px solid  #bdc3c7',
-      borderRadius: '5px',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: '#5ebbea',
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-
-    submit: {
-      '&:hover': {
-        backgroundColor: '#096490',
-        color: 'white',
-      },
-      margin: theme.spacing(3, 0, 2),
-      background: '#5ebbea',
-    },
-  }));
-
   const { paper, avatar, form, submit } = useStyles();
+  const [stayConnected, setStayConnected] = useState(false);
+
+  const initialState = {
+    email: '',
+    password: '',
+  };
+
+  const [userLogin, setUserLogin] = useState(initialState);
+  const [userLoginToSubmit, setUserLoginToSubmit] = useState({});
+
+  const handleUserLogin = (e) => {
+    setUserLogin((prevData) => {
+      return { ...prevData, [e.target.name]: e.target.value };
+    });
+  };
+
+  const handleRememberMe = () => {
+    setStayConnected(!stayConnected);
+  };
+
+  useEffect(() => {
+    setUserLoginToSubmit({
+      userLogin,
+      stayConnected,
+    });
+  }, [userLogin, stayConnected]);
+
+  const handleSubmitUserLogin = (e) => {
+    e.preventDefault();
+    API.post('/auth/login', userLoginToSubmit).then(() =>
+      console.log('ok dude')
+    );
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -67,6 +102,8 @@ const SignIn = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            value={userLogin.email}
+            onChange={(e) => handleUserLogin(e)}
           />
           <TextField
             variant="outlined"
@@ -78,9 +115,18 @@ const SignIn = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={userLogin.password}
+            onChange={(e) => handleUserLogin(e)}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              // eslint-disable-next-line react/jsx-wrap-multilines
+              <Checkbox
+                value="remember"
+                color="primary"
+                onClick={handleRememberMe}
+              />
+            }
             label="Se rappeler de moi"
           />
           <Button
@@ -89,6 +135,7 @@ const SignIn = () => {
             variant="contained"
             color="primary"
             className={submit}
+            onClick={handleSubmitUserLogin}
           >
             S'identifier
           </Button>
