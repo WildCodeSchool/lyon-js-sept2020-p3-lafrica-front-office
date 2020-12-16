@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useToasts } from 'react-toast-notifications';
+import { useHistory } from 'react-router-dom';
 
 import API from '../../services/API';
 
@@ -69,11 +70,16 @@ const SignUp = () => {
     password_confirmation: false,
   });
   const { addToast } = useToasts();
+  const history = useHistory();
 
   const handleUserData = (e) => {
     setUserData((data) => {
       return { ...data, [e.target.name]: e.target.value };
     });
+  };
+
+  const handleRedirect = () => {
+    history.push('/signIn');
   };
 
   const handleUserErrors = (e) => {
@@ -140,6 +146,7 @@ const SignUp = () => {
           autoDismiss: true,
         })
       )
+      .then(() => handleRedirect())
       .catch(() =>
         addToast('Register failed !', {
           appearance: 'error',
