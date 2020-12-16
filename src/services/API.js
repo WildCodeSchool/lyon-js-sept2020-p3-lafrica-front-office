@@ -11,6 +11,7 @@ Promise.config({
 // REACT_APP_API_BASE_URL variable in .env file at the root of the project
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
+  withCredentials: true,
 });
 
 const makeCancellable = (method, url, data, config) => {
