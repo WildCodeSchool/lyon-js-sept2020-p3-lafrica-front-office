@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useToasts } from 'react-toast-notifications';
 
 import API from '../../services/API';
 
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 const SignIn = () => {
   const { paper, avatar, form, submit } = useStyles();
   const [stayConnected, setStayConnected] = useState(false);
+  const { addToast } = useToasts();
 
   const initialState = {
     email: '',
@@ -77,9 +79,19 @@ const SignIn = () => {
 
   const handleSubmitUserLogin = (e) => {
     e.preventDefault();
-    API.post('/auth/login', userLoginToSubmit).then(() =>
-      console.log('ok dude')
-    );
+    API.post('/auth/login', userLoginToSubmit)
+      .then(() =>
+        addToast('Loggin success', {
+          appearance: 'success',
+          autoDismiss: true,
+        })
+      )
+      .catch(() =>
+        addToast('SignIn failed !', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      );
   };
 
   return (
