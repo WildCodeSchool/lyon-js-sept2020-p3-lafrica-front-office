@@ -69,7 +69,8 @@ const SignIn = () => {
 
   useEffect(() => {
     setUserLoginToSubmit({
-      userLogin,
+      email: userLogin.email,
+      password: userLogin.password,
       stayConnected,
     });
   }, [userLogin, stayConnected]);
