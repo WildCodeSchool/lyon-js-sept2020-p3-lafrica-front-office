@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useToasts } from 'react-toast-notifications';
+import { useHistory } from 'react-router-dom';
 
 import API from '../../services/API';
 
@@ -50,6 +51,7 @@ const SignIn = () => {
   const { paper, avatar, form, submit } = useStyles();
   const [stayConnected, setStayConnected] = useState(false);
   const { addToast } = useToasts();
+  const history = useHistory();
 
   const initialState = {
     email: '',
@@ -69,6 +71,10 @@ const SignIn = () => {
     setStayConnected(!stayConnected);
   };
 
+  const handleRedirect = () => {
+    history.push('/users/:user_id/campaigns');
+  };
+
   useEffect(() => {
     setUserLoginToSubmit({
       email: userLogin.email,
@@ -86,6 +92,7 @@ const SignIn = () => {
           autoDismiss: true,
         })
       )
+      .then(() => handleRedirect())
       .catch(() =>
         addToast('SignIn failed !', {
           appearance: 'error',
