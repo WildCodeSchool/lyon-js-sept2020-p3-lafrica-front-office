@@ -2,12 +2,28 @@ import React from 'react';
 import './header.css';
 import { slide as Menu } from 'react-burger-menu';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 import API from '../../services/API';
 
 const Header = () => {
-  const handleLogOut = () => {
-    API.get('/auth/logout');
+  const history = useHistory();
+  const { addToast } = useToasts();
+
+  const handleLogOut = async () => {
+    try {
+      await API.get('/auth/logout');
+      history.push('/');
+      addToast('Déconnexion réussie !', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    } catch {
+      addToast('Echec de déconnexion !', {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   return (

@@ -89,12 +89,12 @@ const SignIn = () => {
     try {
       const res = await API.post('/auth/login', userLoginToSubmit);
       handleRedirect(res.data);
-      addToast('Loggin success', {
+      addToast('Connexion réussie !', {
         appearance: 'success',
         autoDismiss: true,
       });
     } catch {
-      addToast('SignIn failed !', {
+      addToast('Echec de connexion !', {
         appearance: 'error',
         autoDismiss: true,
       });
