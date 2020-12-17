@@ -71,8 +71,8 @@ const SignIn = () => {
     setStayConnected(!stayConnected);
   };
 
-  const handleRedirect = () => {
-    history.push('/users/:user_id/campaigns');
+  const handleRedirect = (userId) => {
+    history.push(`/users/${userId}/campaigns`);
   };
 
   useEffect(() => {
@@ -83,22 +83,22 @@ const SignIn = () => {
     });
   }, [userLogin, stayConnected]);
 
-  const handleSubmitUserLogin = (e) => {
+  const handleSubmitUserLogin = async (e) => {
     e.preventDefault();
-    API.post('/auth/login', userLoginToSubmit)
-      .then(() =>
-        addToast('Loggin success', {
-          appearance: 'success',
-          autoDismiss: true,
-        })
-      )
-      .then(() => handleRedirect())
-      .catch(() =>
-        addToast('SignIn failed !', {
-          appearance: 'error',
-          autoDismiss: true,
-        })
-      );
+
+    try {
+      const res = await API.post('/auth/login', userLoginToSubmit);
+      handleRedirect(res.data);
+      addToast('Loggin success', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    } catch {
+      addToast('SignIn failed !', {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   return (

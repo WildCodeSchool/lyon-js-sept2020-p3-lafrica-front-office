@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
+import { useHistory } from 'react-router-dom';
+import API from '../../services/API';
 
 const campaignsList = [
   {
@@ -25,7 +27,21 @@ const campaignsList = [
   },
 ];
 
-const CampaignsView = () => {
+const CampaignsView = (props) => {
+  const { match } = props;
+  const history = useHistory();
+
+  const handleRedirect = () => {
+    history.push('/signIn');
+  };
+
+  useEffect(() => {
+    API.get(`/users/${match.params.user_id}/campaigns`).catch((err) => {
+      handleRedirect();
+      console.log(err);
+    });
+  }, []);
+
   return (
     <div className="compaigns-view-container">
       <article className="campaings-editor-view-container">

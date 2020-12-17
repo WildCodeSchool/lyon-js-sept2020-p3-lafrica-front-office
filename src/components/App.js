@@ -8,6 +8,7 @@ import Header from './header/Header';
 import SignIn from './login/SignIn';
 import Home from './home/Home';
 import SignUp from './login/SignUp';
+import CampaignsView from './campaignsView/CampaignsView';
 
 function App() {
   return (
@@ -32,6 +33,10 @@ function App() {
               <Route path="/users/:user_id/campaigns/:campaign_id">
                 <CampaignDetail />
               </Route>
+              <Route
+                path="/users/:user_id/campaigns"
+                component={CampaignsView}
+              />
             </Switch>
           </main>
           <Footer />
