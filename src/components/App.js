@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ToastProvider } from 'react-toast-notifications';
 import CreateCampaign from './create campaign/CreateCampaign';
 import CampaignDetail from './CampaignDetail/CampaignDetails';
 import Footer from './footer/Footer';
@@ -10,31 +11,33 @@ import SignUp from './login/SignUp';
 
 function App() {
   return (
-    <Router>
-      <div className="app">
-        <Header />
-        <main>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/signIn">
-              <SignIn />
-            </Route>
-            <Route path="/signUp">
-              <SignUp />
-            </Route>
-            <Route path="/users/:user_id/createCampaign">
-              <CreateCampaign />
-            </Route>
-            <Route path="/users/:user_id/campaigns/:campaign_id">
-              <CampaignDetail />
-            </Route>
-          </Switch>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <ToastProvider placement="top-center">
+      <Router>
+        <div className="app">
+          <Header />
+          <main>
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/signIn">
+                <SignIn />
+              </Route>
+              <Route path="/signUp">
+                <SignUp />
+              </Route>
+              <Route path="/users/:user_id/createCampaign">
+                <CreateCampaign />
+              </Route>
+              <Route path="/users/:user_id/campaigns/:campaign_id">
+                <CampaignDetail />
+              </Route>
+            </Switch>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </ToastProvider>
   );
 }
 

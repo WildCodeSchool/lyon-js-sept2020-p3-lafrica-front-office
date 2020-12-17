@@ -22,6 +22,7 @@ header {
   padding-left: 20px;
 }
 
+.menuBtn button,
 .menuBtn a {
   border: 1px solid #5ebbea;
   padding: 5px 15px;
@@ -34,11 +35,11 @@ header {
   color: lightgrey;
 }
 
-.menuBtn ul:nth-child(2) a {
+.menuBtn ul:nth-child(2) button {
   background: #00bfff;
 }
 
-.menuBtn ul:nth-child(2) a:hover {
+.menuBtn ul:nth-child(2) button:hover {
   background: none;
   color: lightgrey;
 }

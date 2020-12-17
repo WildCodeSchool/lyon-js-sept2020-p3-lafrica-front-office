@@ -3,8 +3,13 @@ import './header.css';
 import { slide as Menu } from 'react-burger-menu';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import API from '../../services/API';
 
 const Header = () => {
+  const handleLogOut = () => {
+    API.get('/auth/logout');
+  };
+
   return (
     <header>
       <Menu>
@@ -34,7 +39,9 @@ const Header = () => {
         </ul>
         <ul>
           <li>
-            <a href="?">Déconnexion</a>
+            <button type="button" onClick={handleLogOut}>
+              Déconnexion
+            </button>
           </li>
         </ul>
       </div>
