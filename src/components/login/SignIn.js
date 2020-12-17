@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './login.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useToasts } from 'react-toast-notifications';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import API from '../../services/API';
 
@@ -49,45 +50,46 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = () => {
   const { paper, avatar, form, submit } = useStyles();
-  const [stayConnected, setStayConnected] = useState(false);
+  // const [stayConnected, setStayConnected] = useState(false);
   const { addToast } = useToasts();
   const history = useHistory();
+  const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
 
-  const initialState = {
-    email: '',
-    password: '',
-  };
+  // const initialState = {
+  //   email: '',
+  //   password: '',
+  // };
 
-  const [userLogin, setUserLogin] = useState(initialState);
-  const [userLoginToSubmit, setUserLoginToSubmit] = useState({});
+  // const [userLogin, setUserLogin] = useState(initialState);
+  // const [userLoginToSubmit, setUserLoginToSubmit] = useState({});
 
-  const handleUserLogin = (e) => {
-    setUserLogin((prevData) => {
-      return { ...prevData, [e.target.name]: e.target.value };
-    });
-  };
+  // const handleUserLogin = (e) => {
+  //   setUserLogin((prevData) => {
+  //     return { ...prevData, [e.target.name]: e.target.value };
+  //   });
+  // };
 
-  const handleRememberMe = () => {
-    setStayConnected(!stayConnected);
-  };
+  // const handleRememberMe = () => {
+  //   setStayConnected(!stayConnected);
+  // };
 
   const handleRedirect = (userId) => {
     history.push(`/users/${userId}/campaigns`);
   };
 
-  useEffect(() => {
-    setUserLoginToSubmit({
-      email: userLogin.email,
-      password: userLogin.password,
-      stayConnected,
-    });
-  }, [userLogin, stayConnected]);
+  // useEffect(() => {
+  //   setUserLoginToSubmit({
+  //     email: userLogin.email,
+  //     password: userLogin.password,
+  //     stayConnected,
+  //   });
+  // }, [userLogin, stayConnected]);
 
-  const handleSubmitUserLogin = async (e) => {
-    e.preventDefault();
+  const handleSubmitUserLogin = async (data) => {
+    // e.preventDefault();
 
     try {
-      const res = await API.post('/auth/login', userLoginToSubmit);
+      const res = await API.post('/auth/login', data);
       handleRedirect(res.data);
       addToast('Connexion réussie !', {
         appearance: 'success',
@@ -111,7 +113,11 @@ const SignIn = () => {
         <Typography component="h1" variant="h5">
           S'identifier
         </Typography>
-        <form className={form} noValidate>
+        <form
+          className={form}
+          noValidate
+          onSubmit={handleSubmit(handleSubmitUserLogin)}
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -122,8 +128,15 @@ const SignIn = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            value={userLogin.email}
-            onChange={(e) => handleUserLogin(e)}
+            inputRef={register({
+              required: true,
+              pattern: {
+                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'Veuillez saisir un email valide',
+              },
+            })}
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
           />
           <TextField
             variant="outlined"
@@ -135,16 +148,23 @@ const SignIn = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={userLogin.password}
-            onChange={(e) => handleUserLogin(e)}
+            inputRef={register({
+              required: true,
+              minLength: {
+                value: 5,
+                message: 'Le mot de passe doit faire au moins 5 caractères',
+              },
+            })}
+            error={!!errors.password}
+            helperText={errors.password && errors.password.message}
           />
           <FormControlLabel
             control={
               // eslint-disable-next-line react/jsx-wrap-multilines
               <Checkbox
-                value="remember"
                 color="primary"
-                onClick={handleRememberMe}
+                name="stayConnected"
+                inputRef={register}
               />
             }
             label="Se rappeler de moi"
@@ -155,7 +175,6 @@ const SignIn = () => {
             variant="contained"
             color="primary"
             className={submit}
-            onClick={handleSubmitUserLogin}
           >
             S'identifier
           </Button>
@@ -178,5 +197,4 @@ const SignIn = () => {
     </Container>
   );
 };
-
 export default SignIn;
