@@ -3,7 +3,7 @@ import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import API from '../../services/API';
 
 const campaignsList = [
@@ -36,9 +36,8 @@ const CampaignsView = (props) => {
   };
 
   useEffect(() => {
-    API.get(`/users/${match.params.user_id}/campaigns`).catch((err) => {
+    API.get(`/users/${match.params.user_id}/campaigns`).catch(() => {
       handleRedirect();
-      console.log(err);
     });
   }, []);
 
@@ -54,7 +53,9 @@ const CampaignsView = (props) => {
             <div className="megaphone">
               <GoMegaphone className="btn-icon" />
 
-              <h3>Créer une campagne</h3>
+              <Link to={`/users/${match.params.user_id}/createCampaign`}>
+                <h3>Créer une campagne</h3>
+              </Link>
             </div>
             <div className="edit">
               <BiEdit className="btn-icon" />
