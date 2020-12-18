@@ -67,7 +67,7 @@ const SignIn = () => {
         autoDismiss: true,
       });
     } catch {
-      addToast('Echec de connexion !', {
+      addToast('Identifiants invalides !', {
         appearance: 'error',
         autoDismiss: true,
       });
