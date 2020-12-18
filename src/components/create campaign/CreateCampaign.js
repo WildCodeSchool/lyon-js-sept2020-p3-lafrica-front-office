@@ -6,24 +6,26 @@ import { IoIosPlayCircle } from 'react-icons/io';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
-import Axios from 'axios';
+import API from '../../services/API';
 import textToSpeechIcon from '../../images/text_to_speech.png';
 import CustomizedSlider from './subcomponents/CustomizedSlider';
 
-const CreateCampaign = () => {
+const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
+
+  const { match } = props;
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
   };
   const sendToGTTS = () => {
-    Axios.post('http://localhost:5000/campaigns/TTS', {
+    API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
       message: messageToVocalize,
     })
       .then((res) => {
         setAudioFilePath(
-          `http://localhost:5000/campaigns/audio?audio=${res.data}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
         );
       })
       .catch((err) => {
