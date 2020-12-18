@@ -91,13 +91,13 @@ const SignUp = () => {
   const submitUserData = async (data) => {
     try {
       await API.post('/users/signUp', data);
-      addToast('Welcome on LAfricamobile !', {
+      addToast('Bienvenue sur LAfricamobile !', {
         appearance: 'success',
         autoDismiss: true,
       });
       handleRedirect();
     } catch {
-      addToast('Register failed !', {
+      addToast("L'inscription a echouée !", {
         appearance: 'error',
         autoDismiss: true,
       });

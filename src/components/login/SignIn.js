@@ -122,8 +122,8 @@ const SignIn = () => {
             inputRef={register({
               required: true,
               minLength: {
-                value: 5,
-                message: 'Le mot de passe doit faire au moins 5 caractères',
+                value: 6,
+                message: 'Le mot de passe doit contenir au moins 6 caractères',
               },
             })}
             error={!!errors.password}
