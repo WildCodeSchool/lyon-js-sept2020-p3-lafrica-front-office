@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './login.css';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -15,6 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useToasts } from 'react-toast-notifications';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 
 import API from '../../services/API';
 
@@ -51,111 +52,57 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = () => {
-  const initialState = {
-    firstname: '',
-    lastname: '',
-    email: '',
-    phone_number: '',
-    password: '',
-    password_confirmation: '',
-  };
+  const classes = useStyles();
 
-  const [userData, setUserData] = useState(initialState);
-  const [errors, setErrors] = useState({
-    firstname: false,
-    lastname: false,
-    phone_number: false,
-    email: false,
-    password: false,
-    password_confirmation: false,
-  });
   const { addToast } = useToasts();
-  const history = useHistory();
 
-  const handleUserData = (e) => {
-    setUserData((data) => {
-      return { ...data, [e.target.name]: e.target.value };
-    });
-  };
+  const schema = Joi.object({
+    firstname: Joi.string().max(50).required(),
+    lastname: Joi.string().max(50).required(),
+    phone_number: Joi.string().pattern(
+      new RegExp(/^(\+|00)[0-9]?()[0-9](\s|\S)(\d[0-9]{0,})$/)
+    ),
+    email: Joi.string()
+      .required()
+      .pattern(
+        new RegExp(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ),
+    password: Joi.string()
+      .required()
+      .pattern(
+        new RegExp(/^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/)
+      ),
+    password_confirmation: Joi.ref('password'),
+  }).with('password', 'password_confirmation');
+
+  const { register, handleSubmit, errors } = useForm({
+    resolver: joiResolver(schema),
+    mode: 'onBlur',
+  });
+
+  const history = useHistory();
 
   const handleRedirect = () => {
     history.push('/signIn');
   };
 
-  const handleUserErrors = (e) => {
-    if (e.target.value.length === 0) {
-      setErrors((prevErrors) => {
-        return { ...prevErrors, [e.target.name]: true };
+  const submitUserData = async (data) => {
+    try {
+      await API.post('/users/signUp', data);
+      addToast('Welcome on LAfricamobile !', {
+        appearance: 'success',
+        autoDismiss: true,
       });
-    } else if (e.target.name === 'phone_number') {
-      // Besoin de vérifier la compatibilité des numéros africains
-      const regex = /^(\+|00)[0-9]?()[0-9](\s|\S)(\d[0-9]{8,12})$/;
-      const isPhoneNumberValid = regex.test(e.target.value);
-      if (!isPhoneNumberValid) {
-        setErrors((prevErrors) => {
-          return { ...prevErrors, [e.target.name]: true };
-        });
-      } else {
-        setErrors((prevErrors) => {
-          return { ...prevErrors, [e.target.name]: false };
-        });
-      }
-    } else if (e.target.name === 'email') {
-      const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-      const isEmailValid = regex.test(e.target.value);
-
-      if (!isEmailValid) {
-        setErrors((prevErrors) => {
-          return { ...prevErrors, [e.target.name]: true };
-        });
-      } else {
-        setErrors((prevErrors) => {
-          return { ...prevErrors, [e.target.name]: false };
-        });
-      }
-    } else if (
-      (e.target.name === 'password' ||
-        e.target.name === 'password_confirmation') &&
-      e.target.value.length < 5
-    ) {
-      setErrors((prevErrors) => {
-        return { ...prevErrors, [e.target.name]: true };
-      });
-    } else if (
-      e.target.name === 'password_confirmation' &&
-      e.target.value !== userData.password
-    ) {
-      setErrors((prevErrors) => {
-        return { ...prevErrors, [e.target.name]: true };
-      });
-    } else {
-      setErrors((prevErrors) => {
-        return { ...prevErrors, [e.target.name]: false };
+      handleRedirect();
+    } catch {
+      addToast('Register failed !', {
+        appearance: 'error',
+        autoDismiss: true,
       });
     }
   };
-
-  const submitUserData = (e) => {
-    e.preventDefault();
-    API.post('/users/signUp', userData)
-      .then(() => setUserData(initialState))
-      .then(() =>
-        addToast('Welcome on LAfricamobile !', {
-          appearance: 'success',
-          autoDismiss: true,
-        })
-      )
-      .then(() => handleRedirect())
-      .catch(() =>
-        addToast('Register failed !', {
-          appearance: 'error',
-          autoDismiss: true,
-        })
-      );
-  };
-
-  const classes = useStyles();
 
   return (
     <Container className={classes.root} component="main" maxWidth="xs">
@@ -167,7 +114,11 @@ const SignUp = () => {
         <Typography component="h1" variant="h5">
           S'enregistrer
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit(submitUserData)}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -176,14 +127,12 @@ const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="firstname"
                 label="Prénom"
                 autoFocus
-                error={errors.firstname}
+                inputRef={register}
+                error={!!errors.firstname}
                 helperText={errors.firstname && 'Un prénom est obligatoire'}
-                value={userData.firstname}
-                onChange={(e) => handleUserData(e)}
-                onBlur={(e) => handleUserErrors(e)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -195,11 +144,9 @@ const SignUp = () => {
                 label="Nom"
                 name="lastname"
                 autoComplete="lname"
-                value={userData.lastname}
+                inputRef={register}
                 helperText={errors.lastname && 'Un nom est obligatoire'}
-                error={errors.lastname}
-                onChange={(e) => handleUserData(e)}
-                onBlur={(e) => handleUserErrors(e)}
+                error={!!errors.lastname}
               />
             </Grid>
             <Grid item xs={12}>
@@ -211,13 +158,11 @@ const SignUp = () => {
                 label="Telephone"
                 name="phone_number"
                 autoComplete="lname"
-                value={userData.phone_number}
+                inputRef={register}
+                error={!!errors.phone_number}
                 helperText={
                   errors.phone_number && 'Un numéro valide est obligatoire'
                 }
-                error={errors.phone_number}
-                onChange={(e) => handleUserData(e)}
-                onBlur={(e) => handleUserErrors(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -229,11 +174,9 @@ const SignUp = () => {
                 label="Adresse e-mail"
                 name="email"
                 autoComplete="email"
-                value={userData.email}
-                error={errors.email}
+                inputRef={register}
+                error={!!errors.email}
                 helperText={errors.email && 'Adresse email invalide'}
-                onChange={(e) => handleUserData(e)}
-                onBlur={(e) => handleUserErrors(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -246,14 +189,12 @@ const SignUp = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={userData.password}
-                error={errors.password}
+                inputRef={register}
+                error={!!errors.password}
                 helperText={
                   errors.password &&
-                  "Votre mot de passe doit être d'au moins 5 caractères"
+                  "Votre mot de passe doit être d'au moins 6 caractères et doit contenir un chiffre, un caractère majuscule, un caractère minuscule et un caractère spécial"
                 }
-                onChange={(e) => handleUserData(e)}
-                onBlur={(e) => handleUserErrors(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -266,20 +207,12 @@ const SignUp = () => {
                 type="password"
                 id="password_confirmation"
                 autoComplete="current-password"
-                value={userData.password_confirmation}
-                error={errors.password_confirmation}
+                inputRef={register}
+                error={!!errors.password_confirmation}
                 helperText={
                   errors.password_confirmation &&
                   'Le mot de passe et la confirmation ne sont pas identiques'
                 }
-                onChange={(e) => handleUserData(e)}
-                onBlur={(e) => handleUserErrors(e)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="Si vous souhaitez recevoir nos offres commerciales, merci de cocher cette case "
               />
             </Grid>
           </Grid>
@@ -289,7 +222,6 @@ const SignUp = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={submitUserData}
           >
             S'enregistrer
           </Button>

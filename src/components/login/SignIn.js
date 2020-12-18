@@ -50,44 +50,15 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = () => {
   const { paper, avatar, form, submit } = useStyles();
-  // const [stayConnected, setStayConnected] = useState(false);
   const { addToast } = useToasts();
   const history = useHistory();
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
-
-  // const initialState = {
-  //   email: '',
-  //   password: '',
-  // };
-
-  // const [userLogin, setUserLogin] = useState(initialState);
-  // const [userLoginToSubmit, setUserLoginToSubmit] = useState({});
-
-  // const handleUserLogin = (e) => {
-  //   setUserLogin((prevData) => {
-  //     return { ...prevData, [e.target.name]: e.target.value };
-  //   });
-  // };
-
-  // const handleRememberMe = () => {
-  //   setStayConnected(!stayConnected);
-  // };
 
   const handleRedirect = (userId) => {
     history.push(`/users/${userId}/campaigns`);
   };
 
-  // useEffect(() => {
-  //   setUserLoginToSubmit({
-  //     email: userLogin.email,
-  //     password: userLogin.password,
-  //     stayConnected,
-  //   });
-  // }, [userLogin, stayConnected]);
-
   const handleSubmitUserLogin = async (data) => {
-    // e.preventDefault();
-
     try {
       const res = await API.post('/auth/login', data);
       handleRedirect(res.data);
