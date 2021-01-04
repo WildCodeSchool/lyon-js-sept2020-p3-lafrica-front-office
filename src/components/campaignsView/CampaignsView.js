@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
+import { useHistory, Link } from 'react-router-dom';
+import API from '../../services/API';
 
 const campaignsList = [
   {
@@ -25,7 +27,20 @@ const campaignsList = [
   },
 ];
 
-const CampaignsView = () => {
+const CampaignsView = (props) => {
+  const { match } = props;
+  const history = useHistory();
+
+  const handleRedirect = () => {
+    history.push('/signIn');
+  };
+
+  useEffect(() => {
+    API.get(`/users/${match.params.user_id}/campaigns`).catch(() => {
+      handleRedirect();
+    });
+  }, []);
+
   return (
     <div className="compaigns-view-container">
       <article className="campaings-editor-view-container">
@@ -38,7 +53,9 @@ const CampaignsView = () => {
             <div className="megaphone">
               <GoMegaphone className="btn-icon" />
 
-              <h3>Créer une campagne</h3>
+              <Link to={`/users/${match.params.user_id}/createCampaign`}>
+                <h3>Créer une campagne</h3>
+              </Link>
             </div>
             <div className="edit">
               <BiEdit className="btn-icon" />
@@ -55,11 +72,11 @@ const CampaignsView = () => {
           <table>
             <thead>
               <tr>
-                <th /> {/* eslint-disable-line */}
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <th />
                 <th className="stylized-th">Nom</th>
                 <th className="stylized-th">Date d'envoi</th>
                 <th className="stylized-th">Statut</th>
-                <th /> {/* eslint-disable-line */}
               </tr>
             </thead>
             <tbody>
