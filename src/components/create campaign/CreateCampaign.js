@@ -27,6 +27,7 @@ const CreateCampaign = (props) => {
   const [audioFilePath, setAudioFilePath] = useState('');
   const [open, setOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('Entrer un numéro');
+  const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(true);
 
   const { match } = props;
 
@@ -69,6 +70,16 @@ const CreateCampaign = (props) => {
 
   const handleCancelPhoneNumber = () => {
     setPhoneNumber('Entrer un numéro');
+  };
+
+  const sendVocalMessage = async () => {
+    if (phoneNumber === 'Entrer un numéro') {
+      setPhoneNumberTestCheck(false);
+    } else {
+      setPhoneNumberTestCheck(true);
+      await API.post('/voice/sendVocalMessage/test', phoneNumber);
+      // setPhoneNumber('Message envoyé');
+    }
   };
 
   return (
@@ -178,16 +189,23 @@ const CreateCampaign = (props) => {
             <p>Télécharger le fichier audio</p>
           </div>
           <div className="vocalization-action-trySend">
-            <FiPhoneIncoming className="vocalization-action-icon" />
+            <FiPhoneIncoming
+              className="vocalization-action-icon"
+              onClick={sendVocalMessage}
+            />
             <p>Tester un envoi</p>
             <div>
-              <Button
-                variant="outlined"
-                color="primary"
+              <button
+                type="button"
+                className={
+                  phoneNumberTestCheck
+                    ? 'vocalization-action-dialog-ok'
+                    : 'vocalization-action-dialog-error'
+                }
                 onClick={handleClickOpen}
               >
                 {phoneNumber}
-              </Button>
+              </button>
               <Dialog
                 open={open}
                 onClose={handleClose}

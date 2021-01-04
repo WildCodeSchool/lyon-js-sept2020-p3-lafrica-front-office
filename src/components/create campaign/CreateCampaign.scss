@@ -136,6 +136,18 @@
         flex-direction: column;
         align-items: center;
       }
+      .vocalization-action-dialog-ok {
+        cursor: pointer;
+        width: 120px;
+        height: 40px;
+        color: rgb(98, 186, 227);
+      }
+      .vocalization-action-dialog-error {
+        cursor: pointer;
+        width: 120px;
+        height: 40px;
+        color: red;
+      }
     }
   }
 
