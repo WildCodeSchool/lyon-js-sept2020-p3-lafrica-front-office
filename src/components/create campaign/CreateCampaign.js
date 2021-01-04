@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import { GrCloudDownload } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
+import { FiPhoneIncoming } from 'react-icons/fi';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
@@ -177,8 +178,8 @@ const CreateCampaign = (props) => {
             <p>Télécharger le fichier audio</p>
           </div>
           <div className="vocalization-action-trySend">
-            <ImFolderDownload className="vocalization-action-icon" />
-            <p>Tester le message</p>
+            <FiPhoneIncoming className="vocalization-action-icon" />
+            <p>Tester un envoi</p>
             <div>
               <Button
                 variant="outlined"
