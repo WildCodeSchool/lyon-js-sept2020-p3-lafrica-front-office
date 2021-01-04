@@ -25,7 +25,7 @@ const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [open, setOpen] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('Entrer un numéro');
 
   const { match } = props;
 
@@ -62,9 +62,12 @@ const CreateCampaign = (props) => {
     setOpen(false);
   };
 
-  const handleChangeNumber = (e) => {
+  const handleChangePhoneNumber = (e) => {
     setPhoneNumber(e.target.value);
-    console.log(phoneNumber);
+  };
+
+  const handleCancelPhoneNumber = () => {
+    setPhoneNumber('Entrer un numéro');
   };
 
   return (
@@ -182,7 +185,7 @@ const CreateCampaign = (props) => {
                 color="primary"
                 onClick={handleClickOpen}
               >
-                Entrer un numéro
+                {phoneNumber}
               </Button>
               <Dialog
                 open={open}
@@ -190,7 +193,7 @@ const CreateCampaign = (props) => {
                 aria-labelledby="form-dialog-title"
               >
                 <DialogTitle id="form-dialog-title">
-                  Entrez votre numéro
+                  Entrer un numéro
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText>
@@ -204,14 +207,20 @@ const CreateCampaign = (props) => {
                     label="Numéro de téléphone"
                     type="tel"
                     fullWidth
-                    onChange={handleChangeNumber}
+                    onChange={handleChangePhoneNumber}
                   />
                   <small>
                     Exemple: <strong>33</strong>603190988 pour la France
                   </small>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClose} color="primary">
+                  <Button
+                    onClick={() => {
+                      handleClose();
+                      handleCancelPhoneNumber();
+                    }}
+                    color="primary"
+                  >
                     Annuler
                   </Button>
                   <Button onClick={handleClose} color="primary">
