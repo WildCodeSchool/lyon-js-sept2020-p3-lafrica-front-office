@@ -1,4 +1,15 @@
-import { InputLabel, NativeSelect, TextField } from '@material-ui/core';
+import {
+  InputLabel,
+  NativeSelect,
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
+
 import React, { useState } from 'react';
 import { GrCloudDownload } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
@@ -13,6 +24,8 @@ import CustomizedSlider from './subcomponents/CustomizedSlider';
 const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
+  const [open, setOpen] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const { match } = props;
 
@@ -39,6 +52,19 @@ const CreateCampaign = (props) => {
       </audio>
     );
     // <audio controls src={audioFilePath} />;
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChangeNumber = (e) => {
+    setPhoneNumber(e.target.value);
+    console.log(phoneNumber);
   };
 
   return (
@@ -146,6 +172,54 @@ const CreateCampaign = (props) => {
           <div className="vocalization-action-download">
             <ImFolderDownload className="vocalization-action-icon" />
             <p>Télécharger le fichier audio</p>
+          </div>
+          <div className="vocalization-action-trySend">
+            <ImFolderDownload className="vocalization-action-icon" />
+            <p>Tester le message</p>
+            <div>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleClickOpen}
+              >
+                Entrer un numéro
+              </Button>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title">
+                  Entrez votre numéro
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Pour tester la vocalisation de votre message vers un numéro
+                    mobile, merci d'inscrire ci-dessous un numéro de téléphone
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="tel"
+                    label="Numéro de téléphone"
+                    type="tel"
+                    fullWidth
+                    onChange={handleChangeNumber}
+                  />
+                  <small>
+                    Exemple: <strong>33</strong>603190988 pour la France
+                  </small>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Annuler
+                  </Button>
+                  <Button onClick={handleClose} color="primary">
+                    Envoyer
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </div>
         </div>
       </div>
