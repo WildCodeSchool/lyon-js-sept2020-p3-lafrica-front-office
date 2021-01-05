@@ -112,9 +112,11 @@
       }
     }
     .vocalization-action {
-      display: flex;
-      justify-content: space-around;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 20px;
       margin-bottom: 50px;
+      text-align: center;
       .vocalization-action-icon {
         cursor: pointer;
         width: 35px;
@@ -144,10 +146,21 @@
       }
       .vocalization-action-dialog-error {
         cursor: pointer;
+        pointer-events: none;
         width: 120px;
         height: 40px;
         color: red;
       }
+      .vocalization-action-trySend {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .vocalization-action-trySend button {
+      }
+    }
+    audio {
+      width: 200px;
     }
   }
 

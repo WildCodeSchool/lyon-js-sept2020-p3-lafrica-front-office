@@ -2,7 +2,6 @@ import {
   InputLabel,
   NativeSelect,
   TextField,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -26,8 +25,8 @@ const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [open, setOpen] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('Entrer un numéro');
-  const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(false);
   const [vocalisationFileName, setVocalisationFileName] = useState('');
 
   const { match } = props;
@@ -51,11 +50,10 @@ const CreateCampaign = (props) => {
   };
   const playAudioTest = () => {
     return (
-      <audio controls src={audioFilePath}>
+      <audio id="audioPlayer" src={audioFilePath}>
         <track default kind="captions" srcLang="fr" />
       </audio>
     );
-    // <audio controls src={audioFilePath} />;
   };
 
   const handleClickOpen = () => {
@@ -75,7 +73,7 @@ const CreateCampaign = (props) => {
   };
 
   const sendVocalMessage = async () => {
-    if (phoneNumber === 'Entrer un numéro') {
+    if (phoneNumber === '') {
       setPhoneNumberTestCheck(false);
     } else {
       setPhoneNumberTestCheck(true);
@@ -89,6 +87,16 @@ const CreateCampaign = (props) => {
       // LoaderOFF
     }
   };
+
+  const play = () => {
+    const audio = document.getElementById('audioPlayer');
+    audio.play();
+  };
+
+  // const dlVocal = () => {
+  //   const audioDl = document.getElementById('audioPlayer');
+  //   audioDl.download();
+  // };
 
   return (
     <div className="create-campaign-body">
@@ -188,74 +196,78 @@ const CreateCampaign = (props) => {
             <p>Vocaliser votre message</p>
           </div>
           <div className="vocalization-action-test">
-            <IoIosPlayCircle className="vocalization-action-icon" />
+            <IoIosPlayCircle
+              onClick={play}
+              className="vocalization-action-icon"
+            />
             <p>Ecouter votre message</p>
             {playAudioTest()}
           </div>
           <div className="vocalization-action-download">
-            <ImFolderDownload className="vocalization-action-icon" />
+            <a href={audioFilePath} download={vocalisationFileName}>
+              <ImFolderDownload className="vocalization-action-icon" />
+            </a>
+
             <p>Télécharger le fichier audio</p>
           </div>
+          <div />
           <div className="vocalization-action-trySend">
             <FiPhoneIncoming
               className="vocalization-action-icon"
-              onClick={sendVocalMessage}
+              onClick={handleClickOpen}
             />
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Entrer un numéro</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Pour tester la vocalisation de votre message vers un numéro
+                  mobile, merci d'inscrire ci-dessous un numéro de téléphone
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="tel"
+                  label="Numéro de téléphone"
+                  type="tel"
+                  fullWidth
+                  onChange={handleChangePhoneNumber}
+                />
+                <small>
+                  Exemple: <strong>33</strong>603190988 pour la France
+                </small>
+              </DialogContent>
+              <DialogActions>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleClose();
+                    handleCancelPhoneNumber();
+                  }}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sendVocalMessage();
+                    handleClose();
+                  }}
+                  className={
+                    phoneNumberTestCheck
+                      ? 'vocalization-action-dialog-ok'
+                      : 'vocalization-action-dialog-error'
+                  }
+                >
+                  Envoyer
+                </button>
+              </DialogActions>
+            </Dialog>
+
             <p>Tester un envoi</p>
-            <div>
-              <button
-                type="button"
-                className={
-                  phoneNumberTestCheck
-                    ? 'vocalization-action-dialog-ok'
-                    : 'vocalization-action-dialog-error'
-                }
-                onClick={handleClickOpen}
-              >
-                {phoneNumber}
-              </button>
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">
-                  Entrer un numéro
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Pour tester la vocalisation de votre message vers un numéro
-                    mobile, merci d'inscrire ci-dessous un numéro de téléphone
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="tel"
-                    label="Numéro de téléphone"
-                    type="tel"
-                    fullWidth
-                    onChange={handleChangePhoneNumber}
-                  />
-                  <small>
-                    Exemple: <strong>33</strong>603190988 pour la France
-                  </small>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={() => {
-                      handleClose();
-                      handleCancelPhoneNumber();
-                    }}
-                    color="primary"
-                  >
-                    Annuler
-                  </Button>
-                  <Button onClick={handleClose} color="primary">
-                    Envoyer
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
           </div>
         </div>
       </div>
