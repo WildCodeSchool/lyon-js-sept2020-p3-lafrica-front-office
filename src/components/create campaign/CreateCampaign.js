@@ -14,6 +14,7 @@ const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [textToUpload, setTextToUpload] = useState('');
+  const [fileNameTextToUpload, setFileNameTextToUpload] = useState('');
 
   const { match } = props;
 
@@ -42,10 +43,6 @@ const CreateCampaign = (props) => {
       </audio>
     );
     // <audio controls src={audioFilePath} />;
-  };
-
-  const deleteFile = () => {
-    setTextToUpload('');
   };
 
   return (
@@ -95,13 +92,14 @@ const CreateCampaign = (props) => {
                 <input
                   id="textToUpload"
                   type="file"
-                  color="transparent"
-                  onChange={(e) => setTextToUpload(e.target.files[0])}
+                  hidden
+                  onChange={(e) => {
+                    setTextToUpload(e.target.files[0]);
+                    setFileNameTextToUpload(e.target.files[0].name);
+                  }}
                 />
               </label>
-              <button type="button" onClick={deleteFile}>
-                Suprrimer le fichier
-              </button>
+              <p>{fileNameTextToUpload}</p>
             </div>
             <textarea
               className="text-to-vocalize"
