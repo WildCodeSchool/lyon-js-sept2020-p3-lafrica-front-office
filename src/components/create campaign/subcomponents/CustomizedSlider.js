@@ -10,17 +10,38 @@ const CustomSlider = withStyles({
   },
 })(Slider);
 
-export default function CustomizedSlider() {
+export function SpeedSlider({ handleAudioConfig }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <div className={classes.margin} />
-      <CustomSlider
-        valueLabelDisplay="auto"
-        aria-label="pretto slider"
-        defaultValue={20}
-      />
-    </div>
+    <CustomSlider
+      className={classes.root}
+      valueLabelDisplay="auto"
+      aria-label="pretto slider"
+      name="speekingRate"
+      min={0.25}
+      max={4.0}
+      step={0.25}
+      defaultValue={1}
+      onChange={handleAudioConfig('speekingRate')}
+    />
+  );
+}
+
+export function PitchSlider({ handleAudioConfig }) {
+  const classes = useStyles();
+
+  return (
+    <CustomSlider
+      className={classes.root}
+      valueLabelDisplay="auto"
+      aria-label="pretto slider"
+      name="pitch"
+      min={-20}
+      max={20}
+      step={1}
+      defaultValue={0}
+      onChange={handleAudioConfig('pitch')}
+    />
   );
 }

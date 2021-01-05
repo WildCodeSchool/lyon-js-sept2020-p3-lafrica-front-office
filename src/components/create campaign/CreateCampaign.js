@@ -8,13 +8,14 @@ import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
 import API from '../../services/API';
 import textToSpeechIcon from '../../images/text_to_speech.png';
-import CustomizedSlider from './subcomponents/CustomizedSlider';
+import { SpeedSlider, PitchSlider } from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [textToUpload, setTextToUpload] = useState('');
   const [fileNameTextToUpload, setFileNameTextToUpload] = useState('');
+  const [audioConfig, setAudioConfig] = useState({});
 
   const { match } = props;
 
@@ -35,12 +36,22 @@ const CreateCampaign = (props) => {
   };
 
   useEffect(() => {
-    submitTextToUpload();
+    if (textToUpload) {
+      submitTextToUpload();
+    }
   }, [textToUpload]);
 
+  const handleAudioConfig = (name) => (e, value) => {
+    setAudioConfig((prevConfig) => {
+      return { ...prevConfig, [name]: value || e.target.value };
+    });
+  };
+
   const sendToGTTS = () => {
+    console.log(audioConfig);
     API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
       message: messageToVocalize,
+      audioConfig,
     })
       .then((res) => {
         setAudioFilePath(
@@ -152,23 +163,31 @@ const CreateCampaign = (props) => {
             <p>Language</p>
             <div className="option-vocalization-language">
               <InputLabel htmlFor="select" />
-              <NativeSelect id="select">
-                <option value="10">Français</option>
-                <option value="20">Autre</option>
+              <NativeSelect
+                id="select"
+                onChange={handleAudioConfig('languageCode')}
+              >
+                <option value="fr-FR">Français</option>
+                <option value="other">Autre</option>
               </NativeSelect>
             </div>
             <p>Vitesse de la voix</p>
-            <CustomizedSlider />
+
+            <SpeedSlider handleAudioConfig={handleAudioConfig} />
+
             <p>Type de voix</p>
             <div className="option-vocalization-type">
               <InputLabel htmlFor="select" />
-              <NativeSelect id="select">
-                <option value="10">Homme</option>
-                <option value="20">Femme</option>
+              <NativeSelect
+                id="select"
+                onChange={handleAudioConfig('ssmlGender')}
+              >
+                <option value="MALE">Homme</option>
+                <option value="FEMALE">Femme</option>
               </NativeSelect>
             </div>
             <p>Hauteur de la voix</p>
-            <CustomizedSlider />
+            <PitchSlider handleAudioConfig={handleAudioConfig} />
             <p>Réalisme de la voix</p>
             <div className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
@@ -198,7 +217,6 @@ const CreateCampaign = (props) => {
           </div>
         </div>
       </div>
-
       <div className="broadcast-list-body">
         <h3 className="broadcast-list-title">Liste de diffusion</h3>
         <div className="broadcast-list-frame">
