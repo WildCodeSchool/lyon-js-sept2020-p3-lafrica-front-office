@@ -29,10 +29,11 @@ header {
   border-radius: 4px;
   text-decoration: none;
   color: black;
+  font-size: 1em;
 }
 
 .menuBtn a:hover {
-  color: lightgrey;
+  background-color: #00bfff;
 }
 
 .menuBtn ul:nth-child(2) button {
@@ -41,7 +42,7 @@ header {
 
 .menuBtn ul:nth-child(2) button:hover {
   background: none;
-  color: lightgrey;
+  cursor: pointer;
 }
 .menuBtn ul {
   padding: 10px;

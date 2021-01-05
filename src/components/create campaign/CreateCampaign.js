@@ -1,5 +1,5 @@
 import { InputLabel, NativeSelect, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GrCloudDownload } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
@@ -21,12 +21,27 @@ const CreateCampaign = (props) => {
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
   };
-  const sendToGTTS = (e) => {
-    e.preventDefault();
+
+  const submitTextToUpload = () => {
     const formData = new FormData();
     formData.append('uploaded_text', textToUpload);
-    formData.append('message', messageToVocalize);
-    API.post(`/users/${match.params.user_id}/campaigns/TTS`, formData)
+    API.post(`/users/${match.params.user_id}/campaigns/uploadtext`, formData)
+      .then((res) => {
+        setMessageToVocalize(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    submitTextToUpload();
+  }, [textToUpload]);
+
+  const sendToGTTS = () => {
+    API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
+      message: messageToVocalize,
+    })
       .then((res) => {
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
@@ -43,6 +58,15 @@ const CreateCampaign = (props) => {
       </audio>
     );
     // <audio controls src={audioFilePath} />;
+  };
+
+  const handleFileUpload = (e) => {
+    setTextToUpload(e.target.files[0]);
+    if (e.target.files[0]) {
+      setFileNameTextToUpload(e.target.files[0].name);
+    } else {
+      setFileNameTextToUpload('');
+    }
   };
 
   return (
@@ -84,29 +108,35 @@ const CreateCampaign = (props) => {
           Saisissez votre message à vocaliser (160 caractères maximum)
         </h3>
         <div className="vocalization-frame">
-          <form onSubmit={sendToGTTS}>
+          <form>
             <div className="text-download">
-              <p>Importer un message</p>
               <label htmlFor="textToUpload">
-                <GrCloudDownload className="download-icon" />
+                <div className="flexForm">
+                  <GrCloudDownload className="download-icon" />
+                  <p className="upload">
+                    {!fileNameTextToUpload
+                      ? 'Importer un message'
+                      : fileNameTextToUpload}
+                    <br />
+                    <em>(format accepté : .txt)</em>
+                  </p>
+                </div>
                 <input
                   id="textToUpload"
                   type="file"
+                  accept=".txt"
                   hidden
                   onChange={(e) => {
-                    setTextToUpload(e.target.files[0]);
-                    setFileNameTextToUpload(e.target.files[0].name);
+                    handleFileUpload(e);
                   }}
                 />
               </label>
-              <p>{fileNameTextToUpload}</p>
             </div>
             <textarea
               className="text-to-vocalize"
               placeholder="Ecrivez votre message à vocaliser ici..."
               value={messageToVocalize}
               onChange={handleChange}
-              disabled={textToUpload}
             />
           </form>
           <p className="warning-message">

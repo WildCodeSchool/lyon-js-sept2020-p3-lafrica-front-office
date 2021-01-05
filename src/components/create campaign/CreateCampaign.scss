@@ -16,6 +16,7 @@
     padding: 5px;
     display: flex;
     align-items: center;
+    background-color: white;
     img {
       width: 100px;
       margin: 5px 20px;
@@ -41,6 +42,7 @@
       margin-bottom: 50px;
       border: solid lightgray 6px;
       padding: 5px;
+      background-color: white;
     }
     .vocal-campaign-grid {
       max-width: 400px;
@@ -67,16 +69,18 @@
       margin-bottom: 50px;
       border: solid lightgray 6px;
       padding: 5px 16px;
+      background-color: white;
       .text-download {
         display: flex;
         padding: 10px;
         width: 200px;
-        justify-content: space-around;
+
         .download-icon {
           cursor: pointer;
           width: 35px;
           height: inherit;
           color: rgb(98, 186, 227);
+          margin-right: 20px;
         }
       }
       .text-to-vocalize {
@@ -101,6 +105,7 @@
       margin-bottom: 10px;
       border: solid lightgray 6px;
       padding: 5px;
+      background-color: white;
 
       .option-vocalization-grid {
         max-width: 700px;
@@ -152,6 +157,7 @@
       margin-bottom: 10px;
       border: solid lightgray 6px;
       padding: 5px;
+      background-color: white;
     }
     .broadcast-list-grid {
       display: grid;
@@ -196,4 +202,17 @@
     display: flex;
     flex-direction: column;
   }
-} ;
+}
+
+.flexForm {
+  display: flex;
+}
+
+.upload {
+  cursor: pointer;
+  width: 250px;
+  border: 1px solid lightgray;
+  em {
+    font-size: 0.8em;
+  }
+}
