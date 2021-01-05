@@ -13,16 +13,19 @@ import CustomizedSlider from './subcomponents/CustomizedSlider';
 const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
+  const [textToUpload, setTextToUpload] = useState('');
 
   const { match } = props;
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
   };
-  const sendToGTTS = () => {
-    API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
-      message: messageToVocalize,
-    })
+  const sendToGTTS = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('uploaded_text', textToUpload);
+    formData.append('message', messageToVocalize);
+    API.post(`/users/${match.params.user_id}/campaigns/TTS`, formData)
       .then((res) => {
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
@@ -39,6 +42,10 @@ const CreateCampaign = (props) => {
       </audio>
     );
     // <audio controls src={audioFilePath} />;
+  };
+
+  const deleteFile = () => {
+    setTextToUpload('');
   };
 
   return (
@@ -80,16 +87,30 @@ const CreateCampaign = (props) => {
           Saisissez votre message à vocaliser (160 caractères maximum)
         </h3>
         <div className="vocalization-frame">
-          <div className="text-download">
-            <GrCloudDownload className="download-icon" />
-            <p>Importer un message</p>
-          </div>
-          <textarea
-            className="text-to-vocalize"
-            placeholder="Ecrivez votre message à vocaliser ici..."
-            value={messageToVocalize}
-            onChange={handleChange}
-          />
+          <form onSubmit={sendToGTTS}>
+            <div className="text-download">
+              <p>Importer un message</p>
+              <label htmlFor="textToUpload">
+                <GrCloudDownload className="download-icon" />
+                <input
+                  id="textToUpload"
+                  type="file"
+                  color="transparent"
+                  onChange={(e) => setTextToUpload(e.target.files[0])}
+                />
+              </label>
+              <button type="button" onClick={deleteFile}>
+                Suprrimer le fichier
+              </button>
+            </div>
+            <textarea
+              className="text-to-vocalize"
+              placeholder="Ecrivez votre message à vocaliser ici..."
+              value={messageToVocalize}
+              onChange={handleChange}
+              disabled={textToUpload}
+            />
+          </form>
           <p className="warning-message">
             Message d'alerte en cas de dépassement de caractères
           </p>
