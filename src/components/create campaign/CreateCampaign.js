@@ -28,6 +28,7 @@ const CreateCampaign = (props) => {
   const [open, setOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('Entrer un numéro');
   const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(true);
+  const [vocalisationFileName, setVocalisationFileName] = useState('');
 
   const { match } = props;
 
@@ -39,6 +40,7 @@ const CreateCampaign = (props) => {
       message: messageToVocalize,
     })
       .then((res) => {
+        setVocalisationFileName(res.data);
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
         );
@@ -77,8 +79,14 @@ const CreateCampaign = (props) => {
       setPhoneNumberTestCheck(false);
     } else {
       setPhoneNumberTestCheck(true);
-      await API.post('/voice/sendVocalMessage/test', phoneNumber);
+      // loaderON
       // setPhoneNumber('Message envoyé');
+
+      await API.post('/voice/sendVocalMessage/test', {
+        phoneNumber,
+        vocalisationFileName,
+      });
+      // LoaderOFF
     }
   };
 
