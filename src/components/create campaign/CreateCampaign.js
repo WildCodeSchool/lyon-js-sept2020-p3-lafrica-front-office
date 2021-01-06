@@ -17,6 +17,8 @@ import { FiPhoneIncoming } from 'react-icons/fi';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import API from '../../services/API';
 import textToSpeechIcon from '../../images/text_to_speech.png';
 import CustomizedSlider from './subcomponents/CustomizedSlider';
@@ -65,11 +67,12 @@ const CreateCampaign = (props) => {
   };
 
   const handleChangePhoneNumber = (e) => {
-    setPhoneNumber(e.target.value);
+    console.log(e);
+    setPhoneNumber(e);
   };
 
   const handleCancelPhoneNumber = () => {
-    setPhoneNumber('Entrer un numéro');
+    setPhoneNumber('');
   };
 
   const sendVocalMessage = async () => {
@@ -77,14 +80,14 @@ const CreateCampaign = (props) => {
       setPhoneNumberTestCheck(false);
     } else {
       setPhoneNumberTestCheck(true);
-      // loaderON
-      // setPhoneNumber('Message envoyé');
+      // loaderON A RAJOUTER
+      // setPhoneNumber('Message envoyé') A RAJOUTER;
 
       await API.post('/voice/sendVocalMessage/test', {
         phoneNumber,
         vocalisationFileName,
       });
-      // LoaderOFF
+      // LoaderOFF A RAJOUTER
     }
   };
 
@@ -92,11 +95,6 @@ const CreateCampaign = (props) => {
     const audio = document.getElementById('audioPlayer');
     audio.play();
   };
-
-  // const dlVocal = () => {
-  //   const audioDl = document.getElementById('audioPlayer');
-  //   audioDl.download();
-  // };
 
   return (
     <div className="create-campaign-body">
@@ -111,7 +109,6 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
-            {/* <InputLabel htmlFor='select'></InputLabel> */}
             <NativeSelect className="vocal-campaign-name" id="select">
               <option value="10">Mon nom de campagne</option>
               <option value="20">Une autre campagne</option>
@@ -227,7 +224,7 @@ const CreateCampaign = (props) => {
                   Pour tester la vocalisation de votre message vers un numéro
                   mobile, merci d'inscrire ci-dessous un numéro de téléphone
                 </DialogContentText>
-                <TextField
+                {/* <TextField
                   autoFocus
                   margin="dense"
                   id="tel"
@@ -235,7 +232,13 @@ const CreateCampaign = (props) => {
                   type="tel"
                   fullWidth
                   onChange={handleChangePhoneNumber}
+                /> */}
+                <PhoneInput
+                  country="fr"
+                  value={phoneNumber}
+                  onChange={handleChangePhoneNumber}
                 />
+
                 <small>
                   Exemple: <strong>33</strong>603190988 pour la France
                 </small>
