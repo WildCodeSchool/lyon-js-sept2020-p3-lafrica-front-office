@@ -3,8 +3,8 @@ FROM node:12.18 as builder
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
-ARG REACT_APP_API_URL=${REACT_APP_API_URL}
-ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+ARG REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
+ENV REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
 COPY . /usr/src/app
 RUN npm install
 RUN npm run build
