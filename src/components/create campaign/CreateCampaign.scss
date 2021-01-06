@@ -194,6 +194,12 @@
   }
 }
 
+.alert-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 @media screen and (max-width: 768px) {
   .title-page {
     flex-direction: column;

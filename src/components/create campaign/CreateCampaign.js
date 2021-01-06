@@ -8,7 +8,11 @@ import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
 import API from '../../services/API';
 import textToSpeechIcon from '../../images/text_to_speech.png';
-import { SpeedSlider, PitchSlider } from './subcomponents/CustomizedSlider';
+import {
+  SpeedSlider,
+  PitchSlider,
+  VolumeSlider,
+} from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
@@ -41,14 +45,18 @@ const CreateCampaign = (props) => {
     }
   }, [textToUpload]);
 
-  const handleAudioConfig = (name) => (e, value) => {
+  const handleSliderAudioConfig = (name) => (e, value) => {
     setAudioConfig((prevConfig) => {
-      return { ...prevConfig, [name]: value || e.target.value };
+      return { ...prevConfig, [name]: value };
+    });
+  };
+  const handleSelectAudioConfig = (e) => {
+    setAudioConfig((prevConfig) => {
+      return { ...prevConfig, [e.target.name]: e.target.value };
     });
   };
 
   const sendToGTTS = () => {
-    console.log(audioConfig);
     API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
       message: messageToVocalize,
       audioConfig,
@@ -68,7 +76,6 @@ const CreateCampaign = (props) => {
         <track default kind="captions" srcLang="fr" />
       </audio>
     );
-    // <audio controls src={audioFilePath} />;
   };
 
   const handleFileUpload = (e) => {
@@ -160,44 +167,64 @@ const CreateCampaign = (props) => {
         <h3 className="option-vocalization-title">Options de vocalisation</h3>
         <div className="option-vocalization-frame">
           <div className="option-vocalization-grid">
-            <p>Language</p>
-            <div className="option-vocalization-language">
-              <InputLabel htmlFor="select" />
-              <NativeSelect
-                id="select"
-                onChange={handleAudioConfig('languageCode')}
-              >
-                <option value="fr-FR">Français</option>
-                <option value="other">Autre</option>
-              </NativeSelect>
-            </div>
-            <p>Vitesse de la voix</p>
-
-            <SpeedSlider handleAudioConfig={handleAudioConfig} />
-
             <p>Type de voix</p>
             <div className="option-vocalization-type">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
-                onChange={handleAudioConfig('ssmlGender')}
+                name="voiceGender"
+                onChange={(e) => handleSelectAudioConfig(e)}
               >
-                <option value="MALE">Homme</option>
-                <option value="FEMALE">Femme</option>
+                <option value="A">Femme 1</option>
+                <option value="B">Homme 1</option>
+                <option value="C">Femme 2</option>
+                <option value="D">Homme 2</option>
+                <option value="E">Femme 3</option>
               </NativeSelect>
             </div>
-            <p>Hauteur de la voix</p>
-            <PitchSlider handleAudioConfig={handleAudioConfig} />
+            <p>Vitesse de la voix</p>
+
+            <SpeedSlider handleSliderAudioConfig={handleSliderAudioConfig} />
             <p>Réalisme de la voix</p>
             <div className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
-              <NativeSelect id="select">
-                <option value="10">Standard</option>
-                <option value="20">Réaliste</option>
+              <NativeSelect
+                id="select"
+                name="voiceType"
+                onChange={(e) => handleSelectAudioConfig(e)}
+              >
+                <option value="Standard">Standard</option>
+                <option value="WaveNet">Réaliste</option>
               </NativeSelect>
             </div>
+
+            <p>Hauteur de la voix</p>
+            <PitchSlider handleSliderAudioConfig={handleSliderAudioConfig} />
+
+            <p>Format du fichier audio</p>
+            <div className="option-vocalization-realism">
+              <InputLabel htmlFor="select" />
+              <NativeSelect
+                id="select"
+                name="audioEncoding"
+                onChange={(e) => handleSelectAudioConfig(e)}
+              >
+                <option value="MP3">mp3</option>
+                <option value="LINEAR16">wav</option>
+              </NativeSelect>
+            </div>
+
+            <p>Volume de la voix</p>
+            <VolumeSlider handleSliderAudioConfig={handleSliderAudioConfig} />
           </div>
         </div>
+
+        {audioConfig.voiceType === 'WaveNet' && (
+          <p className="alert-message">
+            Une voix réaliste engendre un surcoût de facturation.
+          </p>
+        )}
+
         <div className="vocalization-action">
           <div className="vocalization-action-vocalize">
             <FaMicrophone
