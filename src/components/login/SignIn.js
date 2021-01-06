@@ -150,13 +150,6 @@ const SignIn = () => {
             S'identifier
           </Button>
           <Grid container>
-            <Grid item xs>
-              {/* eslint-disable-next-line */}
-              <Link href="#" variant="body2">
-                {' '}
-                Mot de passe oublié ?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="/signUp" variant="body2">
                 Pas de compte ? Inscrivez-vous !
