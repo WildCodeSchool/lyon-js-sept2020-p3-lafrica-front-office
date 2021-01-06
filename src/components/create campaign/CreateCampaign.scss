@@ -209,16 +209,24 @@
     flex-direction: column;
   }
 }
-
 .flexForm {
   display: flex;
 }
-
-.upload {
+.fileNotYetUploaded {
   cursor: pointer;
   width: 250px;
   border: 1px solid lightgray;
   em {
     font-size: 0.8em;
   }
+}
+.fileUploaded {
+  cursor: pointer;
+  border: 1px solid lightgray;
+  background-color: #aed581;
+  text-align: center;
+  width: 250px;
+}
+.hidden {
+  display: none;
 }

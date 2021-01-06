@@ -100,7 +100,6 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
-            {/* <InputLabel htmlFor='select'></InputLabel> */}
             <NativeSelect className="vocal-campaign-name" id="select">
               <option value="10">Mon nom de campagne</option>
               <option value="20">Une autre campagne</option>
@@ -131,12 +130,20 @@ const CreateCampaign = (props) => {
               <label htmlFor="textToUpload">
                 <div className="flexForm">
                   <GrCloudDownload className="download-icon" />
-                  <p className="upload">
+                  <p
+                    className={
+                      !fileNameTextToUpload
+                        ? 'fileNotYetUploaded'
+                        : 'fileUploaded'
+                    }
+                  >
                     {!fileNameTextToUpload
                       ? 'Importer un message'
                       : fileNameTextToUpload}
                     <br />
-                    <em>(format accepté : .txt)</em>
+                    <em className={!fileNameTextToUpload ? '' : 'hidden'}>
+                      (format accepté : .txt)
+                    </em>
                   </p>
                 </div>
                 <input
