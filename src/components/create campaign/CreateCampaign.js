@@ -1,31 +1,91 @@
-import { InputLabel, NativeSelect, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
+import {
+  InputLabel,
+  NativeSelect,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
+
+import React, { useEffect, useState } from 'react';
 import { GrCloudDownload } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
+import { FiPhoneIncoming } from 'react-icons/fi';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import './CreateCampaign.scss';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import API from '../../services/API';
 import textToSpeechIcon from '../../images/text_to_speech.png';
-import CustomizedSlider from './subcomponents/CustomizedSlider';
+import {
+  SpeedSlider,
+  PitchSlider,
+  VolumeSlider,
+} from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = (props) => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
+  const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
+  const [textToUpload, setTextToUpload] = useState('');
+  const [fileNameTextToUpload, setFileNameTextToUpload] = useState('');
+  const [audioConfig, setAudioConfig] = useState({});
+  const [open, setOpen] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(false);
+  const [vocalisationFileName, setVocalisationFileName] = useState('');
 
   const { match } = props;
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
   };
+
+  const submitTextToUpload = () => {
+    const formData = new FormData();
+    formData.append('uploaded_text', textToUpload);
+    API.post(`/users/${match.params.user_id}/campaigns/uploadtext`, formData)
+      .then((res) => {
+        setMessageToVocalize(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (textToUpload) {
+      submitTextToUpload();
+    }
+  }, [textToUpload]);
+
+  const handleSliderAudioConfig = (name) => (e, value) => {
+    setAudioConfig((prevConfig) => {
+      return { ...prevConfig, [name]: value };
+    });
+  };
+  const handleSelectAudioConfig = (e) => {
+    setAudioConfig((prevConfig) => {
+      return { ...prevConfig, [e.target.name]: e.target.value };
+    });
+  };
+
   const sendToGTTS = () => {
     API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
       message: messageToVocalize,
+      audioConfig,
     })
       .then((res) => {
+        setVocalisationFileName(res.data);
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
+        );
+        setDownloadAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/downloadaudio?audio=${res.data}`
         );
       })
       .catch((err) => {
@@ -34,11 +94,56 @@ const CreateCampaign = (props) => {
   };
   const playAudioTest = () => {
     return (
-      <audio controls src={audioFilePath}>
+      <audio id="audioPlayer" src={audioFilePath}>
         <track default kind="captions" srcLang="fr" />
       </audio>
     );
-    // <audio controls src={audioFilePath} />;
+  };
+
+  const handleFileUpload = (e) => {
+    setTextToUpload(e.target.files[0]);
+    if (e.target.files[0]) {
+      setFileNameTextToUpload(e.target.files[0].name);
+    } else {
+      setFileNameTextToUpload('');
+    }
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChangePhoneNumber = (e) => {
+    console.log(e);
+    setPhoneNumber(e);
+  };
+
+  const handleCancelPhoneNumber = () => {
+    setPhoneNumber('');
+  };
+
+  const sendVocalMessage = async () => {
+    if (phoneNumber === '') {
+      setPhoneNumberTestCheck(false);
+    } else {
+      setPhoneNumberTestCheck(true);
+      // loaderON A RAJOUTER
+      // setPhoneNumber('Message envoyé') A RAJOUTER;
+
+      await API.post('/voice/sendVocalMessage/test', {
+        phoneNumber,
+        vocalisationFileName,
+      });
+      // LoaderOFF A RAJOUTER
+    }
+  };
+
+  const play = () => {
+    const audio = document.getElementById('audioPlayer');
+    audio.play();
   };
 
   return (
@@ -54,7 +159,6 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
-            {/* <InputLabel htmlFor='select'></InputLabel> */}
             <NativeSelect className="vocal-campaign-name" id="select">
               <option value="10">Mon nom de campagne</option>
               <option value="20">Une autre campagne</option>
@@ -80,16 +184,45 @@ const CreateCampaign = (props) => {
           Saisissez votre message à vocaliser (160 caractères maximum)
         </h3>
         <div className="vocalization-frame">
-          <div className="text-download">
-            <GrCloudDownload className="download-icon" />
-            <p>Importer un message</p>
-          </div>
-          <textarea
-            className="text-to-vocalize"
-            placeholder="Ecrivez votre message à vocaliser ici..."
-            value={messageToVocalize}
-            onChange={handleChange}
-          />
+          <form>
+            <div className="text-download">
+              <label htmlFor="textToUpload">
+                <div className="flexForm">
+                  <GrCloudDownload className="download-icon" />
+                  <p
+                    className={
+                      !fileNameTextToUpload
+                        ? 'fileNotYetUploaded'
+                        : 'fileUploaded'
+                    }
+                  >
+                    {!fileNameTextToUpload
+                      ? 'Importer un message'
+                      : fileNameTextToUpload}
+                    <br />
+                    <em className={!fileNameTextToUpload ? '' : 'hidden'}>
+                      (format accepté : .txt)
+                    </em>
+                  </p>
+                </div>
+                <input
+                  id="textToUpload"
+                  type="file"
+                  accept=".txt"
+                  hidden
+                  onChange={(e) => {
+                    handleFileUpload(e);
+                  }}
+                />
+              </label>
+            </div>
+            <textarea
+              className="text-to-vocalize"
+              placeholder="Ecrivez votre message à vocaliser ici..."
+              value={messageToVocalize}
+              onChange={handleChange}
+            />
+          </form>
           <p className="warning-message">
             Message d'alerte en cas de dépassement de caractères
           </p>
@@ -100,36 +233,64 @@ const CreateCampaign = (props) => {
         <h3 className="option-vocalization-title">Options de vocalisation</h3>
         <div className="option-vocalization-frame">
           <div className="option-vocalization-grid">
-            <p>Language</p>
-            <div className="option-vocalization-language">
-              <InputLabel htmlFor="select" />
-              <NativeSelect id="select">
-                <option value="10">Français</option>
-                <option value="20">Autre</option>
-              </NativeSelect>
-            </div>
-            <p>Vitesse de la voix</p>
-            <CustomizedSlider />
             <p>Type de voix</p>
             <div className="option-vocalization-type">
               <InputLabel htmlFor="select" />
-              <NativeSelect id="select">
-                <option value="10">Homme</option>
-                <option value="20">Femme</option>
+              <NativeSelect
+                id="select"
+                name="voiceGender"
+                onChange={(e) => handleSelectAudioConfig(e)}
+              >
+                <option value="A">Femme 1</option>
+                <option value="B">Homme 1</option>
+                <option value="C">Femme 2</option>
+                <option value="D">Homme 2</option>
+                <option value="E">Femme 3</option>
               </NativeSelect>
             </div>
-            <p>Hauteur de la voix</p>
-            <CustomizedSlider />
+            <p>Vitesse de la voix</p>
+
+            <SpeedSlider handleSliderAudioConfig={handleSliderAudioConfig} />
             <p>Réalisme de la voix</p>
             <div className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
-              <NativeSelect id="select">
-                <option value="10">Standard</option>
-                <option value="20">Réaliste</option>
+              <NativeSelect
+                id="select"
+                name="voiceType"
+                onChange={(e) => handleSelectAudioConfig(e)}
+              >
+                <option value="Standard">Standard</option>
+                <option value="WaveNet">Réaliste</option>
               </NativeSelect>
             </div>
+
+            <p>Hauteur de la voix</p>
+            <PitchSlider handleSliderAudioConfig={handleSliderAudioConfig} />
+
+            <p>Format du fichier audio</p>
+            <div className="option-vocalization-realism">
+              <InputLabel htmlFor="select" />
+              <NativeSelect
+                id="select"
+                name="audioEncoding"
+                onChange={(e) => handleSelectAudioConfig(e)}
+              >
+                <option value="MP3">mp3</option>
+                <option value="LINEAR16">wav</option>
+              </NativeSelect>
+            </div>
+
+            <p>Volume de la voix</p>
+            <VolumeSlider handleSliderAudioConfig={handleSliderAudioConfig} />
           </div>
         </div>
+
+        {audioConfig.voiceType === 'WaveNet' && (
+          <p className="alert-message">
+            Une voix réaliste engendre un surcoût de facturation.
+          </p>
+        )}
+
         <div className="vocalization-action">
           <div className="vocalization-action-vocalize">
             <FaMicrophone
@@ -139,17 +300,87 @@ const CreateCampaign = (props) => {
             <p>Vocaliser votre message</p>
           </div>
           <div className="vocalization-action-test">
-            <IoIosPlayCircle className="vocalization-action-icon" />
+            <IoIosPlayCircle
+              onClick={play}
+              className="vocalization-action-icon"
+            />
             <p>Ecouter votre message</p>
             {playAudioTest()}
           </div>
           <div className="vocalization-action-download">
-            <ImFolderDownload className="vocalization-action-icon" />
+            <a href={downloadAudioFilePath}>
+              <ImFolderDownload className="vocalization-action-icon" />
+            </a>
+
             <p>Télécharger le fichier audio</p>
+          </div>
+          <div />
+          <div className="vocalization-action-trySend">
+            <FiPhoneIncoming
+              className="vocalization-action-icon"
+              onClick={handleClickOpen}
+            />
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Entrer un numéro</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Pour tester la vocalisation de votre message vers un numéro
+                  mobile, merci d'inscrire ci-dessous un numéro de téléphone
+                </DialogContentText>
+                {/* <TextField
+                  autoFocus
+                  margin="dense"
+                  id="tel"
+                  label="Numéro de téléphone"
+                  type="tel"
+                  fullWidth
+                  onChange={handleChangePhoneNumber}
+                /> */}
+                <PhoneInput
+                  country="fr"
+                  value={phoneNumber}
+                  onChange={handleChangePhoneNumber}
+                />
+
+                <small>
+                  Exemple: <strong>33</strong>603190988 pour la France
+                </small>
+              </DialogContent>
+              <DialogActions>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleClose();
+                    handleCancelPhoneNumber();
+                  }}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sendVocalMessage();
+                    handleClose();
+                  }}
+                  className={
+                    phoneNumberTestCheck
+                      ? 'vocalization-action-dialog-ok'
+                      : 'vocalization-action-dialog-error'
+                  }
+                >
+                  Envoyer
+                </button>
+              </DialogActions>
+            </Dialog>
+
+            <p>Tester un envoi</p>
           </div>
         </div>
       </div>
-
       <div className="broadcast-list-body">
         <h3 className="broadcast-list-title">Liste de diffusion</h3>
         <div className="broadcast-list-frame">

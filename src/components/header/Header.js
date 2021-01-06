@@ -47,6 +47,8 @@ const Header = () => {
         <Link to="/users/:user_id/createCampaign">CREER UNE CAMPAGNE</Link>
       </Menu>
 
+      <div>Bonjour utilisateur</div>
+
       <div className="menuBtn">
         <ul>
           <li>
