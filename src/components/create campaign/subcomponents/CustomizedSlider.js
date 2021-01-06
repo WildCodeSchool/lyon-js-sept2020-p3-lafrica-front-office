@@ -10,17 +10,55 @@ const CustomSlider = withStyles({
   },
 })(Slider);
 
-export default function CustomizedSlider() {
+export function SpeedSlider({ handleSliderAudioConfig }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <div className={classes.margin} />
-      <CustomSlider
-        valueLabelDisplay="auto"
-        aria-label="pretto slider"
-        defaultValue={20}
-      />
-    </div>
+    <CustomSlider
+      className={classes.root}
+      valueLabelDisplay="auto"
+      aria-label="pretto slider"
+      name="speakingRate"
+      min={0.25}
+      max={4.0}
+      step={0.25}
+      defaultValue={1.0}
+      onChange={handleSliderAudioConfig('speakingRate')}
+    />
+  );
+}
+
+export function PitchSlider({ handleSliderAudioConfig }) {
+  const classes = useStyles();
+
+  return (
+    <CustomSlider
+      className={classes.root}
+      valueLabelDisplay="auto"
+      aria-label="pretto slider"
+      name="pitch"
+      min={-20.0}
+      max={20.0}
+      step={1}
+      defaultValue={0}
+      onChange={handleSliderAudioConfig('pitch')}
+    />
+  );
+}
+export function VolumeSlider({ handleSliderAudioConfig }) {
+  const classes = useStyles();
+
+  return (
+    <CustomSlider
+      className={classes.root}
+      valueLabelDisplay="auto"
+      aria-label="pretto slider"
+      name="volumeGainDb"
+      min={-3.0}
+      max={3.0}
+      step={1}
+      defaultValue={0}
+      onChange={handleSliderAudioConfig('volumeGainDb')}
+    />
   );
 }
