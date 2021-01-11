@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import React, { useEffect, useState } from 'react';
-import { GrCloudDownload } from 'react-icons/gr';
+import { GrCloudDownload, GrSend } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
 import { FiPhoneIncoming } from 'react-icons/fi';
@@ -28,6 +28,7 @@ import {
 } from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = (props) => {
+  const [campaignName, setCampaignName] = useState('');
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
@@ -117,7 +118,6 @@ const CreateCampaign = (props) => {
   };
 
   const handleChangePhoneNumber = (e) => {
-    console.log(e);
     setPhoneNumber(e);
   };
 
@@ -159,10 +159,15 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
-            <NativeSelect className="vocal-campaign-name" id="select">
-              <option value="10">Mon nom de campagne</option>
-              <option value="20">Une autre campagne</option>
-            </NativeSelect>
+            <input
+              type="text"
+              className="vocal-campaign-name"
+              placeholder="Votre nom de campagne"
+              value={campaignName}
+              onChange={(e) => {
+                setCampaignName(e.target.value);
+              }}
+            />
             <p>Date d'envoi</p>
             <form className="vocal-campaign-date" noValidate>
               <TextField
@@ -418,8 +423,9 @@ const CreateCampaign = (props) => {
       </div>
 
       {/* permet d'envoyer tous les éléments du formulaire à a BDD */}
-      <button type="button" onClick={sendToGTTS}>
-        Vocaliser
+      <button className="sendCampaign" type="button">
+        <GrSend className="sendCampaignIcon" />
+        <h3>Créer ma campagne d'envoi de message</h3>
       </button>
     </div>
   );
