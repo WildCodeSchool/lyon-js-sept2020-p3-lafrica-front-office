@@ -9,12 +9,26 @@ header li {
   justify-content: space-around;
 }
 
+.logoutBtn-true {
+  display: block;
+}
+
+.logoutBtn-false {
+  display: none;
+}
+
 header {
   display: flex;
   justify-content: space-between;
   background: #eaeaea;
   height: 65px;
   color: white;
+}
+
+.userTitle {
+  padding-top: 20px;
+  font-size: 1.5em;
+  color: black;
 }
 
 .BurgerMenu img {

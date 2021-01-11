@@ -64,6 +64,7 @@ const SignIn = () => {
     try {
       const res = await API.post('/auth/login', data);
       await setUserDetails({
+        id: res.data.id,
         firstname: res.data.firstname,
         lastname: res.data.lastname,
       });

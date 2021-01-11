@@ -10,11 +10,12 @@ import { UserContext } from '../../context/UserContext';
 const Header = () => {
   const history = useHistory();
   const { addToast } = useToasts();
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
 
   const handleLogOut = async () => {
     try {
       await API.get('/auth/logout');
+      setUserDetails('');
       history.push('/');
       addToast('Déconnexion réussie !', {
         appearance: 'success',
@@ -40,10 +41,12 @@ const Header = () => {
         <Link to="/">ACCUEIL</Link>
         <Link to="/signIn">S'IDENTIFIER</Link>
 
-        <Link to="/users/:user_id/createCampaign">CREER UNE CAMPAGNE</Link>
+        <Link to={`/users/${userDetails.id}/createCampaign`}>
+          CREER UNE CAMPAGNE
+        </Link>
       </Menu>
 
-      <div>
+      <div className="userTitle">
         {userDetails.firstname} {userDetails.lastname}
       </div>
 
@@ -54,7 +57,7 @@ const Header = () => {
           </li>
         </ul>
         <ul>
-          <li>
+          <li className={userDetails.id ? 'logoutBtn-true' : 'logoutBtn-false'}>
             <button type="button" onClick={handleLogOut}>
               Déconnexion
             </button>
