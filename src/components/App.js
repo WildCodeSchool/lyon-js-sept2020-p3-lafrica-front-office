@@ -9,6 +9,7 @@ import SignIn from './login/SignIn';
 import Home from './home/Home';
 import SignUp from './login/SignUp';
 import CampaignsView from './campaignsView/CampaignsView';
+import ContactsView from './ContactsView/ContactsView';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
                 path="/users/:user_id/campaigns"
                 component={CampaignsView}
               />
+              <Route path="/users/:user_id/contacts" component={ContactsView} />
             </Switch>
           </main>
           <Footer />
