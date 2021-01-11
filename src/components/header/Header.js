@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './header.css';
 import { slide as Menu } from 'react-burger-menu';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { Link, useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
 const Header = () => {
   const history = useHistory();
   const { addToast } = useToasts();
+  const { userDetails } = useContext(UserContext);
 
   const handleLogOut = async () => {
     try {
@@ -31,7 +33,9 @@ const Header = () => {
       <Menu>
         <div id="home" className="menu-item" href="/">
           <BsFillPersonFill size={150} color="white" />
-          <p>Bonjour Utilisateur</p>
+          <p>
+            Bonjour {userDetails.firstname} {userDetails.lastname}
+          </p>
         </div>
         <Link to="/">ACCUEIL</Link>
         <Link to="/signIn">S'IDENTIFIER</Link>
@@ -39,7 +43,9 @@ const Header = () => {
         <Link to="/users/:user_id/createCampaign">CREER UNE CAMPAGNE</Link>
       </Menu>
 
-      <div>Bonjour utilisateur</div>
+      <div>
+        {userDetails.firstname} {userDetails.lastname}
+      </div>
 
       <div className="menuBtn">
         <ul>

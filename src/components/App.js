@@ -9,40 +9,43 @@ import SignIn from './login/SignIn';
 import Home from './home/Home';
 import SignUp from './login/SignUp';
 import CampaignsView from './campaignsView/CampaignsView';
+import UserContextProvider from '../context/UserContext';
 
 function App() {
   return (
     <ToastProvider placement="top-center">
-      <Router>
-        <div className="app">
-          <Header />
-          <main>
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/signIn">
-                <SignIn />
-              </Route>
-              <Route path="/signUp">
-                <SignUp />
-              </Route>
-              <Route
-                path="/users/:user_id/createCampaign"
-                component={CreateCampaign}
-              />
-              <Route path="/users/:user_id/campaigns/:campaign_id">
-                <CampaignDetail />
-              </Route>
-              <Route
-                path="/users/:user_id/campaigns"
-                component={CampaignsView}
-              />
-            </Switch>
-          </main>
-          <Footer />
-        </div>
-      </Router>
+      <UserContextProvider>
+        <Router>
+          <div className="app">
+            <Header />
+            <main>
+              <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
+                <Route path="/signIn">
+                  <SignIn />
+                </Route>
+                <Route path="/signUp">
+                  <SignUp />
+                </Route>
+                <Route
+                  path="/users/:user_id/createCampaign"
+                  component={CreateCampaign}
+                />
+                <Route path="/users/:user_id/campaigns/:campaign_id">
+                  <CampaignDetail />
+                </Route>
+                <Route
+                  path="/users/:user_id/campaigns"
+                  component={CampaignsView}
+                />
+              </Switch>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </UserContextProvider>
     </ToastProvider>
   );
 }

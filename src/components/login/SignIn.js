@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './login.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignIn = () => {
+  const { setUserDetails } = useContext(UserContext);
   const { paper, avatar, form, submit } = useStyles();
   const { addToast } = useToasts();
   const history = useHistory();
@@ -61,7 +63,12 @@ const SignIn = () => {
   const handleSubmitUserLogin = async (data) => {
     try {
       const res = await API.post('/auth/login', data);
-      handleRedirect(res.data);
+      await setUserDetails({
+        firstname: res.data.firstname,
+        lastname: res.data.lastname,
+      });
+      handleRedirect(res.data.id);
+
       addToast('Connexion réussie !', {
         appearance: 'success',
         autoDismiss: true,
