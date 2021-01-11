@@ -283,55 +283,56 @@ const CreateCampaign = (props) => {
             <p>Volume de la voix</p>
             <VolumeSlider handleSliderAudioConfig={handleSliderAudioConfig} />
           </div>
-        </div>
 
-        {audioConfig.voiceType === 'WaveNet' && (
-          <p className="alert-message">
-            Une voix réaliste engendre un surcoût de facturation.
-          </p>
-        )}
+          {audioConfig.voiceType === 'WaveNet' && (
+            <p className="alert-message">
+              Une voix réaliste engendre un surcoût de facturation.
+            </p>
+          )}
 
-        <div className="vocalization-action">
-          <div className="vocalization-action-vocalize">
-            <FaMicrophone
-              className="vocalization-action-icon"
-              onClick={sendToGTTS}
-            />
-            <p>Vocaliser votre message</p>
-          </div>
-          <div className="vocalization-action-test">
-            <IoIosPlayCircle
-              onClick={play}
-              className="vocalization-action-icon"
-            />
-            <p>Ecouter votre message</p>
-            {playAudioTest()}
-          </div>
-          <div className="vocalization-action-download">
-            <a href={downloadAudioFilePath}>
-              <ImFolderDownload className="vocalization-action-icon" />
-            </a>
+          <div className="vocalization-action">
+            <div className="vocalization-action-vocalize">
+              <FaMicrophone
+                className="vocalization-action-icon"
+                onClick={sendToGTTS}
+              />
+              <p>Vocaliser votre message</p>
+            </div>
+            <div className="vocalization-action-test">
+              <IoIosPlayCircle
+                onClick={play}
+                className="vocalization-action-icon"
+              />
+              <p>Ecouter votre message</p>
+              {playAudioTest()}
+            </div>
+            <div className="vocalization-action-download">
+              <a href={downloadAudioFilePath}>
+                <ImFolderDownload className="vocalization-action-icon" />
+              </a>
 
-            <p>Télécharger le fichier audio</p>
-          </div>
-          <div />
-          <div className="vocalization-action-trySend">
-            <FiPhoneIncoming
-              className="vocalization-action-icon"
-              onClick={handleClickOpen}
-            />
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Entrer un numéro</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Pour tester la vocalisation de votre message vers un numéro
-                  mobile, merci d'inscrire ci-dessous un numéro de téléphone
-                </DialogContentText>
-                {/* <TextField
+              <p>Télécharger le fichier audio</p>
+            </div>
+            <div />
+            <div className="vocalization-action-trySend">
+              <FiPhoneIncoming
+                className="vocalization-action-icon"
+                onClick={handleClickOpen}
+              />
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title">
+                  Entrer un numéro
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Pour tester la vocalisation de votre message vers un numéro
+                    mobile, merci d'inscrire ci-dessous un numéro de téléphone
+                  </DialogContentText>
+                  {/* <TextField
                   autoFocus
                   margin="dense"
                   id="tel"
@@ -340,44 +341,45 @@ const CreateCampaign = (props) => {
                   fullWidth
                   onChange={handleChangePhoneNumber}
                 /> */}
-                <PhoneInput
-                  country="fr"
-                  value={phoneNumber}
-                  onChange={handleChangePhoneNumber}
-                />
+                  <PhoneInput
+                    country="fr"
+                    value={phoneNumber}
+                    onChange={handleChangePhoneNumber}
+                  />
 
-                <small>
-                  Exemple: <strong>33</strong>603190988 pour la France
-                </small>
-              </DialogContent>
-              <DialogActions>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleClose();
-                    handleCancelPhoneNumber();
-                  }}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    sendVocalMessage();
-                    handleClose();
-                  }}
-                  className={
-                    phoneNumberTestCheck
-                      ? 'vocalization-action-dialog-ok'
-                      : 'vocalization-action-dialog-error'
-                  }
-                >
-                  Envoyer
-                </button>
-              </DialogActions>
-            </Dialog>
+                  <small>
+                    Exemple: <strong>33</strong>603190988 pour la France
+                  </small>
+                </DialogContent>
+                <DialogActions>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleClose();
+                      handleCancelPhoneNumber();
+                    }}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sendVocalMessage();
+                      handleClose();
+                    }}
+                    className={
+                      phoneNumberTestCheck
+                        ? 'vocalization-action-dialog-ok'
+                        : 'vocalization-action-dialog-error'
+                    }
+                  >
+                    Envoyer
+                  </button>
+                </DialogActions>
+              </Dialog>
 
-            <p>Tester un envoi</p>
+              <p>Tester un envoi</p>
+            </div>
           </div>
         </div>
       </div>

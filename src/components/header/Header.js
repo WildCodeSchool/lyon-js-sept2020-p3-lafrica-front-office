@@ -35,15 +35,7 @@ const Header = () => {
         </div>
         <Link to="/">ACCUEIL</Link>
         <Link to="/signIn">S'IDENTIFIER</Link>
-        {/* <a id='user' className='menu-item' href='/about'>
-          ADMINISTRATION
-        </a>
-        <a id='user' className='menu-item' href='/about'>
-          COMPTE UTILISATEUR
-        </a>
-        <a id='sms' className='menu-item' href='/contact'>
-          SMS
-        </a> */}
+
         <Link to="/users/:user_id/createCampaign">CREER UNE CAMPAGNE</Link>
       </Menu>
 
