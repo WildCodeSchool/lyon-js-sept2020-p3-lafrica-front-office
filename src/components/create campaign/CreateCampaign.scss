@@ -173,9 +173,8 @@
       color: rgb(98, 186, 227);
     }
     .broadcast-list-frame {
-      height: 200px;
+      height: 100%;
       display: flex;
-      flex-direction: column;
       flex-wrap: wrap;
       margin-bottom: 10px;
       border: solid lightgray 6px;

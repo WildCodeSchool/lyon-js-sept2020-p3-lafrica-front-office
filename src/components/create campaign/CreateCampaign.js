@@ -391,11 +391,11 @@ const CreateCampaign = (props) => {
             </div>
             <div className="broadcast-list-export">
               <AiOutlineExport className="broadcast-list-icon" />
-              <p>Importer une liste de diffusion</p>
+              <p>Exporter une liste de diffusion</p>
             </div>
             <div className="broadcast-list-download">
               <FaPlusCircle className="broadcast-list-icon" />
-              <p>Télécharger le fichier audio</p>
+              <p>Ajouter un fichier audio</p>
             </div>
           </div>
           <table className="broadcast-list-array">
@@ -416,11 +416,6 @@ const CreateCampaign = (props) => {
           </table>
         </div>
       </div>
-
-      {/* permet d'envoyer tous les éléments du formulaire à a BDD */}
-      <button type="button" onClick={sendToGTTS}>
-        Vocaliser
-      </button>
     </div>
   );
 };
