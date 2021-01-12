@@ -1,26 +1,9 @@
 import { useState } from 'react';
+import API from '../../services/API';
 
-const ContactsView = () => {
-  const initialContactsList = [
-    {
-      id: 1,
-      lastname: 'Genthon',
-      firstname: 'Pierre',
-      phone_number: '0412131415',
-    },
-    {
-      id: 2,
-      lastname: 'Olmos',
-      firstname: 'Laeticia',
-      phone_number: '0412131415',
-    },
-    {
-      id: 3,
-      lastname: 'Balkany',
-      firstname: 'Patrick',
-      phone_number: '0412131415',
-    },
-  ];
+const ContactsView = (props) => {
+  const { match } = props;
+  const initialContactsList = [];
 
   const initialNewContact = {
     lastname: '',
@@ -33,6 +16,16 @@ const ContactsView = () => {
 
   const deletecontact = (contactID) => {
     setContactsList(contactsList.filter((contact) => contactID !== contact.id));
+  };
+
+  const getCollection = () => {
+    API.get(`/users/${match.params.user_id}/contacts/`)
+      .then((res) => {
+        setContactsList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChangeLastname = (contactID, newLastname) => {
@@ -77,7 +70,7 @@ const ContactsView = () => {
     setNewContact({ ...newContact, phone_number: newPhoneNumber });
   };
 
-  const addANewContact = (event) => {
+  /*   const addANewContact = (event) => {
     event.preventDefault();
     setContactsList([
       ...contactsList,
@@ -93,12 +86,36 @@ const ContactsView = () => {
       firstname: '',
       phone_number: '',
     });
+  }; */
+
+  const addANewContact = async (event) => {
+    event.preventDefault();
+
+    await API.post(`/users/${match.params.user_id}/contacts/`, [
+      {
+        lastname: newContact.lastname,
+        firstname: newContact.firstname,
+        phone_number: newContact.phone_number,
+      },
+    ])
+      .then((res) => {
+        setContactsList([...contactsList, res.data]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setNewContact({
+      lastname: '',
+      firstname: '',
+      phone_number: '',
+    });
+    getCollection();
   };
 
   return (
     <div>
       <h2>Gérer vos contacts</h2>
-      <h3>Ajoutez, modifiez ou suprimer un contact</h3>
+      <h3>Ajoutez, modifiez ou suprimez un contact</h3>
       <table>
         <thead>
           <tr>
@@ -145,7 +162,15 @@ const ContactsView = () => {
                     type="button"
                     onClick={() => deletecontact(contact.id)}
                   >
-                    Suprimer le contact
+                    Modifiez
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => deletecontact(contact.id)}
+                  >
+                    Suprimer
                   </button>
                 </td>
               </tr>
@@ -185,7 +210,9 @@ const ContactsView = () => {
           Ajouter le contact
         </button>
       </form>
-      <button type="button">Sauvegardez la liste de contacts</button>
+      <button type="button" onClick={getCollection}>
+        Afficher la liste de contacts
+      </button>
     </div>
   );
 };
