@@ -6,46 +6,41 @@ import CampaignDetail from './CampaignDetail/CampaignDetails';
 import Footer from './footer/Footer';
 import Header from './header/Header';
 import SignIn from './login/SignIn';
-import Home from './home/Home';
+// import Home from './home/Home';
 import SignUp from './login/SignUp';
 import CampaignsView from './campaignsView/CampaignsView';
 import UserContextProvider from '../context/UserContext';
+import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
 
 function App() {
   return (
     <ToastProvider placement="top-center">
-      <UserContextProvider>
-        <Router>
+      <Router>
+        <UserContextProvider>
           <div className="app">
             <Header />
             <main>
               <Switch>
-                <Route exact path="/">
-                  <Home />
-                </Route>
-                <Route path="/signIn">
+                <Route path="/signin">
                   <SignIn />
                 </Route>
-                <Route path="/signUp">
+                <Route path="/signup">
                   <SignUp />
                 </Route>
-                <Route
-                  path="/users/:user_id/createCampaign"
-                  component={CreateCampaign}
+                <ProtectedRoute path="/campaigns" component={CreateCampaign} />
+
+                <ProtectedRoute
+                  path="/campaigns/:campaign_id"
+                  component={CampaignDetail}
                 />
-                <Route path="/users/:user_id/campaigns/:campaign_id">
-                  <CampaignDetail />
-                </Route>
-                <Route
-                  path="/users/:user_id/campaigns"
-                  component={CampaignsView}
-                />
+
+                <ProtectedRoute exact path="/" component={CampaignsView} />
               </Switch>
             </main>
             <Footer />
           </div>
-        </Router>
-      </UserContextProvider>
+        </UserContextProvider>
+      </Router>
     </ToastProvider>
   );
 }

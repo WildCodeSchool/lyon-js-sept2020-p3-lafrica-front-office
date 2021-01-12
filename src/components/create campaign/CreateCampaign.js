@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GrCloudDownload } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
@@ -26,8 +26,9 @@ import {
   PitchSlider,
   VolumeSlider,
 } from './subcomponents/CustomizedSlider';
+import { UserContext } from '../../context/UserContext';
 
-const CreateCampaign = (props) => {
+const CreateCampaign = () => {
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
@@ -39,7 +40,7 @@ const CreateCampaign = (props) => {
   const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(false);
   const [vocalisationFileName, setVocalisationFileName] = useState('');
 
-  const { match } = props;
+  const { userDetails } = useContext(UserContext);
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
@@ -48,7 +49,7 @@ const CreateCampaign = (props) => {
   const submitTextToUpload = () => {
     const formData = new FormData();
     formData.append('uploaded_text', textToUpload);
-    API.post(`/users/${match.params.user_id}/campaigns/uploadtext`, formData)
+    API.post(`/users/${userDetails.id}/campaigns/uploadtext`, formData)
       .then((res) => {
         setMessageToVocalize(res.data);
       })
@@ -75,17 +76,17 @@ const CreateCampaign = (props) => {
   };
 
   const sendToGTTS = () => {
-    API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
+    API.post(`/users/${userDetails.id}/campaigns/TTS`, {
       message: messageToVocalize,
       audioConfig,
     })
       .then((res) => {
         setVocalisationFileName(res.data);
         setAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
         );
         setDownloadAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/downloadaudio?audio=${res.data}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data}`
         );
       })
       .catch((err) => {
@@ -117,7 +118,6 @@ const CreateCampaign = (props) => {
   };
 
   const handleChangePhoneNumber = (e) => {
-    console.log(e);
     setPhoneNumber(e);
   };
 

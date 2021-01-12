@@ -50,25 +50,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignIn = () => {
-  const { setUserDetails } = useContext(UserContext);
+  const { setUserDetails, setLoggedIn } = useContext(UserContext);
   const { paper, avatar, form, submit } = useStyles();
   const { addToast } = useToasts();
   const history = useHistory();
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
 
-  const handleRedirect = (userId) => {
-    history.push(`/users/${userId}/campaigns`);
+  const handleRedirect = () => {
+    history.push(`/`);
   };
 
   const handleSubmitUserLogin = async (data) => {
     try {
       const res = await API.post('/auth/login', data);
-      await setUserDetails({
-        id: res.data.id,
-        firstname: res.data.firstname,
-        lastname: res.data.lastname,
-      });
-      handleRedirect(res.data.id);
+      await setUserDetails(res.data);
+      await setLoggedIn(!!res.data);
+      handleRedirect();
 
       addToast('Connexion réussie !', {
         appearance: 'success',
@@ -159,7 +156,7 @@ const SignIn = () => {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="/signUp" variant="body2">
+              <Link href="/signup" variant="body2">
                 Pas de compte ? Inscrivez-vous !
               </Link>
             </Grid>
