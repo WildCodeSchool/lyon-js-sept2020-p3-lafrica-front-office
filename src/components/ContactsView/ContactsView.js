@@ -158,12 +158,7 @@ const ContactsView = (props) => {
                   />
                 </td>
                 <td>
-                  <button
-                    type="button"
-                    onClick={() => deletecontact(contact.id)}
-                  >
-                    Modifiez
-                  </button>
+                  <button type="button">Modifiez</button>
                 </td>
                 <td>
                   <button
