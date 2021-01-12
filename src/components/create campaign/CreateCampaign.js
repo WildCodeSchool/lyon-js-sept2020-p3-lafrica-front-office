@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GrCloudDownload, GrSend } from 'react-icons/gr';
 import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
@@ -26,8 +26,9 @@ import {
   PitchSlider,
   VolumeSlider,
 } from './subcomponents/CustomizedSlider';
+import { UserContext } from '../../context/UserContext';
 
-const CreateCampaign = (props) => {
+const CreateCampaign = () => {
   const dateNow = new Date();
   const [campaignName, setCampaignName] = useState('');
   const [campaignDate, setCampaignDate] = useState(dateNow);
@@ -42,7 +43,7 @@ const CreateCampaign = (props) => {
   const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(false);
   const [vocalisationFileName, setVocalisationFileName] = useState('');
 
-  const { match } = props;
+  const { userDetails } = useContext(UserContext);
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
@@ -51,7 +52,7 @@ const CreateCampaign = (props) => {
   const submitTextToUpload = () => {
     const formData = new FormData();
     formData.append('uploaded_text', textToUpload);
-    API.post(`/users/${match.params.user_id}/campaigns/uploadtext`, formData)
+    API.post(`/users/${userDetails.id}/campaigns/uploadtext`, formData)
       .then((res) => {
         setMessageToVocalize(res.data);
       })
@@ -78,17 +79,17 @@ const CreateCampaign = (props) => {
   };
 
   const sendToGTTS = () => {
-    API.post(`/users/${match.params.user_id}/campaigns/TTS`, {
+    API.post(`/users/${userDetails.id}/campaigns/TTS`, {
       message: messageToVocalize,
       audioConfig,
     })
       .then((res) => {
         setVocalisationFileName(res.data);
         setAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/audio?audio=${res.data}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
         );
         setDownloadAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${match.params.user_id}/campaigns/downloadaudio?audio=${res.data}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data}`
         );
       })
       .catch((err) => {
@@ -293,55 +294,56 @@ const CreateCampaign = (props) => {
             <p>Volume de la voix</p>
             <VolumeSlider handleSliderAudioConfig={handleSliderAudioConfig} />
           </div>
-        </div>
 
-        {audioConfig.voiceType === 'WaveNet' && (
-          <p className="alert-message">
-            Une voix réaliste engendre un surcoût de facturation.
-          </p>
-        )}
+          {audioConfig.voiceType === 'WaveNet' && (
+            <p className="alert-message">
+              Une voix réaliste engendre un surcoût de facturation.
+            </p>
+          )}
 
-        <div className="vocalization-action">
-          <div className="vocalization-action-vocalize">
-            <FaMicrophone
-              className="vocalization-action-icon"
-              onClick={sendToGTTS}
-            />
-            <p>Vocaliser votre message</p>
-          </div>
-          <div className="vocalization-action-test">
-            <IoIosPlayCircle
-              onClick={play}
-              className="vocalization-action-icon"
-            />
-            <p>Ecouter votre message</p>
-            {playAudioTest()}
-          </div>
-          <div className="vocalization-action-download">
-            <a href={downloadAudioFilePath}>
-              <ImFolderDownload className="vocalization-action-icon" />
-            </a>
+          <div className="vocalization-action">
+            <div className="vocalization-action-vocalize">
+              <FaMicrophone
+                className="vocalization-action-icon"
+                onClick={sendToGTTS}
+              />
+              <p>Vocaliser votre message</p>
+            </div>
+            <div className="vocalization-action-test">
+              <IoIosPlayCircle
+                onClick={play}
+                className="vocalization-action-icon"
+              />
+              <p>Ecouter votre message</p>
+              {playAudioTest()}
+            </div>
+            <div className="vocalization-action-download">
+              <a href={downloadAudioFilePath}>
+                <ImFolderDownload className="vocalization-action-icon" />
+              </a>
 
-            <p>Télécharger le fichier audio</p>
-          </div>
-          <div />
-          <div className="vocalization-action-trySend">
-            <FiPhoneIncoming
-              className="vocalization-action-icon"
-              onClick={handleClickOpen}
-            />
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Entrer un numéro</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Pour tester la vocalisation de votre message vers un numéro
-                  mobile, merci d'inscrire ci-dessous un numéro de téléphone
-                </DialogContentText>
-                {/* <TextField
+              <p>Télécharger le fichier audio</p>
+            </div>
+            <div />
+            <div className="vocalization-action-trySend">
+              <FiPhoneIncoming
+                className="vocalization-action-icon"
+                onClick={handleClickOpen}
+              />
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title">
+                  Entrer un numéro
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Pour tester la vocalisation de votre message vers un numéro
+                    mobile, merci d'inscrire ci-dessous un numéro de téléphone
+                  </DialogContentText>
+                  {/* <TextField
                   autoFocus
                   margin="dense"
                   id="tel"
@@ -350,44 +352,45 @@ const CreateCampaign = (props) => {
                   fullWidth
                   onChange={handleChangePhoneNumber}
                 /> */}
-                <PhoneInput
-                  country="fr"
-                  value={phoneNumber}
-                  onChange={handleChangePhoneNumber}
-                />
+                  <PhoneInput
+                    country="fr"
+                    value={phoneNumber}
+                    onChange={handleChangePhoneNumber}
+                  />
 
-                <small>
-                  Exemple: <strong>33</strong>603190988 pour la France
-                </small>
-              </DialogContent>
-              <DialogActions>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleClose();
-                    handleCancelPhoneNumber();
-                  }}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    sendVocalMessage();
-                    handleClose();
-                  }}
-                  className={
-                    phoneNumberTestCheck
-                      ? 'vocalization-action-dialog-ok'
-                      : 'vocalization-action-dialog-error'
-                  }
-                >
-                  Envoyer
-                </button>
-              </DialogActions>
-            </Dialog>
+                  <small>
+                    Exemple: <strong>33</strong>603190988 pour la France
+                  </small>
+                </DialogContent>
+                <DialogActions>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleClose();
+                      handleCancelPhoneNumber();
+                    }}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sendVocalMessage();
+                      handleClose();
+                    }}
+                    className={
+                      phoneNumberTestCheck
+                        ? 'vocalization-action-dialog-ok'
+                        : 'vocalization-action-dialog-error'
+                    }
+                  >
+                    Envoyer
+                  </button>
+                </DialogActions>
+              </Dialog>
 
-            <p>Tester un envoi</p>
+              <p>Tester un envoi</p>
+            </div>
           </div>
         </div>
       </div>
@@ -401,11 +404,11 @@ const CreateCampaign = (props) => {
             </div>
             <div className="broadcast-list-export">
               <AiOutlineExport className="broadcast-list-icon" />
-              <p>Importer une liste de diffusion</p>
+              <p>Exporter une liste de diffusion</p>
             </div>
             <div className="broadcast-list-download">
               <FaPlusCircle className="broadcast-list-icon" />
-              <p>Télécharger le fichier audio</p>
+              <p>Ajouter un fichier audio</p>
             </div>
           </div>
           <table className="broadcast-list-array">
