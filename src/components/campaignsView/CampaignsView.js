@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
-import { useHistory, Link } from 'react-router-dom';
+// import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
 const campaignsList = [
   {
@@ -27,19 +29,14 @@ const campaignsList = [
   },
 ];
 
-const CampaignsView = (props) => {
-  const { match } = props;
-  const history = useHistory();
-
-  const handleRedirect = () => {
-    history.push('/signIn');
-  };
+const CampaignsView = () => {
+  const { userDetails } = useContext(UserContext);
 
   useEffect(() => {
-    API.get(`/users/${match.params.user_id}/campaigns`).catch(() => {
-      handleRedirect();
-    });
-  }, []);
+    if (userDetails) {
+      API.get(`/users/${userDetails.id}/campaigns`);
+    }
+  }, [userDetails]);
 
   return (
     <div className="compaigns-view-container">
@@ -53,7 +50,7 @@ const CampaignsView = (props) => {
             <div className="megaphone">
               <GoMegaphone className="btn-icon" />
 
-              <Link to={`/users/${match.params.user_id}/createCampaign`}>
+              <Link to="/campaigns">
                 <h3>Créer une campagne</h3>
               </Link>
             </div>
