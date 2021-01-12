@@ -28,7 +28,9 @@ import {
 } from './subcomponents/CustomizedSlider';
 
 const CreateCampaign = (props) => {
+  const dateNow = new Date();
   const [campaignName, setCampaignName] = useState('');
+  const [campaignDate, setCampaignDate] = useState(dateNow);
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
@@ -173,10 +175,13 @@ const CreateCampaign = (props) => {
               <TextField
                 id="datetime-local"
                 type="datetime-local"
-                defaultValue="2017-05-24T10:30"
+                value={campaignDate}
                 className="textField"
                 InputLabelProps={{
                   shrink: true,
+                }}
+                onChange={(e) => {
+                  setCampaignDate(e.target.value);
                 }}
               />
             </form>
