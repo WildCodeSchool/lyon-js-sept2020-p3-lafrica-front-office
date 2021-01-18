@@ -1,9 +1,11 @@
 import React from 'react';
 import './login.css';
 
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/material.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -60,7 +62,7 @@ const SignUp = () => {
     firstname: Joi.string().max(50).required(),
     lastname: Joi.string().max(50).required(),
     phone_number: Joi.string().pattern(
-      new RegExp(/^(\+|00)[0-9]?()[0-9](\s|\S)(\d[0-9]{0,})$/)
+      new RegExp(/^[0-9]?()[0-9](\s|\S)(\d[0-9]{0,})$/)
     ),
     email: Joi.string()
       .required()
@@ -77,7 +79,7 @@ const SignUp = () => {
     password_confirmation: Joi.ref('password'),
   }).with('password', 'password_confirmation');
 
-  const { register, handleSubmit, errors } = useForm({
+  const { control, errors, register, handleSubmit } = useForm({
     resolver: joiResolver(schema),
     mode: 'onBlur',
   });
@@ -89,6 +91,7 @@ const SignUp = () => {
   };
 
   const submitUserData = async (data) => {
+    console.log(data);
     try {
       await API.post('/users/signUp', data);
       addToast('Bienvenue sur LAfricamobile !', {
@@ -150,19 +153,40 @@ const SignUp = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="phone_number"
-                label="Telephone"
+              <Controller
+                render={(props) => (
+                  <PhoneInput
+                    onlyCountries={['fr', 'at']}
+                    masks={{ fr: '(..) ..-..-..-..', at: '(....) ...-....' }}
+                    isValid={(v) => v.length > 10}
+                    placeholder="Numéro de téléphone"
+                    inputRef={register}
+                    inputStyle={{
+                      width: '368px',
+                      height: '56px',
+                      fontSize: '15px',
+                      paddingLeft: '60px',
+                      borderRadius: '5px',
+                    }}
+                    inputProps={{
+                      name: 'phone_number',
+                      required: true,
+                      autoFocus: true,
+                    }}
+                    id="phone_number"
+                    specialLabel="Telephone"
+                    name="phone_number"
+                    autoComplete="phone_number"
+                    onChange={(value) => props.onChange(value)}
+                    error={!!errors.phone_number}
+                    helperText={
+                      errors.phone_number && 'Un numéro valide est obligatoire'
+                    }
+                  />
+                )}
+                defaultValue=""
                 name="phone_number"
-                autoComplete="lname"
-                inputRef={register}
-                error={!!errors.phone_number}
-                helperText={
-                  errors.phone_number && 'Un numéro valide est obligatoire'
-                }
+                control={control}
               />
             </Grid>
             <Grid item xs={12}>
@@ -225,6 +249,7 @@ const SignUp = () => {
           >
             S'enregistrer
           </Button>
+
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/signIn" variant="body2">
