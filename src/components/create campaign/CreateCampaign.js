@@ -430,7 +430,8 @@ const CreateCampaign = () => {
         </div>
       </div>
 
-      {/* permet d'envoyer tous les éléments du formulaire à a BDD */}
+      {/* A câbler avec l'API, tout est prêt pour l'envoi de campagne, il faut ajouter l'UPDATE de la table de jointure qui permet de lier les numéros avec la campagne en cours.
+      Tout est à mettre dans le le model createCampaign */}
       <button className="sendCampaign" type="button">
         <GrSend className="sendCampaignIcon" />
         <h3>Créer ma campagne d'envoi de message</h3>
