@@ -1,7 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
-import API from '../../services/API';
-import Contact from './subComponents/Contact';
-import { UserContext } from '../../context/UserContext';
+import API from '../../../services/API';
+import Contact from './Contact';
+import { UserContext } from '../../../context/UserContext';
+import './ContactsView.scss';
 
 const ContactsView = () => {
   const initialContactsList = [];
@@ -71,13 +72,11 @@ const ContactsView = () => {
   };
 
   return (
-    <div>
-      <h2>Gérer vos contacts</h2>
-      <h3>Ajoutez, modifiez ou suprimez un contact</h3>
+    <div className="contacts-view-container">
       <table>
         <thead>
           <tr>
-            <th>Identifiant</th>
+            <th>Id</th>
             <th>Nom de famille</th>
             <th>Prénom</th>
             <th>Numéro de télephone</th>
@@ -87,6 +86,7 @@ const ContactsView = () => {
           {contactsList.map((contact) => {
             return (
               <Contact
+                key={contact.id}
                 id={contact.id}
                 lastname={contact.lastname}
                 firstname={contact.firstname}
@@ -99,41 +99,51 @@ const ContactsView = () => {
           })}
         </tbody>
       </table>
+      <h4 className="add-contact">Ajouter un contact</h4>
       <form onSubmit={(event) => addANewContact(event)}>
-        <input
-          type="text"
-          placeholder="Nom de famille"
-          value={newContact.lastname}
-          required
-          onChange={(event) =>
-            handleChangeNewContactLastname(event.target.value)
-          }
-        />
-        <input
-          type="text"
-          placeholder="prénom"
-          value={newContact.firstname}
-          required
-          onChange={(event) =>
-            handleChangeNewContactFirstname(event.target.value)
-          }
-        />
-        <input
-          type="text"
-          placeholder="Numéro de télephone"
-          value={newContact.phoneNumber}
-          required
-          onChange={(event) =>
-            handleChangeNewContactPhoneNumber(event.target.value)
-          }
-        />
-        <button type="submit" className="btn btn-default">
-          Ajouter le contact
-        </button>
+        <table>
+          <tr>
+            <td>
+              <input
+                type="text"
+                placeholder="Nom de famille"
+                value={newContact.lastname}
+                required
+                onChange={(event) =>
+                  handleChangeNewContactLastname(event.target.value)
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                placeholder="prénom"
+                value={newContact.firstname}
+                required
+                onChange={(event) =>
+                  handleChangeNewContactFirstname(event.target.value)
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                placeholder="Numéro de télephone"
+                value={newContact.phoneNumber}
+                required
+                onChange={(event) =>
+                  handleChangeNewContactPhoneNumber(event.target.value)
+                }
+              />
+            </td>
+            <td>
+              <button type="submit" className="create-and-modify-contact-btn">
+                Ajouter le contact
+              </button>
+            </td>
+          </tr>
+        </table>
       </form>
-      <button type="button" onClick={getCollection}>
-        Afficher la liste de contacts
-      </button>
     </div>
   );
 };

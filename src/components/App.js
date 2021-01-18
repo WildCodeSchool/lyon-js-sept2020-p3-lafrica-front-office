@@ -9,7 +9,7 @@ import SignIn from './login/SignIn';
 // import Home from './home/Home';
 import SignUp from './login/SignUp';
 import CampaignsView from './campaignsView/CampaignsView';
-import ContactsView from './ContactsView/ContactsView';
+import ContactsView from './create campaign/subcomponents/ContactsView';
 import UserContextProvider from '../context/UserContext';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
 

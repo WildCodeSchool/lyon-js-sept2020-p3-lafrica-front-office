@@ -29,16 +29,14 @@ const Contact = (props) => {
     setContactPhoneNumber(e.target.value);
   };
 
-  const modifyContact = async () => {
-    await API.put(`/users/${userDetails.id}/contacts/`, [
-      {
-        lastname: contactLastname,
-        firstname: contactFirstname,
-        phone_number: contactPhoneNumber,
-      },
-    ])
-      .then((res) => {
-        setContactsList([...contactsList, res.data[0]]);
+  const modifyContact = async (contactId) => {
+    await API.put(`/users/${userDetails.id}/contacts/${contactId}`, {
+      lastname: contactLastname,
+      firstname: contactFirstname,
+      phone_number: contactPhoneNumber,
+    })
+      .then(() => {
+        setContactsList([...contactsList]);
       })
       .catch((err) => {
         console.log(err);
@@ -47,12 +45,11 @@ const Contact = (props) => {
 
   return (
     <tr key={id}>
-      <td>{id}</td>
+      <td className="id">{id}</td>
       <td>
         <input
           type="text"
           value={contactLastname}
-          // eslint-disable-next-line no-restricted-globals
           onChange={handleChangeLastname}
         />
       </td>
@@ -71,12 +68,20 @@ const Contact = (props) => {
         />
       </td>
       <td>
-        <button type="button" onClick={() => modifyContact(id)}>
+        <button
+          className="create-and-modify-contact-btn"
+          type="button"
+          onClick={() => modifyContact(id)}
+        >
           Modifiez
         </button>
       </td>
       <td>
-        <button type="button" onClick={() => deleteContact(id)}>
+        <button
+          className="delete-contact-btn"
+          type="button"
+          onClick={() => deleteContact(id)}
+        >
           Suprimer
         </button>
       </td>
