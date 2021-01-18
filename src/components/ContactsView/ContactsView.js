@@ -1,25 +1,24 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import API from '../../services/API';
+import Contact from './subComponents/Contact';
+import { UserContext } from '../../context/UserContext';
 
-const ContactsView = (props) => {
-  const { match } = props;
+const ContactsView = () => {
   const initialContactsList = [];
 
   const initialNewContact = {
     lastname: '',
     firstname: '',
-    phone_number: '',
+    phoneNumber: '',
   };
+
+  const { userDetails } = useContext(UserContext);
 
   const [contactsList, setContactsList] = useState(initialContactsList);
   const [newContact, setNewContact] = useState(initialNewContact);
 
-  const deletecontact = (contactID) => {
-    setContactsList(contactsList.filter((contact) => contactID !== contact.id));
-  };
-
   const getCollection = () => {
-    API.get(`/users/${match.params.user_id}/contacts/`)
+    API.get(`/users/${userDetails.id}/contacts/`)
       .then((res) => {
         setContactsList(res.data);
       })
@@ -28,36 +27,9 @@ const ContactsView = (props) => {
       });
   };
 
-  const handleChangeLastname = (contactID, newLastname) => {
-    setContactsList(
-      contactsList.map((contact) =>
-        contactID === contact.id
-          ? { ...contact, lastname: newLastname }
-          : contact
-      )
-    );
-  };
-
-  const handleChangeFirstname = (contactID, newFirstname) => {
-    setContactsList(
-      contactsList.map((contact) =>
-        contactID === contact.id
-          ? { ...contact, firstname: newFirstname }
-          : contact
-      )
-    );
-  };
-
-  const handleChangePhoneNumber = (contactID, newPhoneNumber) => {
-    setContactsList(
-      contactsList.map((contact) =>
-        contactID === contact.id
-          ? { ...contact, phone_number: newPhoneNumber }
-          : contact
-      )
-    );
-  };
-
+  useEffect(() => {
+    getCollection();
+  }, []);
   const handleChangeNewContactLastname = (newLastname) => {
     setNewContact({ ...newContact, lastname: newLastname });
   };
@@ -67,39 +39,26 @@ const ContactsView = (props) => {
   };
 
   const handleChangeNewContactPhoneNumber = (newPhoneNumber) => {
-    setNewContact({ ...newContact, phone_number: newPhoneNumber });
+    setNewContact({ ...newContact, phoneNumber: newPhoneNumber });
   };
 
-  /*   const addANewContact = (event) => {
-    event.preventDefault();
-    setContactsList([
-      ...contactsList,
-      {
-        id: contactsList.length + 1,
-        lastname: newContact.lastname,
-        firstname: newContact.firstname,
-        phone_number: newContact.phone_number,
-      },
-    ]);
-    setNewContact({
-      lastname: '',
-      firstname: '',
-      phone_number: '',
-    });
-  }; */
+  const deleteContact = async (contactId) => {
+    await API.delete(`/users/${userDetails.id}/contacts/${contactId}`);
+    getCollection();
+  };
 
   const addANewContact = async (event) => {
     event.preventDefault();
 
-    await API.post(`/users/${match.params.user_id}/contacts/`, [
+    await API.post(`/users/${userDetails.id}/contacts/`, [
       {
         lastname: newContact.lastname,
         firstname: newContact.firstname,
-        phone_number: newContact.phone_number,
+        phone_number: newContact.phoneNumber,
       },
     ])
       .then((res) => {
-        setContactsList([...contactsList, res.data]);
+        setContactsList([...contactsList, res.data[0]]);
       })
       .catch((err) => {
         console.log(err);
@@ -107,9 +66,8 @@ const ContactsView = (props) => {
     setNewContact({
       lastname: '',
       firstname: '',
-      phone_number: '',
+      phoneNumber: '',
     });
-    getCollection();
   };
 
   return (
@@ -128,47 +86,15 @@ const ContactsView = (props) => {
         <tbody>
           {contactsList.map((contact) => {
             return (
-              <tr key={contact.id}>
-                <td>{contact.id}</td>
-                <td>
-                  <input
-                    type="text"
-                    value={contact.lastname}
-                    onChange={(event) =>
-                      handleChangeLastname(contact.id, event.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    value={contact.firstname}
-                    onChange={(event) =>
-                      handleChangeFirstname(contact.id, event.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    value={contact.phone_number}
-                    onChange={(event) =>
-                      handleChangePhoneNumber(contact.id, event.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <button type="button">Modifiez</button>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    onClick={() => deletecontact(contact.id)}
-                  >
-                    Suprimer
-                  </button>
-                </td>
-              </tr>
+              <Contact
+                id={contact.id}
+                lastname={contact.lastname}
+                firstname={contact.firstname}
+                phoneNumber={contact.phone_number}
+                deleteContact={deleteContact}
+                contactsList={contactsList}
+                setContactsList={setContactsList}
+              />
             );
           })}
         </tbody>
@@ -195,7 +121,7 @@ const ContactsView = (props) => {
         <input
           type="text"
           placeholder="Numéro de télephone"
-          value={newContact.phone_number}
+          value={newContact.phoneNumber}
           required
           onChange={(event) =>
             handleChangeNewContactPhoneNumber(event.target.value)
