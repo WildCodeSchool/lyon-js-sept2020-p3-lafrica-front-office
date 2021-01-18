@@ -90,7 +90,13 @@
         height: 100px;
       }
       .warning-message {
+        font-size: 0.7em;
+        padding-left: 1px;
+      }
+      .warning-message-active {
         color: red;
+        font-size: 0.7em;
+        padding-left: 1px;
       }
     }
   }

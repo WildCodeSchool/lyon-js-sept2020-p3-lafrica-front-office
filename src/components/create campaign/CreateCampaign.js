@@ -94,11 +94,9 @@ const CreateCampaign = () => {
       });
   };
   const playAudioTest = () => {
-    return (
-      <audio id="audioPlayer" src={audioFilePath}>
-        <track default kind="captions" srcLang="fr" />
-      </audio>
-    );
+    // ES lint should be disabled for Safari compatibility
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    return <audio id="audioPlayer" src={audioFilePath} />;
   };
 
   const handleFileUpload = (e) => {
@@ -143,6 +141,7 @@ const CreateCampaign = () => {
 
   const play = () => {
     const audio = document.getElementById('audioPlayer');
+    console.log(audio.duration);
     audio.play();
   };
 
@@ -223,8 +222,14 @@ const CreateCampaign = () => {
               onChange={handleChange}
             />
           </form>
-          <p className="warning-message">
-            Message d'alerte en cas de dépassement de caractères
+          <p
+            className={
+              messageToVocalize.length > 160
+                ? 'warning-message-active'
+                : 'warning-message'
+            }
+          >
+            {messageToVocalize.length}/160
           </p>
         </div>
       </div>
