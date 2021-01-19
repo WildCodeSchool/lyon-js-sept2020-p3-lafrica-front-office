@@ -7,15 +7,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  CircularProgress,
 } from '@material-ui/core';
 
 import React, { useContext, useEffect, useState } from 'react';
 import { GrCloudDownload, GrSend } from 'react-icons/gr';
-import { FaMicrophone, FaPlusCircle } from 'react-icons/fa';
+import { FaMicrophone } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
 import { FiPhoneIncoming } from 'react-icons/fi';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
+import { MdPermContactCalendar } from 'react-icons/md';
+import { useToasts } from 'react-toast-notifications';
 import './CreateCampaign.scss';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -27,6 +30,7 @@ import {
   VolumeSlider,
 } from './subcomponents/CustomizedSlider';
 import { UserContext } from '../../context/UserContext';
+import ContactsView from './subcomponents/ContactsView';
 
 const CreateCampaign = () => {
   const dateNow = new Date();
@@ -42,8 +46,12 @@ const CreateCampaign = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(false);
   const [vocalisationFileName, setVocalisationFileName] = useState('');
+  const [contactsList, setContactsList] = useState([]);
+  const [sendingLoader, setSendingLoader] = useState(false);
 
   const { userDetails } = useContext(UserContext);
+
+  const { addToast } = useToasts();
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
@@ -146,6 +154,34 @@ const CreateCampaign = () => {
     const audio = document.getElementById('audioPlayer');
     console.log(audio.duration);
     audio.play();
+  };
+
+  const sendCampaign = async () => {
+    setSendingLoader(true);
+    setTimeout(() => {
+      setSendingLoader(false);
+      addToast('Votre campagne a bien été créée !', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    }, 6000);
+
+    const campainAndContactsListDatas = [
+      {
+        user_id: userDetails.id,
+        campaign_name: campaignName,
+        campaign_text: messageToVocalize,
+        campaign_vocal: vocalisationFileName,
+        campaign_date: campaignDate,
+      },
+      contactsList,
+    ];
+    await API.post(
+      `/users/${userDetails.id}/campaigns`,
+      campainAndContactsListDatas
+    ).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -423,6 +459,12 @@ const CreateCampaign = () => {
       <div className="broadcast-list-body">
         <h3 className="broadcast-list-title">Liste de diffusion</h3>
         <div className="broadcast-list-frame">
+          <div className="broadcast-list-title">
+            <MdPermContactCalendar className="broadcast-icon" />
+            <h2>Gérer votre liste de diffusion</h2>
+            <h3>Ajoutez, modifiez ou suprimez un contact</h3>
+          </div>
+
           <div className="broadcast-list-grid">
             <div className="broadcast-list-import">
               <AiOutlineImport className="broadcast-list-icon" />
@@ -432,33 +474,23 @@ const CreateCampaign = () => {
               <AiOutlineExport className="broadcast-list-icon" />
               <p>Exporter une liste de diffusion</p>
             </div>
-            <div className="broadcast-list-download">
-              <FaPlusCircle className="broadcast-list-icon" />
-              <p>Ajouter un fichier audio</p>
-            </div>
           </div>
-          <table className="broadcast-list-array">
-            <tbody>
-              <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Téléphone</th>
-                <th>Mail</th>
-              </tr>
-              <tr>
-                <td>DUCRET</td>
-                <td>Jean</td>
-                <td>06.06.06.06.06</td>
-                <td>mail@mail.com</td>
-              </tr>
-            </tbody>
-          </table>
+          <ContactsView
+            className="broadcast-list-array"
+            contactsList={contactsList}
+            setContactsList={setContactsList}
+          />
         </div>
       </div>
 
-      {/* A câbler avec l'API, tout est prêt pour l'envoi de campagne, il faut ajouter l'UPDATE de la table de jointure qui permet de lier les numéros avec la campagne en cours.
-      Tout est à mettre dans le le model createCampaign */}
-      <button className="sendCampaign" type="button">
+      <button className="sendCampaign" type="button" onClick={sendCampaign}>
+        <div
+          className={
+            sendingLoader ? 'sendCampaign-loader-on' : 'sendCampaign-loader-off'
+          }
+        >
+          <CircularProgress />
+        </div>
         <GrSend className="sendCampaignIcon" />
         <h3>Créer ma campagne d'envoi de message</h3>
       </button>

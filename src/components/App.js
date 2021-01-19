@@ -9,6 +9,7 @@ import SignIn from './login/SignIn';
 // import Home from './home/Home';
 import SignUp from './login/SignUp';
 import CampaignsView from './campaignsView/CampaignsView';
+import ContactsView from './create campaign/subcomponents/ContactsView';
 import UserContextProvider from '../context/UserContext';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
 
@@ -35,6 +36,10 @@ function App() {
                 />
 
                 <ProtectedRoute exact path="/" component={CampaignsView} />
+                <ProtectedRoute
+                  path="/users/:user_id/contacts"
+                  component={ContactsView}
+                />
               </Switch>
             </main>
             <Footer />
