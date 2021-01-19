@@ -128,8 +128,8 @@ const ContactsView = () => {
       <h4 className="small-title">Votre liste de diffusion</h4>
       {contactsList.length === 0 ? (
         <p>
-          Votre liste de diffusion ne contient pas encore de contacts. Ajoutez
-          ou importez des contacts depuis un fichier.
+          Votre liste de diffusion est vide. Ajoutez des contacts ou importez en
+          depuis un fichier.
         </p>
       ) : (
         <table>
