@@ -207,7 +207,7 @@ const CreateCampaign = () => {
 
       <div className="vocalization-body">
         <h3 className="vocalization-title">
-          Saisissez votre message à vocaliser (160 caractères maximum)
+          Saisissez votre message à vocaliser
         </h3>
         <div className="vocalization-frame">
           <form>
