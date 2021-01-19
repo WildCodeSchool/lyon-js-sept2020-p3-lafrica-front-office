@@ -34,19 +34,20 @@ const Header = () => {
 
   return (
     <header>
-      <Menu>
-        <div id="home" className="menu-item" href="/">
-          <BsFillPersonFill size={150} color="white" />
-          <p>
-            Bonjour {userDetails.firstname} {userDetails.lastname}
-          </p>
-        </div>
-        <Link to="/">ACCUEIL</Link>
-        <Link to="/signin">S'IDENTIFIER</Link>
+      <div className={loggedIn ? 'logoutBtn-true' : 'logoutBtn-false'}>
+        <Menu>
+          <div id="home" className="menu-item" href="/">
+            <BsFillPersonFill size={150} color="white" />
+            <p>
+              Bonjour {userDetails.firstname} {userDetails.lastname}
+            </p>
+          </div>
+          <Link to="/">ACCUEIL</Link>
+          <Link to="/signin">S'IDENTIFIER</Link>
 
-        {loggedIn && <Link to="/campaigns">CREER UNE CAMPAGNE</Link>}
-      </Menu>
-
+          {loggedIn && <Link to="/campaigns">CREER UNE CAMPAGNE</Link>}
+        </Menu>
+      </div>
       <div className="userTitle">
         {userDetails.firstname} {userDetails.lastname}
       </div>

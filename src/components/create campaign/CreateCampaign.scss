@@ -90,7 +90,13 @@
         height: 100px;
       }
       .warning-message {
+        font-size: 0.7em;
+        padding-left: 1px;
+      }
+      .warning-message-active {
         color: red;
+        font-size: 0.7em;
+        padding-left: 1px;
       }
     }
   }
@@ -130,6 +136,11 @@
         width: 35px;
         height: inherit;
         color: rgb(98, 186, 227);
+      }
+      .vocalization-action-icon-grey {
+        width: 35px;
+        height: inherit;
+        color: rgb(136, 148, 153);
       }
       .vocalization-action-vocalize {
         display: flex;

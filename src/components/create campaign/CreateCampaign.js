@@ -96,11 +96,9 @@ const CreateCampaign = () => {
       });
   };
   const playAudioTest = () => {
-    return (
-      <audio id="audioPlayer" src={audioFilePath}>
-        <track default kind="captions" srcLang="fr" />
-      </audio>
-    );
+    // ES lint should be disabled for Safari compatibility
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    return <audio id="audioPlayer" src={audioFilePath} />;
   };
 
   const handleFileUpload = (e) => {
@@ -145,6 +143,7 @@ const CreateCampaign = () => {
 
   const play = () => {
     const audio = document.getElementById('audioPlayer');
+    console.log(audio.duration);
     audio.play();
   };
 
@@ -225,8 +224,14 @@ const CreateCampaign = () => {
               onChange={handleChange}
             />
           </form>
-          <p className="warning-message">
-            Message d'alerte en cas de dépassement de caractères
+          <p
+            className={
+              messageToVocalize.length > 160
+                ? 'warning-message-active'
+                : 'warning-message'
+            }
+          >
+            {messageToVocalize.length}/160
           </p>
         </div>
       </div>
@@ -294,33 +299,54 @@ const CreateCampaign = () => {
 
           <div className="vocalization-action">
             <div className="vocalization-action-vocalize">
-              <FaMicrophone
-                className="vocalization-action-icon"
-                onClick={sendToGTTS}
-              />
+              {messageToVocalize ? (
+                <FaMicrophone
+                  className="vocalization-action-icon"
+                  onClick={sendToGTTS}
+                />
+              ) : (
+                <FaMicrophone className="vocalization-action-icon-grey" />
+              )}
               <p>Vocaliser votre message</p>
             </div>
             <div className="vocalization-action-test">
-              <IoIosPlayCircle
-                onClick={play}
-                className="vocalization-action-icon"
-              />
+              {vocalisationFileName ? (
+                <IoIosPlayCircle
+                  onClick={play}
+                  className="vocalization-action-icon"
+                />
+              ) : (
+                <IoIosPlayCircle className="vocalization-action-icon-grey" />
+              )}
+
               <p>Ecouter votre message</p>
               {playAudioTest()}
             </div>
             <div className="vocalization-action-download">
-              <a href={downloadAudioFilePath}>
-                <ImFolderDownload className="vocalization-action-icon" />
-              </a>
+              {vocalisationFileName ? (
+                <div>
+                  <a href={downloadAudioFilePath}>
+                    <ImFolderDownload className="vocalization-action-icon" />
+                  </a>
+                </div>
+              ) : (
+                <a href={downloadAudioFilePath}>
+                  <ImFolderDownload className="vocalization-action-icon-grey" />
+                </a>
+              )}
 
               <p>Télécharger le fichier audio</p>
             </div>
             <div />
             <div className="vocalization-action-trySend">
-              <FiPhoneIncoming
-                className="vocalization-action-icon"
-                onClick={handleClickOpen}
-              />
+              {vocalisationFileName ? (
+                <FiPhoneIncoming
+                  className="vocalization-action-icon"
+                  onClick={handleClickOpen}
+                />
+              ) : (
+                <FiPhoneIncoming className="vocalization-action-icon-grey" />
+              )}
               <Dialog
                 open={open}
                 onClose={handleClose}
