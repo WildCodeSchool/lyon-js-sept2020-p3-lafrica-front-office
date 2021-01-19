@@ -76,6 +76,10 @@
   width: 50%;
 }
 
+a:visited {
+  color: black;
+}
+
 .btn-icon {
   display: block;
   border: 5px solid var(--primary-color);

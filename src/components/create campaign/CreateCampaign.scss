@@ -90,7 +90,13 @@
         height: 100px;
       }
       .warning-message {
+        font-size: 0.7em;
+        padding-left: 1px;
+      }
+      .warning-message-active {
         color: red;
+        font-size: 0.7em;
+        padding-left: 1px;
       }
     }
   }
@@ -185,6 +191,8 @@
       height: 100%;
       display: flex;
       flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
       margin-bottom: 10px;
       border: solid lightgray 2px;
       padding: 5px;
@@ -260,4 +268,21 @@
 }
 .hidden {
   display: none;
+}
+
+.broadcast-icon {
+  width: 35px;
+  height: inherit;
+  color: rgb(98, 186, 227);
+}
+
+.broadcast-list-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2,
+  h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }

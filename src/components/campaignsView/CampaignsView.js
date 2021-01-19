@@ -48,8 +48,9 @@ const CampaignsView = () => {
           </div>
           <div className="btn-container">
             <div className="megaphone">
-              <GoMegaphone className="btn-icon" />
-
+              <Link to="/campaigns">
+                <GoMegaphone className="btn-icon" />
+              </Link>
               <Link to="/campaigns">
                 <h3>Créer une campagne</h3>
               </Link>
