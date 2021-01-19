@@ -30,11 +30,13 @@ const campaignsList = [
 ];
 
 const CampaignsView = () => {
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setLoggedIn } = useContext(UserContext);
 
   useEffect(() => {
     if (userDetails) {
-      API.get(`/users/${userDetails.id}/campaigns`);
+      API.get(`/users/${userDetails.id}/campaigns`).catch(() =>
+        setLoggedIn(false)
+      );
     }
   }, [userDetails]);
 
