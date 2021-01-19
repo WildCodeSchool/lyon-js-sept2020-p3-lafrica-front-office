@@ -51,6 +51,10 @@
   width: 16px;
 }
 
+.no-border {
+  border: none;
+}
+
 .stylized-td {
   border: 1px solid grey;
   padding: 10px;
