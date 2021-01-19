@@ -156,9 +156,13 @@ const SignUp = () => {
               <Controller
                 render={(props) => (
                   <PhoneInput
-                    onlyCountries={['fr', 'at']}
-                    masks={{ fr: '(..) ..-..-..-..', at: '(....) ...-....' }}
-                    isValid={(v) => v.length > 10}
+                    regions={['europe', 'africa']}
+                    masks={{
+                      fr: '(.) ..-..-..-..',
+                      sn: '(..) ...-....',
+                      cg: '(...) ..-..',
+                    }}
+                    isValid={(v) => v.length > 5}
                     placeholder="Numéro de téléphone"
                     inputRef={register}
                     inputStyle={{
