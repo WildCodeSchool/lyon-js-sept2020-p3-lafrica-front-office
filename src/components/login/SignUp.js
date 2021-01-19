@@ -158,9 +158,9 @@ const SignUp = () => {
                   <PhoneInput
                     regions={['europe', 'africa']}
                     masks={{
-                      fr: '(.) ..-..-..-..',
-                      sn: '(..) ...-....',
-                      cg: '(...) ..-..',
+                      fr: '. .. .. .. ..',
+                      sn: '.. ... ....',
+                      cg: '... .. ..',
                     }}
                     isValid={(v) => v.length > 5}
                     placeholder="Numéro de téléphone"
@@ -175,17 +175,12 @@ const SignUp = () => {
                     inputProps={{
                       name: 'phone_number',
                       required: true,
-                      autoFocus: true,
                     }}
                     id="phone_number"
                     specialLabel="Telephone"
                     name="phone_number"
                     autoComplete="phone_number"
                     onChange={(value) => props.onChange(value)}
-                    error={!!errors.phone_number}
-                    helperText={
-                      errors.phone_number && 'Un numéro valide est obligatoire'
-                    }
                   />
                 )}
                 defaultValue=""
