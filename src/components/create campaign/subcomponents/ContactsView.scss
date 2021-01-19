@@ -1,0 +1,53 @@
+button:hover {
+  cursor: pointer;
+}
+
+.contacts-view-container {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid grey;
+}
+
+input,
+button {
+  border: none;
+  padding: 10px;
+  background-color: white;
+  font-size: 0.9em;
+}
+
+.small-title {
+  margin-top: 30px;
+  margin-bottom: 35px;
+  color: rgb(98, 186, 227);
+}
+
+.id {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: none;
+  font-size: 0.9em;
+}
+
+.delete-contact-btn:hover {
+  background-color: #f4511e;
+}
+
+.create-and-modify-contact-btn:hover {
+  background-color: #aed581;
+}
+
+.add-contact-form {
+  margin-bottom: 30px;
+}

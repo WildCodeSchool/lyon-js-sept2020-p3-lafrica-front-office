@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
-import { useHistory, Link } from 'react-router-dom';
+// import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
 const campaignsList = [
   {
@@ -27,19 +29,16 @@ const campaignsList = [
   },
 ];
 
-const CampaignsView = (props) => {
-  const { match } = props;
-  const history = useHistory();
-
-  const handleRedirect = () => {
-    history.push('/signIn');
-  };
+const CampaignsView = () => {
+  const { userDetails, setLoggedIn } = useContext(UserContext);
 
   useEffect(() => {
-    API.get(`/users/${match.params.user_id}/campaigns`).catch(() => {
-      handleRedirect();
-    });
-  }, []);
+    if (userDetails) {
+      API.get(`/users/${userDetails.id}/campaigns`).catch(() =>
+        setLoggedIn(false)
+      );
+    }
+  }, [userDetails]);
 
   return (
     <div className="compaigns-view-container">
@@ -51,9 +50,10 @@ const CampaignsView = (props) => {
           </div>
           <div className="btn-container">
             <div className="megaphone">
-              <GoMegaphone className="btn-icon" />
-
-              <Link to={`/users/${match.params.user_id}/createCampaign`}>
+              <Link to="/campaigns">
+                <GoMegaphone className="btn-icon" />
+              </Link>
+              <Link to="/campaigns">
                 <h3>Créer une campagne</h3>
               </Link>
             </div>
@@ -83,7 +83,7 @@ const CampaignsView = (props) => {
               {campaignsList.map((campaign) => {
                 return (
                   <tr key={campaign.id}>
-                    <td>
+                    <td className="no-border">
                       <BiSearchAlt2 className="search-icon" />
                     </td>
                     <td className="stylized-td">{campaign.name}</td>
@@ -92,7 +92,7 @@ const CampaignsView = (props) => {
                       <span className="status finished-status" />
                       {campaign.status}
                     </td>
-                    <td className="same-width-than-search-icon" />
+                    <td className="same-width-than-search-icon no-border" />
                   </tr>
                 );
               })}

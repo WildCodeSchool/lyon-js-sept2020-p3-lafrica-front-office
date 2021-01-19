@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './header.css';
 import { slide as Menu } from 'react-burger-menu';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { Link, useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
 const Header = () => {
   const history = useHistory();
   const { addToast } = useToasts();
+  const { userDetails, setUserDetails, loggedIn, setLoggedIn } = useContext(
+    UserContext
+  );
 
   const handleLogOut = async () => {
     try {
       await API.get('/auth/logout');
-      history.push('/');
+      await setUserDetails('');
+      await setLoggedIn(false);
+      history.push('/signin');
       addToast('Déconnexion réussie !', {
         appearance: 'success',
         autoDismiss: true,
@@ -28,26 +34,23 @@ const Header = () => {
 
   return (
     <header>
-      <Menu>
-        <div id="home" className="menu-item" href="/">
-          <BsFillPersonFill size={150} color="white" />
-          <p>Bonjour Utilisateur</p>
-        </div>
-        <Link to="/">ACCUEIL</Link>
-        <Link to="/signIn">S'IDENTIFIER</Link>
-        {/* <a id='user' className='menu-item' href='/about'>
-          ADMINISTRATION
-        </a>
-        <a id='user' className='menu-item' href='/about'>
-          COMPTE UTILISATEUR
-        </a>
-        <a id='sms' className='menu-item' href='/contact'>
-          SMS
-        </a> */}
-        <Link to="/users/:user_id/createCampaign">CREER UNE CAMPAGNE</Link>
-      </Menu>
+      <div className={loggedIn ? 'logoutBtn-true' : 'logoutBtn-false'}>
+        <Menu>
+          <div id="home" className="menu-item" href="/">
+            <BsFillPersonFill size={150} color="white" />
+            <p>
+              Bonjour {userDetails.firstname} {userDetails.lastname}
+            </p>
+          </div>
+          <Link to="/">ACCUEIL</Link>
+          <Link to="/signin">S'IDENTIFIER</Link>
 
-      <div>Bonjour utilisateur</div>
+          {loggedIn && <Link to="/campaigns">CREER UNE CAMPAGNE</Link>}
+        </Menu>
+      </div>
+      <div className="userTitle">
+        {userDetails.firstname} {userDetails.lastname}
+      </div>
 
       <div className="menuBtn">
         <ul>
@@ -56,7 +59,7 @@ const Header = () => {
           </li>
         </ul>
         <ul>
-          <li>
+          <li className={loggedIn ? 'logoutBtn-true' : 'logoutBtn-false'}>
             <button type="button" onClick={handleLogOut}>
               Déconnexion
             </button>
