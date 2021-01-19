@@ -158,7 +158,9 @@ const CreateCampaign = () => {
   };
 
   const getMessageCounter = (message) => {
-    if (message.length > 160) {
+    if (message.length === 160) {
+      setMessageCounter(1);
+    } else {
       const length = Math.floor(message.length / 160) + 1;
       setMessageCounter(length);
     }
