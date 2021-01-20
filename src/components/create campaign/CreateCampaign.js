@@ -32,7 +32,7 @@ import {
 import { UserContext } from '../../context/UserContext';
 import ContactsView from './subcomponents/ContactsView';
 
-const CreateCampaign = () => {
+const CreateCampaign = (props) => {
   const dateNow = new Date();
   const [campaignName, setCampaignName] = useState('');
   const [campaignDate, setCampaignDate] = useState(dateNow);
@@ -48,6 +48,7 @@ const CreateCampaign = () => {
   const [vocalisationFileName, setVocalisationFileName] = useState('');
   const [contactsList, setContactsList] = useState([]);
   const [sendingLoader, setSendingLoader] = useState(false);
+  const { match } = props;
 
   const { userDetails } = useContext(UserContext);
 
@@ -68,6 +69,36 @@ const CreateCampaign = () => {
         console.log(err);
       });
   };
+
+  const playAudioTest = () => {
+    // ES lint should be disabled for Safari compatibility
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    return <audio id="audioPlayer" src={audioFilePath} />;
+  };
+
+  useEffect(async () => {
+    await API.get(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
+    ).then((res) => {
+      console.log(res.data);
+
+      if (res.data) {
+        setCampaignName(res.data.campaignData.name);
+        setCampaignDate(res.data.campaignData.date);
+        setMessageToVocalize(res.data.campaignData.text_message);
+        setVocalisationFileName(res.data.campaignData.vocal_message_file_url);
+        setAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.campaignData.vocal_message_file_url}`
+        );
+        setDownloadAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.campaignData.vocal_message_file_url}`
+        );
+        // playAudioTest();
+
+        // setContactsList(res.contactsListCampaign);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (textToUpload) {
@@ -103,11 +134,6 @@ const CreateCampaign = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
-  const playAudioTest = () => {
-    // ES lint should be disabled for Safari compatibility
-    // eslint-disable-next-line jsx-a11y/media-has-caption
-    return <audio id="audioPlayer" src={audioFilePath} />;
   };
 
   const handleFileUpload = (e) => {
@@ -160,11 +186,11 @@ const CreateCampaign = () => {
     setSendingLoader(true);
     setTimeout(() => {
       setSendingLoader(false);
-      addToast('Votre campagne a bien été créée !', {
+      addToast('Votre campagne a bien été enregistrée !', {
         appearance: 'success',
         autoDismiss: true,
       });
-    }, 6000);
+    }, 3000);
 
     const campainAndContactsListDatas = [
       {
@@ -176,8 +202,8 @@ const CreateCampaign = () => {
       },
       contactsList,
     ];
-    await API.post(
-      `/users/${userDetails.id}/campaigns`,
+    await API.put(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
       campainAndContactsListDatas
     ).then((res) => {
       console.log(res);
@@ -405,15 +431,6 @@ const CreateCampaign = () => {
                     Pour tester la vocalisation de votre message vers un numéro
                     mobile, merci d'inscrire ci-dessous un numéro de téléphone
                   </DialogContentText>
-                  {/* <TextField
-                  autoFocus
-                  margin="dense"
-                  id="tel"
-                  label="Numéro de téléphone"
-                  type="tel"
-                  fullWidth
-                  onChange={handleChangePhoneNumber}
-                /> */}
                   <PhoneInput
                     country="fr"
                     value={phoneNumber}
