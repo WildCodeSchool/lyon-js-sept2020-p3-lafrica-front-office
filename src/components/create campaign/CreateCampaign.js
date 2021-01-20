@@ -49,6 +49,8 @@ const CreateCampaign = (props) => {
   const [contactsList, setContactsList] = useState([]);
   const [sendingLoader, setSendingLoader] = useState(false);
   const { match } = props;
+  const [audioDuration, setAudioDuration] = useState();
+  const [messageCounter, setMessageCounter] = useState(1);
 
   const { userDetails } = useContext(UserContext);
 
@@ -176,10 +178,18 @@ const CreateCampaign = (props) => {
     }
   };
 
+  const audio = document.getElementById('audioPlayer');
+
   const play = () => {
-    const audio = document.getElementById('audioPlayer');
-    console.log(audio.duration);
+    setAudioDuration();
     audio.play();
+
+    audio.addEventListener('timeupdate', () => {
+      if (!Number.isNaN(audio.duration) && audio.duration !== Infinity) {
+        const duration = Math.round(audio.duration * 100) / 100;
+        setAudioDuration(`${duration} s`);
+      }
+    });
   };
 
   const sendCampaign = async () => {
@@ -209,6 +219,21 @@ const CreateCampaign = (props) => {
       console.log(res);
     });
   };
+
+  const getMessageCounter = (message) => {
+    if (message.length === 160) {
+      setMessageCounter(1);
+    } else {
+      const length = Math.floor(message.length / 160) + 1;
+      setMessageCounter(length);
+    }
+  };
+
+  useEffect(() => {
+    if (messageToVocalize) {
+      getMessageCounter(messageToVocalize);
+    }
+  }, [messageToVocalize]);
 
   return (
     <div className="create-campaign-body">
@@ -253,7 +278,7 @@ const CreateCampaign = (props) => {
 
       <div className="vocalization-body">
         <h3 className="vocalization-title">
-          Saisissez votre message à vocaliser (160 caractères maximum)
+          Saisissez votre message à vocaliser
         </h3>
         <div className="vocalization-frame">
           <form>
@@ -273,14 +298,14 @@ const CreateCampaign = (props) => {
                       : fileNameTextToUpload}
                     <br />
                     <em className={!fileNameTextToUpload ? '' : 'hidden'}>
-                      (format accepté : .txt)
+                      (formats acceptés : .txt, .docx)
                     </em>
                   </p>
                 </div>
                 <input
                   id="textToUpload"
                   type="file"
-                  accept=".txt"
+                  accept=".txt, .docx"
                   hidden
                   onChange={(e) => {
                     handleFileUpload(e);
@@ -302,7 +327,9 @@ const CreateCampaign = (props) => {
                 : 'warning-message'
             }
           >
-            {messageToVocalize.length}/160
+            {messageToVocalize.length}/160 caractères.{' '}
+            {messageCounter > 1 &&
+              `Ce message vous sera facturé l'équivalent de ${messageCounter} messages.`}
           </p>
         </div>
       </div>
@@ -389,9 +416,11 @@ const CreateCampaign = (props) => {
               ) : (
                 <IoIosPlayCircle className="vocalization-action-icon-grey" />
               )}
-
               <p>Ecouter votre message</p>
               {playAudioTest()}
+              <p className="audio-duration">
+                {audio && `Durée : ${audioDuration || 'calcul...'}`}
+              </p>
             </div>
             <div className="vocalization-action-download">
               {vocalisationFileName ? (

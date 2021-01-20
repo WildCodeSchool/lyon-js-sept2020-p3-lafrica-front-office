@@ -124,32 +124,39 @@ const ContactsView = (props) => {
         </table>
       </form>
       <h4 className="small-title">Votre liste de diffusion</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Nom de famille</th>
-            <th>Prénom</th>
-            <th>Numéro de télephone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contactsList.map((contact) => {
-            return (
-              <Contact
-                key={contact.id}
-                id={contact.id}
-                lastname={contact.lastname}
-                firstname={contact.firstname}
-                phoneNumber={contact.phone_number}
-                deleteContact={deleteContact}
-                contactsList={contactsList}
-                setContactsList={setContactsList}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+      {contactsList.length === 0 ? (
+        <p>
+          Votre liste de diffusion est vide. Ajoutez des contacts ou importez en
+          depuis un fichier.
+        </p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nom de famille</th>
+              <th>Prénom</th>
+              <th>Numéro de télephone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contactsList.map((contact) => {
+              return (
+                <Contact
+                  key={contact.id}
+                  id={contact.id}
+                  lastname={contact.lastname}
+                  firstname={contact.firstname}
+                  phoneNumber={contact.phone_number}
+                  deleteContact={deleteContact}
+                  contactsList={contactsList}
+                  setContactsList={setContactsList}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

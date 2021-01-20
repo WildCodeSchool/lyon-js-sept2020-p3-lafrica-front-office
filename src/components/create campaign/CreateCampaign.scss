@@ -89,6 +89,10 @@
       .text-to-vocalize {
         width: 100%;
         height: 100px;
+        padding: 10px;
+        resize: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
       }
       .warning-message {
         font-size: 0.7em;
@@ -280,18 +284,23 @@
 }
 .fileNotYetUploaded {
   cursor: pointer;
-  width: 250px;
-  border: 1px solid lightgray;
+  width: 25vw;
+  border: 1px solid rgb(98, 186, 227);
+  text-align: center;
+  border-radius: 5px;
   em {
     font-size: 0.8em;
   }
 }
 .fileUploaded {
   cursor: pointer;
-  border: 1px solid lightgray;
-  background-color: #aed581;
+  border: 1px solid #63e26a;
+  /* background-color: #aed581; */
   text-align: center;
-  width: 250px;
+  width: 25vw;
+  border-radius: 5px;
+  padding: 10px 0px;
+  font-size: 0.9em;
 }
 .hidden {
   display: none;
@@ -312,4 +321,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
+}
+
+.audio-duration {
+  margin-top: 10px;
+  font-size: 12px;
 }

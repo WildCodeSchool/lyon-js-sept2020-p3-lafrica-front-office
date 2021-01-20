@@ -32,13 +32,15 @@ const campaignsList = [
 ];
 
 const CampaignsView = () => {
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setLoggedIn } = useContext(UserContext);
   const [campaignId, setCampaignId] = useState();
   const history = useHistory();
 
   useEffect(() => {
     if (userDetails) {
-      API.get(`/users/${userDetails.id}/campaigns`);
+      API.get(`/users/${userDetails.id}/campaigns`).catch(() =>
+        setLoggedIn(false)
+      );
     }
   }, [userDetails]);
 
@@ -108,7 +110,7 @@ const CampaignsView = () => {
               {campaignsList.map((campaign) => {
                 return (
                   <tr key={campaign.id}>
-                    <td>
+                    <td className="no-border">
                       <BiSearchAlt2 className="search-icon" />
                     </td>
                     <td className="stylized-td">{campaign.name}</td>
@@ -117,7 +119,7 @@ const CampaignsView = () => {
                       <span className="status finished-status" />
                       {campaign.status}
                     </td>
-                    <td className="same-width-than-search-icon" />
+                    <td className="same-width-than-search-icon no-border" />
                   </tr>
                 );
               })}
