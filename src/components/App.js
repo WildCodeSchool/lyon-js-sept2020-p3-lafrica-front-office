@@ -28,7 +28,11 @@ function App() {
                 <Route path="/signup">
                   <SignUp />
                 </Route>
-                <ProtectedRoute path="/campaigns" component={CreateCampaign} />
+                <ProtectedRoute
+                  exact
+                  path="/campaigns"
+                  component={CreateCampaign}
+                />
 
                 <ProtectedRoute
                   path="/campaigns/:campaign_id"
