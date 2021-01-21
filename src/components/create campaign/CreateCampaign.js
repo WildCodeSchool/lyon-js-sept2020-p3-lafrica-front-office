@@ -82,13 +82,29 @@ const CreateCampaign = (props) => {
     await API.get(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
     ).then((res) => {
-      console.log(res.data);
-
       if (res.data) {
-        setCampaignName(res.data.name);
-        setCampaignDate(res.data.date);
-        setMessageToVocalize(res.data.text_message);
-        setVocalisationFileName(res.data.vocal_message_file_url);
+        if (res.data.name !== null) {
+          setCampaignName(res.data.name);
+        } else {
+          setCampaignName('');
+        }
+        if (res.data.date !== null) {
+          const newDate = res.data.date.slice(0, -1);
+          console.log(newDate);
+          setCampaignDate(newDate);
+        } else {
+          setCampaignDate('');
+        }
+        if (res.data.text_message !== null) {
+          setMessageToVocalize(res.data.text_message);
+        } else {
+          setMessageToVocalize('');
+        }
+        if (res.data.vocal_message_file_url !== null) {
+          setVocalisationFileName(res.data.vocal_message_file_url);
+        } else {
+          setVocalisationFileName('');
+        }
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
         );
