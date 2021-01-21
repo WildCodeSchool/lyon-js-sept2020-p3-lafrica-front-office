@@ -4,22 +4,22 @@ import Contact from './Contact';
 import { UserContext } from '../../../context/UserContext';
 import './ContactsView.scss';
 
-const ContactsView = () => {
-  const initialContactsList = [];
-
+const ContactsView = (props) => {
   const initialNewContact = {
     lastname: '',
     firstname: '',
     phoneNumber: '',
   };
 
+  const { campaignId } = props;
+
   const { userDetails } = useContext(UserContext);
 
-  const [contactsList, setContactsList] = useState(initialContactsList);
+  const { contactsList, setContactsList } = props;
   const [newContact, setNewContact] = useState(initialNewContact);
 
-  const getCollection = () => {
-    API.get(`/users/${userDetails.id}/contacts/`)
+  const getCollection = async () => {
+    await API.get(`/users/${userDetails.id}/campaigns/${campaignId}/contacts`)
       .then((res) => {
         setContactsList(res.data);
       })
@@ -30,7 +30,8 @@ const ContactsView = () => {
 
   useEffect(() => {
     getCollection();
-  }, []);
+  }, [newContact]);
+
   const handleChangeNewContactLastname = (newLastname) => {
     setNewContact({ ...newContact, lastname: newLastname });
   };
@@ -44,23 +45,29 @@ const ContactsView = () => {
   };
 
   const deleteContact = async (contactId) => {
-    await API.delete(`/users/${userDetails.id}/contacts/${contactId}`);
+    await API.delete(
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/${contactId}`
+    );
     getCollection();
   };
 
   const addANewContact = async (event) => {
     event.preventDefault();
+    setContactsList([]);
 
-    await API.post(`/users/${userDetails.id}/contacts/`, [
-      {
-        lastname: newContact.lastname,
-        firstname: newContact.firstname,
-        phone_number: newContact.phoneNumber,
-      },
-    ])
-      .then((res) => {
-        setContactsList([...contactsList, res.data[0]]);
-      })
+    await API.post(
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/`,
+      [
+        {
+          lastname: newContact.lastname,
+          firstname: newContact.firstname,
+          phone_number: newContact.phoneNumber,
+        },
+      ]
+    )
+      // .then(() => {
+      //   getCollection();
+      // })
       .catch((err) => {
         console.log(err);
       });
@@ -153,6 +160,7 @@ const ContactsView = () => {
                   deleteContact={deleteContact}
                   contactsList={contactsList}
                   setContactsList={setContactsList}
+                  campaignId={campaignId}
                 />
               );
             })}

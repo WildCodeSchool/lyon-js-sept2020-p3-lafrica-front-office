@@ -53,7 +53,8 @@
         margin: 10px;
       }
       .vocal-campaign-name {
-        margin: 10px;
+        margin: 5px;
+        padding-left: 5px;
       }
       .vocal-campaign-date {
         margin: 10px;
@@ -210,13 +211,11 @@
         width: 35px;
         height: inherit;
         color: rgb(98, 186, 227);
+        margin-right: 20px;
       }
       .broadcast-list-import {
         display: flex;
         padding: 15px;
-        p {
-          padding-left: 20px;
-        }
       }
       .broadcast-list-export {
         display: flex;
@@ -243,6 +242,32 @@
   margin-bottom: 20px;
 }
 
+.sendCampaign {
+  width: 100%;
+  height: 80px;
+  margin-top: 20px;
+  background-color: white;
+  border: solid lightgray 6px;
+  cursor: pointer;
+  color: rgb(98, 186, 227);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  .sendCampaign-loader-on {
+    display: block;
+  }
+  .sendCampaign-loader-off {
+    display: none;
+  }
+  .sendCampaignIcon {
+    width: 35px;
+    height: 35px;
+    margin-right: 20px;
+    color: rgb(98, 186, 227);
+  }
+}
+
 @media screen and (max-width: 768px) {
   .title-page {
     flex-direction: column;
@@ -257,7 +282,7 @@
 }
 .fileNotYetUploaded {
   cursor: pointer;
-  width: 25vw;
+  width: 20vw;
   border: 1px solid rgb(98, 186, 227);
   text-align: center;
   border-radius: 5px;
@@ -270,13 +295,17 @@
   border: 1px solid #63e26a;
   /* background-color: #aed581; */
   text-align: center;
-  width: 25vw;
+  width: 20vw;
   border-radius: 5px;
   padding: 10px 0px;
   font-size: 0.9em;
 }
 .hidden {
   display: none;
+}
+
+.contacts-upload {
+  display: flex;
 }
 
 .broadcast-icon {

@@ -11,6 +11,7 @@ const Contact = (props) => {
     deleteContact,
     contactsList,
     setContactsList,
+    campaignId,
   } = props;
   const [contactLastname, setContactLastname] = useState(lastname);
   const [contactFirstname, setContactFirstname] = useState(firstname);
@@ -30,11 +31,14 @@ const Contact = (props) => {
   };
 
   const modifyContact = async (contactId) => {
-    await API.put(`/users/${userDetails.id}/contacts/${contactId}`, {
-      lastname: contactLastname,
-      firstname: contactFirstname,
-      phone_number: contactPhoneNumber,
-    })
+    await API.put(
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/${contactId}`,
+      {
+        lastname: contactLastname,
+        firstname: contactFirstname,
+        phone_number: contactPhoneNumber,
+      }
+    )
       .then(() => {
         setContactsList([...contactsList]);
       })

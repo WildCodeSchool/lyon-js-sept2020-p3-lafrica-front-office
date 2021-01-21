@@ -7,16 +7,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  CircularProgress,
 } from '@material-ui/core';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { GrCloudDownload } from 'react-icons/gr';
+import { GrCloudDownload, GrSend } from 'react-icons/gr';
 import { FaMicrophone } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
 import { FiPhoneIncoming } from 'react-icons/fi';
 import { ImFolderDownload } from 'react-icons/im';
 import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
 import { MdPermContactCalendar } from 'react-icons/md';
+import { useToasts } from 'react-toast-notifications';
 import './CreateCampaign.scss';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -30,21 +32,31 @@ import {
 import { UserContext } from '../../context/UserContext';
 import ContactsView from './subcomponents/ContactsView';
 
-const CreateCampaign = () => {
+const CreateCampaign = (props) => {
+  const dateNow = new Date();
+  const [campaignName, setCampaignName] = useState('');
+  const [campaignDate, setCampaignDate] = useState(dateNow);
   const [messageToVocalize, setMessageToVocalize] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
   const [textToUpload, setTextToUpload] = useState('');
   const [fileNameTextToUpload, setFileNameTextToUpload] = useState('');
+  const [contactsUpload, setContactsUpload] = useState('');
+  const [fileNameContactsUpload, setFileNameContactsUpload] = useState('');
   const [audioConfig, setAudioConfig] = useState({});
   const [open, setOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberTestCheck, setPhoneNumberTestCheck] = useState(false);
   const [vocalisationFileName, setVocalisationFileName] = useState('');
+  const [contactsList, setContactsList] = useState([]);
+  const [sendingLoader, setSendingLoader] = useState(false);
+  const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
 
   const { userDetails } = useContext(UserContext);
+
+  const { addToast } = useToasts();
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
@@ -62,11 +74,74 @@ const CreateCampaign = () => {
       });
   };
 
+  const submitContactsUpload = () => {
+    const formData = new FormData();
+    formData.append('uploaded_contacts', contactsUpload);
+    API.post(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
+      formData
+    )
+      .then((res) => {
+        setContactsList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const playAudioTest = () => {
+    // ES lint should be disabled for Safari compatibility
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    return <audio id="audioPlayer" src={audioFilePath} />;
+  };
+
+  useEffect(async () => {
+    await API.get(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
+    ).then((res) => {
+      if (res.data) {
+        if (res.data.name !== null) {
+          setCampaignName(res.data.name);
+        } else {
+          setCampaignName('');
+        }
+        if (res.data.date !== null) {
+          const newDate = res.data.date.slice(0, -1);
+          setCampaignDate(newDate);
+        } else {
+          setCampaignDate('');
+        }
+        if (res.data.text_message !== null) {
+          setMessageToVocalize(res.data.text_message);
+        } else {
+          setMessageToVocalize('');
+        }
+        if (res.data.vocal_message_file_url !== null) {
+          setVocalisationFileName(res.data.vocal_message_file_url);
+        } else {
+          setVocalisationFileName('');
+        }
+        setAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
+        );
+        setDownloadAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
+        );
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (textToUpload) {
       submitTextToUpload();
     }
   }, [textToUpload]);
+
+  useEffect(() => {
+    if (contactsUpload) {
+      submitContactsUpload();
+    }
+  }, [contactsUpload]);
 
   const handleSliderAudioConfig = (name) => (e, value) => {
     setAudioConfig((prevConfig) => {
@@ -97,11 +172,6 @@ const CreateCampaign = () => {
         console.log(err);
       });
   };
-  const playAudioTest = () => {
-    // ES lint should be disabled for Safari compatibility
-    // eslint-disable-next-line jsx-a11y/media-has-caption
-    return <audio id="audioPlayer" src={audioFilePath} />;
-  };
 
   const handleFileUpload = (e) => {
     setTextToUpload(e.target.files[0]);
@@ -111,6 +181,16 @@ const CreateCampaign = () => {
       setFileNameTextToUpload('');
     }
   };
+
+  const handleContactUpload = (e) => {
+    setContactsUpload(e.target.files[0]);
+    if (e.target.files[0]) {
+      setFileNameContactsUpload(e.target.files[0].name);
+    } else {
+      setFileNameContactsUpload('');
+    }
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -157,6 +237,34 @@ const CreateCampaign = () => {
     });
   };
 
+  const sendCampaign = async () => {
+    setSendingLoader(true);
+    setTimeout(() => {
+      setSendingLoader(false);
+      addToast('Votre campagne a bien été enregistrée !', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    }, 3000);
+
+    const campainAndContactsListDatas = [
+      {
+        user_id: userDetails.id,
+        campaign_name: campaignName,
+        campaign_text: messageToVocalize,
+        campaign_vocal: vocalisationFileName,
+        campaign_date: campaignDate,
+      },
+      contactsList,
+    ];
+    await API.put(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
+      campainAndContactsListDatas
+    ).then((res) => {
+      console.log(res);
+    });
+  };
+
   const getMessageCounter = (message) => {
     if (message.length === 160) {
       setMessageCounter(1);
@@ -185,19 +293,26 @@ const CreateCampaign = () => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
-            <NativeSelect className="vocal-campaign-name" id="select">
-              <option value="10">Mon nom de campagne</option>
-              <option value="20">Une autre campagne</option>
-            </NativeSelect>
+            <input
+              type="text"
+              className="vocal-campaign-name"
+              placeholder="Votre nom de campagne"
+              onChange={(e) => {
+                setCampaignName(e.target.value);
+              }}
+            />
             <p>Date d'envoi</p>
             <form className="vocal-campaign-date" noValidate>
               <TextField
                 id="datetime-local"
                 type="datetime-local"
-                defaultValue="2017-05-24T10:30"
+                value={campaignDate}
                 className="textField"
                 InputLabelProps={{
                   shrink: true,
+                }}
+                onChange={(e) => {
+                  setCampaignDate(e.target.value);
                 }}
               />
             </form>
@@ -251,12 +366,12 @@ const CreateCampaign = () => {
           </form>
           <p
             className={
-              messageToVocalize.length > 160
+              messageToVocalize && messageToVocalize.length > 160
                 ? 'warning-message-active'
                 : 'warning-message'
             }
           >
-            {messageToVocalize.length}/160 caractères.{' '}
+            {messageToVocalize && messageToVocalize.length}/160 caractères.{' '}
             {messageCounter > 1 &&
               `Ce message vous sera facturé l'équivalent de ${messageCounter} messages.`}
           </p>
@@ -389,15 +504,6 @@ const CreateCampaign = () => {
                     Pour tester la vocalisation de votre message vers un numéro
                     mobile, merci d'inscrire ci-dessous un numéro de téléphone
                   </DialogContentText>
-                  {/* <TextField
-                  autoFocus
-                  margin="dense"
-                  id="tel"
-                  label="Numéro de téléphone"
-                  type="tel"
-                  fullWidth
-                  onChange={handleChangePhoneNumber}
-                /> */}
                   <PhoneInput
                     country="fr"
                     value={phoneNumber}
@@ -451,17 +557,59 @@ const CreateCampaign = () => {
 
           <div className="broadcast-list-grid">
             <div className="broadcast-list-import">
-              <AiOutlineImport className="broadcast-list-icon" />
-              <p>Importer une liste de diffusion</p>
+              <label htmlFor="contactsUpload" className="contacts-upload">
+                <AiOutlineImport className="broadcast-list-icon" />
+                <p
+                  className={
+                    !fileNameContactsUpload
+                      ? 'fileNotYetUploaded'
+                      : 'fileUploaded'
+                  }
+                >
+                  {!fileNameContactsUpload
+                    ? 'Importer une liste de diffusion'
+                    : fileNameContactsUpload}
+                  <br />
+                  <em className={!fileNameContactsUpload ? '' : 'hidden'}>
+                    (formats acceptés : .xlsx, .csv)
+                  </em>
+                </p>
+                <input
+                  id="contactsUpload"
+                  type="file"
+                  accept=".xlsx, .csv"
+                  hidden
+                  onChange={(e) => {
+                    handleContactUpload(e);
+                  }}
+                />
+              </label>
             </div>
             <div className="broadcast-list-export">
               <AiOutlineExport className="broadcast-list-icon" />
               <p>Exporter une liste de diffusion</p>
             </div>
           </div>
-          <ContactsView className="broadcast-list-array" />
+          <ContactsView
+            className="broadcast-list-array"
+            contactsList={contactsList}
+            setContactsList={setContactsList}
+            campaignId={match.params.campaign_id}
+          />
         </div>
       </div>
+
+      <button className="sendCampaign" type="button" onClick={sendCampaign}>
+        <div
+          className={
+            sendingLoader ? 'sendCampaign-loader-on' : 'sendCampaign-loader-off'
+          }
+        >
+          <CircularProgress />
+        </div>
+        <GrSend className="sendCampaignIcon" />
+        <h3>Créer ma campagne d'envoi de message</h3>
+      </button>
     </div>
   );
 };
