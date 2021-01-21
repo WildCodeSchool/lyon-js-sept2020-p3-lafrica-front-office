@@ -322,12 +322,12 @@ const CreateCampaign = (props) => {
           </form>
           <p
             className={
-              messageToVocalize.length > 160
+              messageToVocalize && messageToVocalize.length > 160
                 ? 'warning-message-active'
                 : 'warning-message'
             }
           >
-            {messageToVocalize.length}/160 caractères.{' '}
+            {messageToVocalize && messageToVocalize.length}/160 caractères.{' '}
             {messageCounter > 1 &&
               `Ce message vous sera facturé l'équivalent de ${messageCounter} messages.`}
           </p>
