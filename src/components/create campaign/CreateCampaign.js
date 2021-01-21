@@ -41,6 +41,8 @@ const CreateCampaign = (props) => {
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
   const [textToUpload, setTextToUpload] = useState('');
   const [fileNameTextToUpload, setFileNameTextToUpload] = useState('');
+  const [contactsUpload, setContactsUpload] = useState('');
+  const [fileNameContactsUpload, setFileNameContactsUpload] = useState('');
   const [audioConfig, setAudioConfig] = useState({});
   const [open, setOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -66,6 +68,21 @@ const CreateCampaign = (props) => {
     API.post(`/users/${userDetails.id}/campaigns/uploadtext`, formData)
       .then((res) => {
         setMessageToVocalize(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const submitContactsUpload = () => {
+    const formData = new FormData();
+    formData.append('uploaded_contacts', contactsUpload);
+    API.post(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
+      formData
+    )
+      .then((res) => {
+        setContactsList(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -105,6 +122,12 @@ const CreateCampaign = (props) => {
     }
   }, [textToUpload]);
 
+  useEffect(() => {
+    if (contactsUpload) {
+      submitContactsUpload();
+    }
+  }, [contactsUpload]);
+
   const handleSliderAudioConfig = (name) => (e, value) => {
     setAudioConfig((prevConfig) => {
       return { ...prevConfig, [name]: value };
@@ -143,6 +166,16 @@ const CreateCampaign = (props) => {
       setFileNameTextToUpload('');
     }
   };
+
+  const handleContactUpload = (e) => {
+    setContactsUpload(e.target.files[0]);
+    if (e.target.files[0]) {
+      setFileNameContactsUpload(e.target.files[0].name);
+    } else {
+      setFileNameContactsUpload('');
+    }
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -249,7 +282,6 @@ const CreateCampaign = (props) => {
               type="text"
               className="vocal-campaign-name"
               placeholder="Votre nom de campagne"
-              value={campaignName}
               onChange={(e) => {
                 setCampaignName(e.target.value);
               }}
@@ -510,8 +542,33 @@ const CreateCampaign = (props) => {
 
           <div className="broadcast-list-grid">
             <div className="broadcast-list-import">
-              <AiOutlineImport className="broadcast-list-icon" />
-              <p>Importer une liste de diffusion</p>
+              <label htmlFor="contactUpload">
+                <AiOutlineImport className="broadcast-list-icon" />
+                <p
+                  className={
+                    !fileNameContactsUpload
+                      ? 'fileNotYetUploaded'
+                      : 'fileUploaded'
+                  }
+                >
+                  {!fileNameContactsUpload
+                    ? 'Importer une liste de diffusion'
+                    : fileNameContactsUpload}
+                  <br />
+                  <em className={!fileNameContactsUpload ? '' : 'hidden'}>
+                    (formats acceptés : .xlsx, .csv)
+                  </em>
+                </p>
+                <input
+                  id="contactUpload"
+                  type="file"
+                  accept=".xlsx, .csv"
+                  hidden
+                  onChange={(e) => {
+                    handleContactUpload(e);
+                  }}
+                />
+              </label>
             </div>
             <div className="broadcast-list-export">
               <AiOutlineExport className="broadcast-list-icon" />

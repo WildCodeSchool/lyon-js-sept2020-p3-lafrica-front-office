@@ -19,7 +19,7 @@ const CampaignDetail = (props) => {
   useEffect(() => {
     API.get(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
-    ).then((res) => setCurrentCampaign(res.data.campaignData));
+    ).then((res) => setCurrentCampaign(res.data));
   }, []);
 
   return (
