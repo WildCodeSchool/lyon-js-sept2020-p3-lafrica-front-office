@@ -95,9 +95,6 @@ const CreateCampaign = (props) => {
         setDownloadAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
         );
-        // playAudioTest();
-
-        // setContactsList(res.contactsListCampaign);
       }
     });
   }, []);
