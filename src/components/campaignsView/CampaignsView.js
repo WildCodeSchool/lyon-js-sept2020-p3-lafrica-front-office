@@ -3,46 +3,67 @@ import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
+// import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-
+import moment from 'moment';
+import 'moment/locale/fr';
 import API from '../../services/API';
 
 import { UserContext } from '../../context/UserContext';
 
-const campaignsList = [
-  {
-    id: 1,
-    name: 'Campagne 1',
-    sendingDate: '02/05/2022',
-    status: 'en cours',
-  },
-  {
-    id: 2,
-    name: 'Campagne 2',
-    sendingDate: '06/05/2024',
-    status: 'en attente',
-  },
-  {
-    id: 3,
-    name: 'Campagne 3',
-    sendingDate: '19/01/2019',
-    status: 'terminée',
-  },
-];
-
 const CampaignsView = () => {
-  const { userDetails, setLoggedIn } = useContext(UserContext);
-  const [campaignId, setCampaignId] = useState();
+  moment.locale('fr');
+
   const history = useHistory();
+
+  const {
+    userDetails,
+    setLoggedIn,
+    campaignsList,
+    setCampaignsList,
+  } = useContext(UserContext);
+  const [campaignId, setCampaignId] = useState();
 
   useEffect(() => {
     if (userDetails) {
-      API.get(`/users/${userDetails.id}/campaigns`).catch(() =>
-        setLoggedIn(false)
-      );
+      API.get(`/users/${userDetails.id}/campaigns`)
+        .then((res) => setCampaignsList(res.data))
+        .catch(() => setLoggedIn(false));
     }
   }, [userDetails]);
+
+  const showCampaignsList = () => {
+    return campaignsList.map((campaign) => {
+      return (
+        <tr key={campaign.id}>
+          <td className="no-border">
+            <BiSearchAlt2
+              className="search-icon"
+              onClick={() => history.push(`/campaigns/${campaign.id}`)}
+            />
+          </td>
+          <td className="stylized-td">{campaign.name}</td>
+          <td className="stylized-td">
+            {moment(campaign.date).format('DD/MM/YYYY HH:mm')}
+          </td>
+          <td className="stylized-td">
+            {campaign.sending_status ? (
+              <div className="cell-campaign-status">
+                <span className="status finished-status" />
+                <p>Envoyée</p>
+              </div>
+            ) : (
+              <div className="cell-campaign-status">
+                <span className="status in-progress-status" />
+                <p>En attente</p>
+              </div>
+            )}
+          </td>
+          <td className="same-width-than-search-icon no-border" />
+        </tr>
+      );
+    });
+  };
 
   const createCampaignInDatabase = async () => {
     await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
@@ -106,24 +127,7 @@ const CampaignsView = () => {
                 <th className="stylized-th">Statut</th>
               </tr>
             </thead>
-            <tbody>
-              {campaignsList.map((campaign) => {
-                return (
-                  <tr key={campaign.id}>
-                    <td className="no-border">
-                      <BiSearchAlt2 className="search-icon" />
-                    </td>
-                    <td className="stylized-td">{campaign.name}</td>
-                    <td className="stylized-td">{campaign.sendingDate}</td>
-                    <td className="stylized-td">
-                      <span className="status finished-status" />
-                      {campaign.status}
-                    </td>
-                    <td className="same-width-than-search-icon no-border" />
-                  </tr>
-                );
-              })}
-            </tbody>
+            <tbody>{showCampaignsList()}</tbody>
           </table>
         </div>
       </article>

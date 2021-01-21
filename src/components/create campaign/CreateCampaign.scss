@@ -211,13 +211,11 @@
         width: 35px;
         height: inherit;
         color: rgb(98, 186, 227);
+        margin-right: 20px;
       }
       .broadcast-list-import {
         display: flex;
         padding: 15px;
-        p {
-          padding-left: 20px;
-        }
       }
       .broadcast-list-export {
         display: flex;
@@ -284,7 +282,7 @@
 }
 .fileNotYetUploaded {
   cursor: pointer;
-  width: 25vw;
+  width: 20vw;
   border: 1px solid rgb(98, 186, 227);
   text-align: center;
   border-radius: 5px;
@@ -297,13 +295,17 @@
   border: 1px solid #63e26a;
   /* background-color: #aed581; */
   text-align: center;
-  width: 25vw;
+  width: 20vw;
   border-radius: 5px;
   padding: 10px 0px;
   font-size: 0.9em;
 }
 .hidden {
   display: none;
+}
+
+.contacts-upload {
+  display: flex;
 }
 
 .broadcast-icon {
