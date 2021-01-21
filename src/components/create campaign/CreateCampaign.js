@@ -107,7 +107,6 @@ const CreateCampaign = (props) => {
         }
         if (res.data.date !== null) {
           const newDate = res.data.date.slice(0, -1);
-          console.log(newDate);
           setCampaignDate(newDate);
         } else {
           setCampaignDate('');

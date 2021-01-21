@@ -18,8 +18,8 @@ const ContactsView = (props) => {
   const { contactsList, setContactsList } = props;
   const [newContact, setNewContact] = useState(initialNewContact);
 
-  const getCollection = () => {
-    API.get(`/users/${userDetails.id}/campaigns/${campaignId}/contacts`)
+  const getCollection = async () => {
+    await API.get(`/users/${userDetails.id}/campaigns/${campaignId}/contacts`)
       .then((res) => {
         setContactsList(res.data);
       })
@@ -30,7 +30,8 @@ const ContactsView = (props) => {
 
   useEffect(() => {
     getCollection();
-  }, []);
+  }, [newContact]);
+
   const handleChangeNewContactLastname = (newLastname) => {
     setNewContact({ ...newContact, lastname: newLastname });
   };
@@ -52,6 +53,7 @@ const ContactsView = (props) => {
 
   const addANewContact = async (event) => {
     event.preventDefault();
+    setContactsList([]);
 
     await API.post(
       `/users/${userDetails.id}/campaigns/${campaignId}/contacts/`,
@@ -63,9 +65,9 @@ const ContactsView = (props) => {
         },
       ]
     )
-      .then((res) => {
-        setContactsList([...contactsList, res.data[0]]);
-      })
+      // .then(() => {
+      //   getCollection();
+      // })
       .catch((err) => {
         console.log(err);
       });
