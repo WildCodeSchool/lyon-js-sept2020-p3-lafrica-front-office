@@ -542,7 +542,7 @@ const CreateCampaign = (props) => {
 
           <div className="broadcast-list-grid">
             <div className="broadcast-list-import">
-              <label htmlFor="contactUpload">
+              <label htmlFor="contactsUpload" className="contacts-upload">
                 <AiOutlineImport className="broadcast-list-icon" />
                 <p
                   className={
@@ -560,7 +560,7 @@ const CreateCampaign = (props) => {
                   </em>
                 </p>
                 <input
-                  id="contactUpload"
+                  id="contactsUpload"
                   type="file"
                   accept=".xlsx, .csv"
                   hidden
