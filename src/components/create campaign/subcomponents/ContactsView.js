@@ -11,13 +11,15 @@ const ContactsView = (props) => {
     phoneNumber: '',
   };
 
+  const { campaignId } = props;
+
   const { userDetails } = useContext(UserContext);
 
   const { contactsList, setContactsList } = props;
   const [newContact, setNewContact] = useState(initialNewContact);
 
   const getCollection = () => {
-    API.get(`/users/${userDetails.id}/contacts/`)
+    API.get(`/users/${userDetails.id}/campaigns/${campaignId}/contacts`)
       .then((res) => {
         setContactsList(res.data);
       })
@@ -42,20 +44,25 @@ const ContactsView = (props) => {
   };
 
   const deleteContact = async (contactId) => {
-    await API.delete(`/users/${userDetails.id}/contacts/${contactId}`);
+    await API.delete(
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/${contactId}`
+    );
     getCollection();
   };
 
   const addANewContact = async (event) => {
     event.preventDefault();
 
-    await API.post(`/users/${userDetails.id}/contacts/`, [
-      {
-        lastname: newContact.lastname,
-        firstname: newContact.firstname,
-        phone_number: newContact.phoneNumber,
-      },
-    ])
+    await API.post(
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/`,
+      [
+        {
+          lastname: newContact.lastname,
+          firstname: newContact.firstname,
+          phone_number: newContact.phoneNumber,
+        },
+      ]
+    )
       .then((res) => {
         setContactsList([...contactsList, res.data[0]]);
       })
@@ -151,6 +158,7 @@ const ContactsView = (props) => {
                   deleteContact={deleteContact}
                   contactsList={contactsList}
                   setContactsList={setContactsList}
+                  campaignId={campaignId}
                 />
               );
             })}

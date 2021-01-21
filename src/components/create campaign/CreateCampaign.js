@@ -85,15 +85,15 @@ const CreateCampaign = (props) => {
       console.log(res.data);
 
       if (res.data) {
-        setCampaignName(res.data.campaignData.name);
-        setCampaignDate(res.data.campaignData.date);
-        setMessageToVocalize(res.data.campaignData.text_message);
-        setVocalisationFileName(res.data.campaignData.vocal_message_file_url);
+        setCampaignName(res.data.name);
+        setCampaignDate(res.data.date);
+        setMessageToVocalize(res.data.text_message);
+        setVocalisationFileName(res.data.vocal_message_file_url);
         setAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.campaignData.vocal_message_file_url}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
         );
         setDownloadAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.campaignData.vocal_message_file_url}`
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
         );
         // playAudioTest();
 
@@ -525,6 +525,7 @@ const CreateCampaign = (props) => {
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
+            campaignId={match.params.campaign_id}
           />
         </div>
       </div>
