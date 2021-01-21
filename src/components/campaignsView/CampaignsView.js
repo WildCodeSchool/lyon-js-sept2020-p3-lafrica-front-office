@@ -1,13 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
 import API from '../../services/API';
+
 import { UserContext } from '../../context/UserContext';
 
 const CampaignsView = () => {
@@ -21,6 +22,7 @@ const CampaignsView = () => {
     campaignsList,
     setCampaignsList,
   } = useContext(UserContext);
+  const [campaignId, setCampaignId] = useState();
 
   useEffect(() => {
     if (userDetails) {
@@ -63,6 +65,18 @@ const CampaignsView = () => {
     });
   };
 
+  const createCampaignInDatabase = async () => {
+    await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
+      setCampaignId(res.data.campaign_id);
+    });
+  };
+
+  useEffect(() => {
+    if (campaignId) {
+      history.push(`/campaigns/edit/${campaignId}`);
+    }
+  }, [campaignId]);
+
   return (
     <div className="compaigns-view-container">
       <article className="campaings-editor-view-container">
@@ -72,13 +86,24 @@ const CampaignsView = () => {
             <h2>NOS SOLUTIONS DE VOCALISATION</h2>
           </div>
           <div className="btn-container">
-            <div className="megaphone">
-              <Link to="/campaigns">
-                <GoMegaphone className="btn-icon" />
+            <div
+              className="megaphone"
+              onClick={createCampaignInDatabase}
+              type="button"
+              onKeyPress={() => {}}
+              role="button"
+              tabIndex="0"
+            >
+              <GoMegaphone className="btn-icon" />
+
+              {/* <Link to={`/campaigns/${campaignId}`}>
               </Link>
-              <Link to="/campaigns">
-                <h3>Créer une campagne</h3>
-              </Link>
+              <Link
+                to={`/campaigns/${campaignId}`}
+                onClick={createCampaignInDatabase}
+              > */}
+              <h3>Créer une campagne</h3>
+              {/* </Link> */}
             </div>
             <div className="edit">
               <BiEdit className="btn-icon" />

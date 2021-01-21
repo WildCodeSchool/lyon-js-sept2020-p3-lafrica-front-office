@@ -29,8 +29,7 @@ function App() {
                   <SignUp />
                 </Route>
                 <ProtectedRoute
-                  exact
-                  path="/campaigns"
+                  path="/campaigns/edit/:campaign_id"
                   component={CreateCampaign}
                 />
 
