@@ -60,6 +60,15 @@
   padding: 10px;
 }
 
+/* td:nth-child(0n + 4) {
+  width: 150px;
+} */
+
+.cell-campaign-status {
+  display: flex;
+  align-items: center;
+}
+
 .stylized-th {
   background-color: var(--primary-color);
   color: #fff;
@@ -69,6 +78,7 @@
 
 .search-icon {
   color: grey;
+  cursor: pointer;
 }
 
 .megaphone,
@@ -132,6 +142,7 @@ h3 {
     padding-left: 2px;
     padding-right: 2px;
     font-size: 0.6em;
+    width: auto;
   }
 }
 
@@ -150,14 +161,14 @@ h3 {
   }
 }
 
-@media only screen and (min-device-width: 760px) and (max-device-width: 1024px) {
+@media screen and (min-device-width: 760px) and (max-device-width: 1024px) {
   .campaigns-list {
     width: 60%;
     margin: auto;
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) {
   .campaigns-list {
     width: 40%;
     margin: auto;

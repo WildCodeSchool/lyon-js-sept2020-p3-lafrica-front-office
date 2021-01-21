@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './CampaignDetails.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { BiExport } from 'react-icons/bi';
 import { RiFileEditLine } from 'react-icons/ri';
+import moment from 'moment';
+import 'moment/locale/fr';
+import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
-const CampaignDetail = () => {
+const CampaignDetail = (props) => {
+  moment.locale('fr');
+
+  const { userDetails } = useContext(UserContext);
+  const { match } = props;
+
+  const [currentCampaign, setCurrentCampaign] = useState();
+
+  useEffect(() => {
+    API.get(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
+    ).then((res) => setCurrentCampaign(res.data));
+  }, []);
+
   return (
     <>
       <div className="campaign-main-container">
@@ -12,7 +29,7 @@ const CampaignDetail = () => {
           <FaMicrophone className="micro-logo" />
           <div>
             <h2>Campagne</h2>
-            <h3>Nom de la campagne</h3>
+            <h3>{currentCampaign && currentCampaign.name}</h3>
           </div>
         </div>
 
@@ -21,15 +38,18 @@ const CampaignDetail = () => {
             <tbody>
               <tr>
                 <td>Date d'envoi :</td>
-                <td>02/01/2021</td>
-              </tr>
-              <tr>
-                <td>Liste de diffusion :</td>
-                <td>Liste n°1</td>
+                <td>
+                  {currentCampaign &&
+                    moment(currentCampaign.date).format('DD/MM/YYYY HH:mm')}
+                </td>
               </tr>
               <tr>
                 <td>Statut: </td>
-                <td>En cours</td>
+                <td>
+                  {currentCampaign && currentCampaign.sending_status
+                    ? 'Envoyée'
+                    : 'En cours'}
+                </td>
               </tr>
             </tbody>
           </table>
