@@ -16,7 +16,11 @@ import { FaMicrophone } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
 import { FiPhoneIncoming } from 'react-icons/fi';
 import { ImFolderDownload } from 'react-icons/im';
-import { AiOutlineImport, AiOutlineExport } from 'react-icons/ai';
+import {
+  AiOutlineImport,
+  AiOutlineExport,
+  AiOutlineWarning,
+} from 'react-icons/ai';
 import { MdPermContactCalendar } from 'react-icons/md';
 import { useToasts } from 'react-toast-notifications';
 import './CreateCampaign.scss';
@@ -53,6 +57,14 @@ const CreateCampaign = (props) => {
   const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
+  const [
+    receivedFormatDifferentFromTxtAndDocx,
+    setReceivedFormatDifferentFromTxtAndDocx,
+  ] = useState('false');
+  const [
+    receivedFormatDifferentFromXlsxAndCsv,
+    setReceivedFormatDifferentFromXlsxAndCsv,
+  ] = useState('false');
 
   const { userDetails } = useContext(UserContext);
 
@@ -67,9 +79,20 @@ const CreateCampaign = (props) => {
     formData.append('uploaded_text', textToUpload);
     API.post(`/users/${userDetails.id}/campaigns/uploadtext`, formData)
       .then((res) => {
+        if (!receivedFormatDifferentFromTxtAndDocx) {
+          setReceivedFormatDifferentFromTxtAndDocx(
+            !receivedFormatDifferentFromTxtAndDocx
+          );
+        }
         setMessageToVocalize(res.data);
       })
       .catch((err) => {
+        if (receivedFormatDifferentFromTxtAndDocx) {
+          setReceivedFormatDifferentFromTxtAndDocx(
+            !receivedFormatDifferentFromTxtAndDocx
+          );
+        }
+
         console.log(err);
       });
   };
@@ -82,9 +105,20 @@ const CreateCampaign = (props) => {
       formData
     )
       .then((res) => {
+        if (!receivedFormatDifferentFromXlsxAndCsv) {
+          setReceivedFormatDifferentFromXlsxAndCsv(
+            !receivedFormatDifferentFromXlsxAndCsv
+          );
+        }
         setContactsList(res.data);
       })
       .catch((err) => {
+        if (receivedFormatDifferentFromXlsxAndCsv) {
+          setReceivedFormatDifferentFromXlsxAndCsv(
+            !receivedFormatDifferentFromXlsxAndCsv
+          );
+        }
+
         console.log(err);
       });
   };
@@ -345,12 +379,18 @@ const CreateCampaign = (props) => {
                     <em className={!fileNameTextToUpload ? '' : 'hidden'}>
                       (formats acceptés : .txt, .docx)
                     </em>
+                    {!receivedFormatDifferentFromTxtAndDocx && (
+                      <p className="receivedWrongFormat">
+                        <AiOutlineWarning className="warning-icon" />
+                        formats acceptés : .txt, .docx
+                      </p>
+                    )}
                   </p>
                 </div>
+
                 <input
                   id="textToUpload"
                   type="file"
-                  accept=".txt, .docx"
                   hidden
                   onChange={(e) => {
                     handleFileUpload(e);
@@ -574,11 +614,17 @@ const CreateCampaign = (props) => {
                   <em className={!fileNameContactsUpload ? '' : 'hidden'}>
                     (formats acceptés : .xlsx, .csv)
                   </em>
+                  {!receivedFormatDifferentFromXlsxAndCsv && (
+                    <p className="receivedWrongFormat">
+                      <AiOutlineWarning className="warning-icon" />
+                      formats acceptés : .xlsx, .csv
+                    </p>
+                  )}
                 </p>
+
                 <input
                   id="contactsUpload"
                   type="file"
-                  accept=".xlsx, .csv"
                   hidden
                   onChange={(e) => {
                     handleContactUpload(e);
