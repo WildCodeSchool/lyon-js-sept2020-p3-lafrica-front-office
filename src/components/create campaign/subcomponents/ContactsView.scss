@@ -23,7 +23,7 @@ button {
   border: none;
   padding: 10px;
   background-color: white;
-  font-size: 0.9em;
+  font-size: 14px;
   width: 100%;
   height: 100%;
 }
@@ -60,35 +60,37 @@ button {
 
   .add-contact-form {
     width: 80%;
-  }
 
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
 
-  tr {
-    border: 1px solid #ccc;
-  }
+    tr {
+      border: 1px solid #ccc;
+      padding: 0px;
+    }
 
-  td {
-    /* Behave  like a "row" */
-    border: none;
-    border-bottom: 1px solid #eee;
-    position: relative;
-  }
+    td {
+      /* Behave  like a "row" */
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding: 0px;
+    }
 
-  td:before {
-    /* Now like a table header */
-    position: absolute;
-    /* Top/left values mimic padding */
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    white-space: nowrap;
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      white-space: nowrap;
+    }
   }
 }
