@@ -130,6 +130,8 @@ const ContactsView = (props) => {
                   onChange={(value) => handleChangeNewContactPhoneNumber(value)}
                   inputStyle={{
                     fontSize: '14px',
+                    width: '100%',
+                    border: 'white',
                   }}
                   specialLabel=""
                   placeholder="Numéro de téléphone"
