@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './CampaignsView.css';
+import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
@@ -7,8 +7,9 @@ import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
-import API from '../../services/API';
+import CampaignsChart from '../CampaignsChart/CampaignsChart';
 
+import API from '../../services/API';
 import { UserContext } from '../../context/UserContext';
 
 const CampaignsView = () => {
@@ -33,6 +34,11 @@ const CampaignsView = () => {
   }, [userDetails]);
 
   const showCampaignsList = () => {
+    // const updateDataset = (datasetIndex, newData) => {
+    //   chartInstance.data.datasets[datasetIndex].data = newData;
+    //   chartInstance.update();
+    // };
+
     return campaignsList.map((campaign) => {
       return (
         <tr key={campaign.id}>
@@ -114,9 +120,6 @@ const CampaignsView = () => {
       </article>
       <article>
         <div className="campaigns-list">
-          <div className="filter-container">
-            <p>Voir pour système de filtre et de tri</p>
-          </div>
           <table>
             <thead>
               <tr>
@@ -129,6 +132,9 @@ const CampaignsView = () => {
             </thead>
             <tbody>{showCampaignsList()}</tbody>
           </table>
+          <div className="campaigns-chart">
+            <CampaignsChart />
+          </div>
         </div>
       </article>
     </div>
