@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Chartjs from 'chart.js';
 // import { UserContext } from '../../context/UserContext';
 
