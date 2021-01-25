@@ -228,6 +228,7 @@ const CreateCampaign = (props) => {
   const play = () => {
     setAudioDuration();
     audio.play();
+    setMessageToVocalize('');
 
     audio.addEventListener('timeupdate', () => {
       if (!Number.isNaN(audio.duration) && audio.duration !== Infinity) {
