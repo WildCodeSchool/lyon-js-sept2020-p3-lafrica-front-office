@@ -113,16 +113,17 @@ const CampaignDetail = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {campaignContacts.map((contact) => {
-                  return (
-                    <tr key={contact.id}>
-                      <td>{contact.lastname}</td>
-                      <td>{contact.firstname}</td>
-                      <td>{contact.phone_number}</td>
-                      <td>Appel failed</td>
-                    </tr>
-                  );
-                })}
+                {campaignContacts &&
+                  campaignContacts.map((contact) => {
+                    return (
+                      <tr key={contact.id}>
+                        <td>{contact.lastname}</td>
+                        <td>{contact.firstname}</td>
+                        <td>{contact.phone_number}</td>
+                        <td>Appel failed</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
