@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './CampaignsView.css';
+import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
