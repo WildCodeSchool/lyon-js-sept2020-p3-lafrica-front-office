@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './CampaignsView.css';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
-import { BiSearchAlt2, BiEdit } from 'react-icons/bi';
+import { BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
@@ -36,12 +36,6 @@ const CampaignsView = () => {
     return campaignsList.map((campaign) => {
       return (
         <tr key={campaign.id}>
-          <td className="no-border">
-            <BiEdit
-              className="edit-icon"
-              onClick={() => history.push(`/campaigns/${campaign.id}`)}
-            />
-          </td>
           <td className="no-border">
             <BiSearchAlt2
               className="search-icon"
@@ -123,8 +117,6 @@ const CampaignsView = () => {
           <table>
             <thead>
               <tr>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <th />
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <th />
                 <th className="stylized-th">Nom</th>

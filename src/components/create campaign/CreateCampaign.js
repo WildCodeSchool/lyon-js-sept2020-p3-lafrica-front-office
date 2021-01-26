@@ -652,10 +652,15 @@ const CreateCampaign = (props) => {
                 />
               </label>
             </div>
-            <div className="broadcast-list-export">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportContacts`}
+              className="broadcast-list-export"
+            >
               <AiOutlineExport className="broadcast-list-icon" />
               <p>Exporter une liste de diffusion</p>
-            </div>
+            </a>
           </div>
           <ContactsView
             className="broadcast-list-array"

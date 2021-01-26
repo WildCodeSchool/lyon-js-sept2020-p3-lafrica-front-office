@@ -650,10 +650,15 @@ const CampaignEditor = (props) => {
                 />
               </label>
             </div>
-            <div className="broadcast-list-export">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${campaignId}/contacts/exportContacts`}
+              className="broadcast-list-export"
+            >
               <AiOutlineExport className="broadcast-list-icon" />
               <p>Exporter une liste de diffusion</p>
-            </div>
+            </a>
           </div>
           <ContactsViewEditor
             className="broadcast-list-array"
