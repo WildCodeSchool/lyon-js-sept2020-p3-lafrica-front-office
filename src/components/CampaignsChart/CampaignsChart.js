@@ -110,7 +110,7 @@ const Chart = () => {
     };
 
     for (let i = 0; i < campaignsList.length; i += 1) {
-      if (campaignsList[i].sending_status === 1) {
+      if (campaignsList[i].sending_status === 2) {
         const campaignMonth = moment(campaignsList[i].date).format('MMMM');
         campaignsByMonth[campaignMonth] += 1;
       }

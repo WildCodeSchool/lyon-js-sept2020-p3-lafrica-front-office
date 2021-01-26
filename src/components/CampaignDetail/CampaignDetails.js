@@ -105,7 +105,6 @@ const CampaignDetail = (props) => {
               <thead>
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <th />
                   <th className="stylized-th">Nom</th>
                   <th className="stylized-th">Prénom</th>
                   <th className="stylized-th">Téléphone</th>
