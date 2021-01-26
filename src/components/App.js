@@ -10,10 +10,11 @@ import ForgetPassword from './login/ForgetPassword';
 import ResetPassword from './login/ResetPassword';
 // import Home from './home/Home';
 import SignUp from './login/SignUp';
-import CampaignsView from './campaignsView/CampaignsView';
+import CampaignsView from './campaignsView/AdminCampaignsView';
 import ContactsView from './create campaign/subcomponents/ContactsView';
 import UserContextProvider from '../context/UserContext';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
+import AdminRoute from './ProtectedRoutes/AdminRoute';
 
 function App() {
   return (
@@ -42,7 +43,7 @@ function App() {
                   component={CampaignDetail}
                 />
 
-                <ProtectedRoute exact path="/" component={CampaignsView} />
+                <AdminRoute exact path="/" component={CampaignsView} />
                 <ProtectedRoute
                   path="/users/:user_id/contacts"
                   component={ContactsView}
