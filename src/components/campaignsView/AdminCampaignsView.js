@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+
 import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
-
 import { BiSearchAlt2 } from 'react-icons/bi';
-
-// import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
@@ -25,7 +23,6 @@ const CampaignsView = () => {
     campaignsList,
     setCampaignsList,
   } = useContext(UserContext);
-  const [campaignId] = useState();
 
   useEffect(() => {
     if (userDetails) {
@@ -73,19 +70,13 @@ const CampaignsView = () => {
     });
   };
 
-  useEffect(() => {
-    if (campaignId) {
-      history.push(`/campaigns/edit/${campaignId}`);
-    }
-  }, [campaignId]);
-
   return (
     <div className="compaigns-view-container">
       <article className="campaings-editor-view-container">
         <div className="campaigns-editor-view">
           <div className="title">
             <FaMicrophone className="microphone-icon" />
-            <h2>Liste des campagnes</h2>
+            <h2>Liste des Campagnes</h2>
           </div>
         </div>
       </article>
