@@ -41,6 +41,7 @@ const CreateCampaign = (props) => {
   const [campaignName, setCampaignName] = useState('');
   const [campaignDate, setCampaignDate] = useState(dateNow);
   const [messageToVocalize, setMessageToVocalize] = useState('');
+  const [lastVocalizedMessage, setLastVocalizedMessage] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
   const [textToUpload, setTextToUpload] = useState('');
@@ -60,11 +61,11 @@ const CreateCampaign = (props) => {
   const [
     receivedFormatDifferentFromTxtAndDocx,
     setReceivedFormatDifferentFromTxtAndDocx,
-  ] = useState('false');
+  ] = useState(false);
   const [
     receivedFormatDifferentFromXlsxAndCsv,
     setReceivedFormatDifferentFromXlsxAndCsv,
-  ] = useState('false');
+  ] = useState(false);
 
   const { userDetails } = useContext(UserContext);
 
@@ -79,7 +80,7 @@ const CreateCampaign = (props) => {
     formData.append('uploaded_text', textToUpload);
     API.post(`/users/${userDetails.id}/campaigns/uploadtext`, formData)
       .then((res) => {
-        if (!receivedFormatDifferentFromTxtAndDocx) {
+        if (receivedFormatDifferentFromTxtAndDocx) {
           setReceivedFormatDifferentFromTxtAndDocx(
             !receivedFormatDifferentFromTxtAndDocx
           );
@@ -87,7 +88,7 @@ const CreateCampaign = (props) => {
         setMessageToVocalize(res.data);
       })
       .catch((err) => {
-        if (receivedFormatDifferentFromTxtAndDocx) {
+        if (!receivedFormatDifferentFromTxtAndDocx) {
           setReceivedFormatDifferentFromTxtAndDocx(
             !receivedFormatDifferentFromTxtAndDocx
           );
@@ -105,7 +106,7 @@ const CreateCampaign = (props) => {
       formData
     )
       .then((res) => {
-        if (!receivedFormatDifferentFromXlsxAndCsv) {
+        if (receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
@@ -113,7 +114,7 @@ const CreateCampaign = (props) => {
         setContactsList(res.data);
       })
       .catch((err) => {
-        if (receivedFormatDifferentFromXlsxAndCsv) {
+        if (!receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
@@ -195,6 +196,7 @@ const CreateCampaign = (props) => {
     })
       .then((res) => {
         setVocalisationFileName(res.data);
+        setLastVocalizedMessage(messageToVocalize);
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
         );
@@ -213,6 +215,7 @@ const CreateCampaign = (props) => {
       setFileNameTextToUpload(e.target.files[0].name);
     } else {
       setFileNameTextToUpload('');
+      setReceivedFormatDifferentFromTxtAndDocx(false);
     }
   };
 
@@ -222,6 +225,7 @@ const CreateCampaign = (props) => {
       setFileNameContactsUpload(e.target.files[0].name);
     } else {
       setFileNameContactsUpload('');
+      setReceivedFormatDifferentFromXlsxAndCsv(false);
     }
   };
 
@@ -262,7 +266,6 @@ const CreateCampaign = (props) => {
   const play = () => {
     setAudioDuration();
     audio.play();
-    setMessageToVocalize('');
 
     audio.addEventListener('timeupdate', () => {
       if (!Number.isNaN(audio.duration) && audio.duration !== Infinity) {
@@ -379,7 +382,7 @@ const CreateCampaign = (props) => {
                     <em className={!fileNameTextToUpload ? '' : 'hidden'}>
                       (formats acceptés : .txt, .docx)
                     </em>
-                    {!receivedFormatDifferentFromTxtAndDocx && (
+                    {receivedFormatDifferentFromTxtAndDocx && (
                       <p className="receivedWrongFormat">
                         <AiOutlineWarning className="warning-icon" />
                         formats acceptés : .txt, .docx
@@ -482,7 +485,8 @@ const CreateCampaign = (props) => {
 
           <div className="vocalization-action">
             <div className="vocalization-action-vocalize">
-              {messageToVocalize ? (
+              {lastVocalizedMessage !== messageToVocalize &&
+              messageToVocalize ? (
                 <FaMicrophone
                   className="vocalization-action-icon"
                   onClick={sendToGTTS}
@@ -490,7 +494,17 @@ const CreateCampaign = (props) => {
               ) : (
                 <FaMicrophone className="vocalization-action-icon-grey" />
               )}
-              <p>Vocaliser votre message</p>
+
+              <p
+                className={
+                  lastVocalizedMessage !== messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
+                Vocaliser votre message
+              </p>
             </div>
             <div className="vocalization-action-test">
               {vocalisationFileName ? (
@@ -501,8 +515,10 @@ const CreateCampaign = (props) => {
               ) : (
                 <IoIosPlayCircle className="vocalization-action-icon-grey" />
               )}
-              <p>Ecouter votre message</p>
-              {playAudioTest()}
+              <p className={vocalisationFileName ? 'blue' : null}>
+                Ecouter votre message
+              </p>
+              }{playAudioTest()}
               <p className="audio-duration">
                 {audio && `Durée : ${audioDuration || 'calcul...'}`}
               </p>
@@ -520,7 +536,9 @@ const CreateCampaign = (props) => {
                 </a>
               )}
 
-              <p>Télécharger le fichier audio</p>
+              <p className={vocalisationFileName ? 'blue' : null}>
+                Télécharger le fichier audio
+              </p>
             </div>
             <div />
             <div className="vocalization-action-trySend">
@@ -614,7 +632,7 @@ const CreateCampaign = (props) => {
                   <em className={!fileNameContactsUpload ? '' : 'hidden'}>
                     (formats acceptés : .xlsx, .csv)
                   </em>
-                  {!receivedFormatDifferentFromXlsxAndCsv && (
+                  {receivedFormatDifferentFromXlsxAndCsv && (
                     <p className="receivedWrongFormat">
                       <AiOutlineWarning className="warning-icon" />
                       formats acceptés : .xlsx, .csv
