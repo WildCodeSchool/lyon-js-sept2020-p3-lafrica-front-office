@@ -502,7 +502,7 @@ const CreateCampaign = (props) => {
 
               <p>Télécharger le fichier audio</p>
             </div>
-            <div />
+            {/* <div /> */}
             <div className="vocalization-action-trySend">
               {vocalisationFileName ? (
                 <FiPhoneIncoming
