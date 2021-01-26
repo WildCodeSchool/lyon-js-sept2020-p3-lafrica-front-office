@@ -53,6 +53,7 @@ const CreateCampaign = (props) => {
   const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
+  const [toggleContactsUpload, setToggleContactsUpload] = useState(false);
 
   const { userDetails } = useContext(UserContext);
 
@@ -81,8 +82,9 @@ const CreateCampaign = (props) => {
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
       formData
     )
-      .then((res) => {
-        setContactsList(res.data);
+      .then(() => {
+        // setContactsList(res.data);
+        setToggleContactsUpload(!toggleContactsUpload);
       })
       .catch((err) => {
         console.log(err);
@@ -594,6 +596,8 @@ const CreateCampaign = (props) => {
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
+            setToggleContactsUpload={setToggleContactsUpload}
+            toggleContactsUpload={toggleContactsUpload}
             campaignId={match.params.campaign_id}
           />
         </div>
