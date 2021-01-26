@@ -20,6 +20,7 @@ const CampaignsView = () => {
 
   const {
     userDetails,
+    setUserDetails,
     setLoggedIn,
     campaignsList,
     setCampaignsList,
@@ -30,7 +31,10 @@ const CampaignsView = () => {
     if (userDetails) {
       API.get(`/users/${userDetails.id}/campaigns`)
         .then((res) => setCampaignsList(res.data))
-        .catch(() => setLoggedIn(false));
+        .catch(() => {
+          setLoggedIn(false);
+          setUserDetails({});
+        });
     }
   }, [userDetails]);
 

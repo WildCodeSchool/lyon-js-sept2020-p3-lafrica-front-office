@@ -6,6 +6,8 @@ import CampaignDetail from './CampaignDetail/CampaignDetails';
 import Footer from './footer/Footer';
 import Header from './header/Header';
 import SignIn from './login/SignIn';
+import ForgetPassword from './login/ForgetPassword';
+import ResetPassword from './login/ResetPassword';
 // import Home from './home/Home';
 import SignUp from './login/SignUp';
 import CampaignsView from './campaignsView/CampaignsView';
@@ -28,6 +30,8 @@ function App() {
                 <Route path="/signup">
                   <SignUp />
                 </Route>
+                <Route path="/forgot" component={ForgetPassword} />
+                <Route path="/reset/:token" component={ResetPassword} />
                 <ProtectedRoute
                   path="/campaigns/edit/:campaign_id"
                   component={CreateCampaign}
