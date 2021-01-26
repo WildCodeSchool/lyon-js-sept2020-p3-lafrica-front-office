@@ -1,4 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/plain.css';
 import API from '../../../services/API';
 import Contact from './Contact';
 import { UserContext } from '../../../context/UserContext';
@@ -113,7 +115,7 @@ const ContactsView = (props) => {
                 />
               </td>
               <td>
-                <input
+                {/* <input
                   type="text"
                   placeholder="Numéro de télephone"
                   value={newContact.phoneNumber}
@@ -121,6 +123,18 @@ const ContactsView = (props) => {
                   onChange={(event) =>
                     handleChangeNewContactPhoneNumber(event.target.value)
                   }
+                /> */}
+                <PhoneInput
+                  regions={['europe', 'africa']}
+                  value={newContact.phoneNumber}
+                  onChange={(value) => handleChangeNewContactPhoneNumber(value)}
+                  inputStyle={{
+                    fontSize: '14px',
+                    width: '100%',
+                    border: 'white',
+                  }}
+                  specialLabel=""
+                  placeholder="Numéro de téléphone"
                 />
               </td>
               <td>

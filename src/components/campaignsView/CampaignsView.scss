@@ -36,15 +36,17 @@
   margin: 10px;
   border: 4px solid var(--primary-color);
   padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
 }
 
-.filter-container {
-  border: 4px solid var(--primary-color);
-  margin-bottom: 10px;
+.campaigns-chart {
+  width: 50%;
+  background-color: white;
 }
 
 .campaigns-list table {
-  margin: auto;
   border-collapse: collapse;
 }
 
@@ -137,6 +139,10 @@ h3 {
   background: #ddb637;
 }
 
+.in-creation-status {
+  background: #747474;
+}
+
 .awaiting-status {
   background: #f4511e;
 }
@@ -170,14 +176,14 @@ h3 {
 
 @media screen and (min-device-width: 760px) and (max-device-width: 1024px) {
   .campaigns-list {
-    width: 60%;
+    width: 80%;
     margin: auto;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .campaigns-list {
-    width: 40%;
+    width: 80%;
     margin: auto;
   }
 }

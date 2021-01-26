@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
-import './CampaignsView.css';
+import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiSearchAlt2 } from 'react-icons/bi';
@@ -7,8 +8,9 @@ import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
-import API from '../../services/API';
+import CampaignsChart from '../CampaignsChart/CampaignsChart';
 
+import API from '../../services/API';
 import { UserContext } from '../../context/UserContext';
 
 const CampaignsView = () => {
@@ -18,6 +20,7 @@ const CampaignsView = () => {
 
   const {
     userDetails,
+    setUserDetails,
     setLoggedIn,
     campaignsList,
     setCampaignsList,
@@ -28,11 +31,19 @@ const CampaignsView = () => {
     if (userDetails) {
       API.get(`/users/${userDetails.id}/campaigns`)
         .then((res) => setCampaignsList(res.data))
-        .catch(() => setLoggedIn(false));
+        .catch(() => {
+          setLoggedIn(false);
+          setUserDetails({});
+        });
     }
   }, [userDetails]);
 
   const showCampaignsList = () => {
+    // const updateDataset = (datasetIndex, newData) => {
+    //   chartInstance.data.datasets[datasetIndex].data = newData;
+    //   chartInstance.update();
+    // };
+
     return campaignsList.map((campaign) => {
       return (
         <tr key={campaign.id}>
@@ -47,15 +58,20 @@ const CampaignsView = () => {
             {moment(campaign.date).format('DD/MM/YYYY HH:mm')}
           </td>
           <td className="stylized-td">
-            {campaign.sending_status ? (
+            {campaign.sending_status === 2 ? (
               <div className="cell-campaign-status">
                 <span className="status finished-status" />
                 <p>Envoyée</p>
               </div>
-            ) : (
+            ) : campaign.sending_status === 1 ? (
               <div className="cell-campaign-status">
                 <span className="status in-progress-status" />
                 <p>En attente</p>
+              </div>
+            ) : (
+              <div className="cell-campaign-status">
+                <span className="status in-creation-status" />
+                <p>En création</p>
               </div>
             )}
           </td>
@@ -111,21 +127,22 @@ const CampaignsView = () => {
       </article>
       <article>
         <div className="campaigns-list">
-          <div className="filter-container">
-            <p>Voir pour système de filtre et de tri</p>
-          </div>
           <table>
             <thead>
               <tr>
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <th />
-                <th className="stylized-th">Nom</th>
+
+                <th className="stylized-th">Nom Campagne</th>
                 <th className="stylized-th">Date d'envoi</th>
                 <th className="stylized-th">Statut</th>
               </tr>
             </thead>
             <tbody>{showCampaignsList()}</tbody>
           </table>
+          <div className="campaigns-chart">
+            <CampaignsChart />
+          </div>
         </div>
       </article>
     </div>
