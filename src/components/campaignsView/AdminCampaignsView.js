@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import './CampaignsView.css';
+import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
