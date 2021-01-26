@@ -210,14 +210,14 @@ const ContactsView = (props) => {
             disabled={currentPage <= 1}
             onClick={() => setCurrentPage(1)}
           >
-            First page
+            Première page
           </button>
           <button
             type="button"
             disabled={currentPage <= 1}
             onClick={() => setCurrentPage(currentPage - 1)}
           >
-            Previous page
+            Page précédente
           </button>
           {currentPage}/{lastPage}
           <button
@@ -225,14 +225,14 @@ const ContactsView = (props) => {
             disabled={currentPage === lastPage}
             onClick={() => setCurrentPage(currentPage + 1)}
           >
-            Next page
+            Page suivante
           </button>
           <button
             type="button"
             disabled={currentPage === lastPage}
             onClick={() => setCurrentPage(lastPage)}
           >
-            Last page
+            Dernière page
           </button>
         </div>
       )}
