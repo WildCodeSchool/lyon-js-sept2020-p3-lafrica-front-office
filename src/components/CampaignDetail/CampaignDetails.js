@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
 import './CampaignDetails.scss';
 import { FaMicrophone } from 'react-icons/fa';
@@ -15,11 +16,20 @@ const CampaignDetail = (props) => {
   const { match } = props;
 
   const [currentCampaign, setCurrentCampaign] = useState();
+  const [campaignContacts, setCampaignContacts] = useState();
 
   useEffect(() => {
     API.get(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
-    ).then((res) => setCurrentCampaign(res.data));
+    ).then((res) => {
+      setCurrentCampaign(res.data);
+    });
+    API.get(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts`
+    ).then((res2) => {
+      setCampaignContacts(res2.data);
+      console.log(campaignContacts);
+    });
   }, []);
 
   return (
@@ -46,9 +56,11 @@ const CampaignDetail = (props) => {
               <tr>
                 <td>Statut: </td>
                 <td>
-                  {currentCampaign && currentCampaign.sending_status
-                    ? 'Envoyée'
-                    : 'En cours'}
+                  {currentCampaign && currentCampaign.sending_status === 0
+                    ? 'En création'
+                    : currentCampaign && currentCampaign.sending_status === 1
+                    ? 'En attente'
+                    : 'Envoyé'}
                 </td>
               </tr>
             </tbody>
@@ -58,10 +70,65 @@ const CampaignDetail = (props) => {
             Modifier ma campagne
           </div>
         </div>
-        <div className="statistiques">
-          <div className="export-statistiques">
+        <div className="stats">
+          <div className="export-stats">
             <BiExport className="export-logo" />
-            <p>Exporter mes statistiques</p>
+            <p>Exporter mes stats</p>
+          </div>
+          <div className="main-stats">
+            <h4>
+              Nombre d'appels total : {currentCampaign && currentCampaign.count}
+            </h4>
+            <h4>
+              Nombre d'appels réussis :{' '}
+              {0 && currentCampaign.call_success_count}
+            </h4>
+            <h4>
+              Nombre d'appels échoués :{' '}
+              {currentCampaign && currentCampaign.call_failed_count}
+            </h4>
+            <h4>
+              Nombre d'appels ignorés :{' '}
+              {currentCampaign && currentCampaign.call_ignored_count}
+            </h4>
+          </div>
+          <div className="win-rate">
+            <p>
+              Taux de réussite :{' '}
+              {currentCampaign &&
+                currentCampaign.call_success_count / currentCampaign.count}
+              %
+            </p>
+          </div>
+          <div className="stats-array">
+            <table>
+              <thead>
+                <tr>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
+                  <th className="stylized-th">Nom</th>
+                  <th className="stylized-th">Prénom</th>
+                  <th className="stylized-th">Téléphone</th>
+                  <th className="stylized-th">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {campaignContacts &&
+                  campaignContacts.map((contact) => {
+                    return (
+                      <tr key={contact.id}>
+                        <td>{contact.lastname}</td>
+                        <td>{contact.firstname}</td>
+                        <td>{contact.phone_number}</td>
+                        <td>Appel failed</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+          <div className="stats-chart">
+            <p> A changer</p>
           </div>
         </div>
       </div>
