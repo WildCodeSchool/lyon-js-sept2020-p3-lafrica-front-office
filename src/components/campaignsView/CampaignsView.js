@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
 import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
@@ -53,15 +54,20 @@ const CampaignsView = () => {
             {moment(campaign.date).format('DD/MM/YYYY HH:mm')}
           </td>
           <td className="stylized-td">
-            {campaign.sending_status ? (
+            {campaign.sending_status === 2 ? (
               <div className="cell-campaign-status">
                 <span className="status finished-status" />
                 <p>Envoyée</p>
               </div>
-            ) : (
+            ) : campaign.sending_status === 1 ? (
               <div className="cell-campaign-status">
                 <span className="status in-progress-status" />
                 <p>En attente</p>
+              </div>
+            ) : (
+              <div className="cell-campaign-status">
+                <span className="status in-creation-status" />
+                <p>En création</p>
               </div>
             )}
           </td>
