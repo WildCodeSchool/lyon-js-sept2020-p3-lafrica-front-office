@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
 import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { BiSearchAlt2 } from 'react-icons/bi';
