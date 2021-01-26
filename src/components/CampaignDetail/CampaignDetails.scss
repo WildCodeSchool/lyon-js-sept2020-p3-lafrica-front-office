@@ -45,16 +45,19 @@ $secondary-blue: #116490;
 
 .edit-campaign {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 10px;
-  color: $primary-blue;
+  text-align: center;
+  width: 50%;
+  cursor: pointer;
 }
 
 .edit-logo {
-  width: 30px;
-  height: 30px;
-  color: black;
+  display: block;
+  border: 5px solid $primary-blue;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 100px;
 }
 
 .statistiques {
@@ -104,11 +107,11 @@ $secondary-blue: #116490;
     flex-direction: column;
     padding: 0;
     margin-left: 50px;
+    border-radius: 50%;
   }
 
   .edit-logo {
-    height: 100px;
-    width: 80px;
+    font-size: 100px;
   }
 
   .export-statistiques {
@@ -121,4 +124,9 @@ $secondary-blue: #116490;
   .campaign-information {
     width: 60vw;
   }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
 }

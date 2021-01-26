@@ -23,20 +23,16 @@ import {
 } from 'react-icons/ai';
 import { MdPermContactCalendar } from 'react-icons/md';
 import { useToasts } from 'react-toast-notifications';
-import './CreateCampaign.scss';
+import './CampaignEditor.scss';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import API from '../../services/API';
-import textToSpeechIcon from '../../images/text_to_speech.png';
-import {
-  SpeedSlider,
-  PitchSlider,
-  VolumeSlider,
-} from './subcomponents/CustomizedSlider';
-import { UserContext } from '../../context/UserContext';
-import ContactsView from './subcomponents/ContactsView';
+import { RiFileEditLine } from 'react-icons/ri';
+import API from '../../../services/API';
+import { SpeedSlider, PitchSlider, VolumeSlider } from './CustomizedSlider';
+import { UserContext } from '../../../context/UserContext';
+import ContactsViewEditor from './ContactsViewEditor';
 
-const CreateCampaign = (props) => {
+const CampaignEditor = (props) => {
   const dateNow = new Date();
   const [campaignName, setCampaignName] = useState('');
   const [campaignDate, setCampaignDate] = useState(dateNow);
@@ -55,7 +51,7 @@ const CreateCampaign = (props) => {
   const [vocalisationFileName, setVocalisationFileName] = useState('');
   const [contactsList, setContactsList] = useState([]);
   const [sendingLoader, setSendingLoader] = useState(false);
-  const { match } = props;
+  const { campaignId } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
   const [
@@ -102,7 +98,7 @@ const CreateCampaign = (props) => {
     const formData = new FormData();
     formData.append('uploaded_contacts', contactsUpload);
     API.post(
-      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/upload`,
       formData
     )
       .then((res) => {
@@ -131,39 +127,40 @@ const CreateCampaign = (props) => {
   };
 
   useEffect(async () => {
-    await API.get(
-      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
-    ).then((res) => {
-      if (res.data) {
-        if (res.data.name !== null) {
-          setCampaignName(res.data.name);
-        } else {
-          setCampaignName('');
+    await API.get(`/users/${userDetails.id}/campaigns/${campaignId}`).then(
+      (res) => {
+        if (res.data) {
+          if (res.data.name !== null) {
+            setCampaignName(res.data.name);
+          } else {
+            setCampaignName('');
+          }
+          if (res.data.date !== null) {
+            const newDate = res.data.date.slice(0, -1);
+            setCampaignDate(newDate);
+          } else {
+            setCampaignDate('');
+          }
+          if (res.data.text_message !== null) {
+            setMessageToVocalize(res.data.text_message);
+          } else {
+            setMessageToVocalize('');
+          }
+          if (res.data.vocal_message_file_url !== null) {
+            setVocalisationFileName(res.data.vocal_message_file_url);
+          } else {
+            setVocalisationFileName('');
+          }
+          setAudioFilePath(
+            `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
+          );
+          setDownloadAudioFilePath(
+            `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
+          );
+          setLastVocalizedMessage(messageToVocalize);
         }
-        if (res.data.date !== null) {
-          const newDate = res.data.date.slice(0, -1);
-          setCampaignDate(newDate);
-        } else {
-          setCampaignDate('');
-        }
-        if (res.data.text_message !== null) {
-          setMessageToVocalize(res.data.text_message);
-        } else {
-          setMessageToVocalize('');
-        }
-        if (res.data.vocal_message_file_url !== null) {
-          setVocalisationFileName(res.data.vocal_message_file_url);
-        } else {
-          setVocalisationFileName('');
-        }
-        setAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
-        );
-        setDownloadAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
-        );
       }
-    });
+    );
   }, []);
 
   useEffect(() => {
@@ -279,7 +276,7 @@ const CreateCampaign = (props) => {
     setSendingLoader(true);
     setTimeout(() => {
       setSendingLoader(false);
-      addToast('Votre campagne a bien été enregistrée !', {
+      addToast('Vos modifications ont été enregistrées !', {
         appearance: 'success',
         autoDismiss: true,
       });
@@ -296,7 +293,7 @@ const CreateCampaign = (props) => {
       contactsList,
     ];
     await API.put(
-      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
+      `/users/${userDetails.id}/campaigns/${campaignId}`,
       campainAndContactsListDatas
     ).then((res) => {
       console.log(res);
@@ -321,9 +318,9 @@ const CreateCampaign = (props) => {
   return (
     <div className="create-campaign-body">
       <div className="title-page">
-        <img src={textToSpeechIcon} alt="push vocal icon" />
-        <h2 className="title-page-title">PUSH VOCAL</h2>
-        <p> : élargir votre audience en envoyant des messages vocaux </p>
+        <RiFileEditLine className="edit-logo-no-border" />
+        <h2 className="title-page-title">Modifiez votre campagne</h2>
+        <p> : {campaignName} </p>
       </div>
 
       <div className="vocal-campaign-body">
@@ -335,6 +332,7 @@ const CreateCampaign = (props) => {
               type="text"
               className="vocal-campaign-name"
               placeholder="Votre nom de campagne"
+              value={campaignName}
               onChange={(e) => {
                 setCampaignName(e.target.value);
               }}
@@ -360,7 +358,7 @@ const CreateCampaign = (props) => {
 
       <div className="vocalization-body">
         <h3 className="vocalization-title">
-          Saisissez votre message à vocaliser
+          Modifiez votre message à vocaliser
         </h3>
         <div className="vocalization-frame">
           <form>
@@ -657,11 +655,11 @@ const CreateCampaign = (props) => {
               <p>Exporter une liste de diffusion</p>
             </div>
           </div>
-          <ContactsView
+          <ContactsViewEditor
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
-            campaignId={match.params.campaign_id}
+            campaignId={campaignId}
           />
         </div>
       </div>
@@ -675,10 +673,10 @@ const CreateCampaign = (props) => {
           <CircularProgress />
         </div>
         <GrSend className="sendCampaignIcon" />
-        <h3>Créer ma campagne d'envoi de message</h3>
+        <h3>Sauvegarder vos modifications</h3>
       </button>
     </div>
   );
 };
 
-export default CreateCampaign;
+export default CampaignEditor;

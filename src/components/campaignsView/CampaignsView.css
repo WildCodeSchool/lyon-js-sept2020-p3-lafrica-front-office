@@ -29,6 +29,7 @@
 .btn-container {
   display: flex;
   justify-content: center;
+  cursor: pointer;
 }
 
 .campaigns-list {
