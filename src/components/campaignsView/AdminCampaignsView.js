@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
+
 import './CampaignsView.scss';
 import { FaMicrophone } from 'react-icons/fa';
-import { GoMegaphone } from 'react-icons/go';
-import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
-// import { useHistory, Link } from 'react-router-dom';
+import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
@@ -23,7 +22,6 @@ const CampaignsView = () => {
     campaignsList,
     setCampaignsList,
   } = useContext(UserContext);
-  const [campaignId, setCampaignId] = useState();
 
   useEffect(() => {
     if (userDetails) {
@@ -71,50 +69,13 @@ const CampaignsView = () => {
     });
   };
 
-  const createCampaignInDatabase = async () => {
-    await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
-      setCampaignId(res.data.campaign_id);
-    });
-  };
-
-  useEffect(() => {
-    if (campaignId) {
-      history.push(`/campaigns/edit/${campaignId}`);
-    }
-  }, [campaignId]);
-
   return (
     <div className="compaigns-view-container">
       <article className="campaings-editor-view-container">
         <div className="campaigns-editor-view">
           <div className="title">
             <FaMicrophone className="microphone-icon" />
-            <h2>NOS SOLUTIONS DE VOCALISATION</h2>
-          </div>
-          <div className="btn-container">
-            <div
-              className="megaphone"
-              onClick={createCampaignInDatabase}
-              type="button"
-              onKeyPress={() => {}}
-              role="button"
-              tabIndex="0"
-            >
-              <GoMegaphone className="btn-icon" />
-
-              {/* <Link to={`/campaigns/${campaignId}`}>
-              </Link>
-              <Link
-                to={`/campaigns/${campaignId}`}
-                onClick={createCampaignInDatabase}
-              > */}
-              <h3>Créer une campagne</h3>
-              {/* </Link> */}
-            </div>
-            <div className="edit">
-              <BiEdit className="btn-icon" />
-              <h3>Editer / ré-utiliser une campagne </h3>
-            </div>
+            <h2>Liste des Campagnes</h2>
           </div>
         </div>
       </article>
