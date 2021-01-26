@@ -104,7 +104,7 @@ const ContactsView = (props) => {
               <td>
                 <input
                   type="text"
-                  placeholder="prénom"
+                  placeholder="Prénom"
                   value={newContact.firstname}
                   required
                   onChange={(event) =>
