@@ -43,7 +43,6 @@ const Header = () => {
             </p>
           </div>
           <Link to="/">ACCUEIL</Link>
-          <Link to="/signin">S'IDENTIFIER</Link>
 
           {loggedIn && <Link to="/campaigns">CREER UNE CAMPAGNE</Link>}
         </Menu>
