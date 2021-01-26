@@ -82,9 +82,6 @@ const CampaignsView = () => {
       </article>
       <article>
         <div className="campaigns-list">
-          <div className="stats-list">
-            <h1>Statistiques</h1>{' '}
-          </div>
           <table>
             <thead>
               <tr>

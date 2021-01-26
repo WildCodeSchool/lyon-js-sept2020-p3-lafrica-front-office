@@ -15,7 +15,7 @@ import ContactsView from './create campaign/subcomponents/ContactsView';
 import UserContextProvider from '../context/UserContext';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
 import AdminRoute from './ProtectedRoutes/AdminRoute';
-// import Statistics from '../components/Stats/Statistics';
+import Statistics from './Stats/Statistics';
 
 function App() {
   return (
@@ -26,6 +26,9 @@ function App() {
             <Header />
             <main>
               <Switch>
+                <Route path="/stats">
+                  <Statistics />
+                </Route>
                 <Route path="/signin">
                   <SignIn />
                 </Route>
