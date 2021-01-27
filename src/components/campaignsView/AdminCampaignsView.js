@@ -6,6 +6,7 @@ import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
+
 import API from '../../services/API';
 
 import { UserContext } from '../../context/UserContext';
@@ -27,9 +28,12 @@ const CampaignsView = () => {
     if (userDetails) {
       API.get(`/users/${userDetails.id}/campaigns`)
         .then((res) => setCampaignsList(res.data))
-        .catch(() => {
-          setLoggedIn(false);
-          setUserDetails({});
+        .catch((err) => {
+          if (err.response.status === 401) {
+            setLoggedIn(false);
+            setUserDetails({});
+            history.push('/signin');
+          }
         });
     }
   }, [userDetails]);
@@ -81,16 +85,13 @@ const CampaignsView = () => {
       </article>
       <article>
         <div className="campaigns-list">
-          <div className="filter-container">
-            <p>Voir pour système de filtre et de tri</p>
-          </div>
           <table>
             <thead>
               <tr>
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <th />
 
-                <th className="stylized-th">PrenomClt</th>
+                <th className="stylized-th">Prénom Client</th>
                 <th className="stylized-th">Nom Client</th>
                 <th className="stylized-th">Nom Campagne</th>
                 <th className="stylized-th">Date d'envoi</th>
