@@ -30,7 +30,7 @@ import { RiFileEditLine } from 'react-icons/ri';
 import API from '../../services/API';
 import { SpeedSlider, PitchSlider, VolumeSlider } from './CustomizedSlider';
 import { UserContext } from '../../context/UserContext';
-import ContactsViewEditor from './ContactsViewEditor';
+import ContactsView from '../create campaign/subcomponents/ContactsView';
 
 const CampaignEditor = (props) => {
   const dateNow = new Date();
@@ -51,7 +51,7 @@ const CampaignEditor = (props) => {
   const [vocalisationFileName, setVocalisationFileName] = useState('');
   const [contactsList, setContactsList] = useState([]);
   const [sendingLoader, setSendingLoader] = useState(false);
-  const { campaignId } = props;
+  const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
   const [
@@ -98,7 +98,7 @@ const CampaignEditor = (props) => {
     const formData = new FormData();
     formData.append('uploaded_contacts', contactsUpload);
     API.post(
-      `/users/${userDetails.id}/campaigns/${campaignId}/contacts/upload`,
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
       formData
     )
       .then((res) => {
@@ -127,40 +127,40 @@ const CampaignEditor = (props) => {
   };
 
   useEffect(async () => {
-    await API.get(`/users/${userDetails.id}/campaigns/${campaignId}`).then(
-      (res) => {
-        if (res.data) {
-          if (res.data.name !== null) {
-            setCampaignName(res.data.name);
-          } else {
-            setCampaignName('');
-          }
-          if (res.data.date !== null) {
-            const newDate = res.data.date.slice(0, -1);
-            setCampaignDate(newDate);
-          } else {
-            setCampaignDate('');
-          }
-          if (res.data.text_message !== null) {
-            setMessageToVocalize(res.data.text_message);
-            setLastVocalizedMessage(res.data.text_message);
-          } else {
-            setMessageToVocalize('');
-          }
-          if (res.data.vocal_message_file_url !== null) {
-            setVocalisationFileName(res.data.vocal_message_file_url);
-          } else {
-            setVocalisationFileName('');
-          }
-          setAudioFilePath(
-            `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
-          );
-          setDownloadAudioFilePath(
-            `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
-          );
+    await API.get(
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
+    ).then((res) => {
+      if (res.data) {
+        if (res.data.name !== null) {
+          setCampaignName(res.data.name);
+        } else {
+          setCampaignName('');
         }
+        if (res.data.date !== null) {
+          const newDate = res.data.date.slice(0, -1);
+          setCampaignDate(newDate);
+        } else {
+          setCampaignDate('');
+        }
+        if (res.data.text_message !== null) {
+          setMessageToVocalize(res.data.text_message);
+          setLastVocalizedMessage(res.data.text_message);
+        } else {
+          setMessageToVocalize('');
+        }
+        if (res.data.vocal_message_file_url !== null) {
+          setVocalisationFileName(res.data.vocal_message_file_url);
+        } else {
+          setVocalisationFileName('');
+        }
+        setAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data.vocal_message_file_url}`
+        );
+        setDownloadAudioFilePath(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
+        );
       }
-    );
+    });
   }, []);
 
   useEffect(() => {
@@ -293,7 +293,7 @@ const CampaignEditor = (props) => {
       contactsList,
     ];
     await API.put(
-      `/users/${userDetails.id}/campaigns/${campaignId}`,
+      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
       campainAndContactsListDatas
     ).then((res) => {
       console.log(res);
@@ -679,18 +679,18 @@ const CampaignEditor = (props) => {
             <a
               target="_blank"
               rel="noreferrer"
-              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${campaignId}/contacts/exportContacts`}
+              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportContacts`}
               className="broadcast-list-export"
             >
               <AiOutlineExport className="broadcast-list-icon" />
               <p>Exporter une liste de diffusion</p>
             </a>
           </div>
-          <ContactsViewEditor
+          <ContactsView
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
-            campaignId={campaignId}
+            campaignId={match.params.campaign_id}
           />
         </div>
       </div>
