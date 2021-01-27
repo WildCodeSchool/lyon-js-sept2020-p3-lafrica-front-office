@@ -1,0 +1,21 @@
+.stats-container {
+  display: flex;
+  padding: 20px;
+  margin-top: 30px;
+  flex-direction: column;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  background-color: white;
+  border: 2px solid grey;
+  border-radius: 10px;
+}
+
+.stats-container th {
+  border: 1px solid black;
+}
+
+.stats-container p {
+  margin: 10px;
+}

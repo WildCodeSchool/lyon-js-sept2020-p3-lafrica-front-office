@@ -26,9 +26,8 @@ function App() {
             <Header />
             <main>
               <Switch>
-                <Route path="/stats">
-                  <Statistics />
-                </Route>
+                <AdminRoute path="/stats" component={Statistics} />
+
                 <Route path="/signin">
                   <SignIn />
                 </Route>
