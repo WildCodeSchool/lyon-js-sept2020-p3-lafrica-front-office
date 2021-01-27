@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/plain.css';
+import queryString from 'query-string';
 import API from '../../../services/API';
 import Contact from './Contact';
 import { UserContext } from '../../../context/UserContext';
@@ -16,16 +17,43 @@ const ContactsView = (props) => {
 
   const { campaignId } = props;
 
-  const { userDetails, setLoggedIn, setUserDetails } = useContext(UserContext);
-
-  const { contactsList, setContactsList } = props;
-  const [newContact, setNewContact] = useState(initialNewContact);
   const history = useHistory();
 
+  const { userDetails, setLoggedIn, setUserDetails } = useContext(UserContext);
+
+  const { contactsList, setContactsList, toggleContactsUpload } = props;
+  const [newContact, setNewContact] = useState(initialNewContact);
+  const [totalContacts, setTotalContacts] = useState();
+  const searchParams = {
+    limit: 10,
+    offset: 0,
+    ...queryString.parse(window.location.search),
+  };
+
+  const { limit, offset } = searchParams;
+
+  const currentPage = offset / limit + 1;
+  const lastPage = Math.ceil(totalContacts / limit);
+
+  const updateSearchUrl = (params) => {
+    const clientQueryParams = queryString.stringify(params);
+    history.push(`/campaigns/edit/${campaignId}?${clientQueryParams}`);
+  };
+
+  const setCurrentPage = (pageNum) => {
+    updateSearchUrl({
+      ...searchParams,
+      offset: parseInt(limit, 10) * (pageNum - 1),
+    });
+  };
+
   const getCollection = async () => {
-    await API.get(`/users/${userDetails.id}/campaigns/${campaignId}/contacts`)
+    await API.get(
+      `/users/${userDetails.id}/campaigns/${campaignId}/contacts?limit=${limit}&offset=${offset}`
+    )
       .then((res) => {
-        setContactsList(res.data);
+        setContactsList(res.data.contacts);
+        setTotalContacts(res.data.total);
       })
       .catch((err) => {
         console.log(err);
@@ -34,7 +62,7 @@ const ContactsView = (props) => {
 
   useEffect(() => {
     getCollection();
-  }, [newContact]);
+  }, [newContact, limit, offset, toggleContactsUpload]);
 
   const handleChangeNewContactLastname = (newLastname) => {
     setNewContact({ ...newContact, lastname: newLastname });
@@ -121,15 +149,6 @@ const ContactsView = (props) => {
                 />
               </td>
               <td>
-                {/* <input
-                  type="text"
-                  placeholder="Numéro de télephone"
-                  value={newContact.phoneNumber}
-                  required
-                  onChange={(event) =>
-                    handleChangeNewContactPhoneNumber(event.target.value)
-                  }
-                /> */}
                 <PhoneInput
                   regions={['europe', 'africa']}
                   value={newContact.phoneNumber}
@@ -152,6 +171,7 @@ const ContactsView = (props) => {
           </tbody>
         </table>
       </form>
+
       <h4 className="small-title">Votre liste de diffusion</h4>
       {contactsList.length === 0 ? (
         <p>
@@ -186,6 +206,39 @@ const ContactsView = (props) => {
             })}
           </tbody>
         </table>
+      )}
+      {lastPage !== 1 && !!contactsList.length && (
+        <div className="pagination">
+          <button
+            type="button"
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage(1)}
+          >
+            Première page
+          </button>
+          <button
+            type="button"
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            Page précédente
+          </button>
+          {currentPage}/{lastPage}
+          <button
+            type="button"
+            disabled={currentPage === lastPage}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Page suivante
+          </button>
+          <button
+            type="button"
+            disabled={currentPage === lastPage}
+            onClick={() => setCurrentPage(lastPage)}
+          >
+            Dernière page
+          </button>
+        </div>
       )}
     </div>
   );

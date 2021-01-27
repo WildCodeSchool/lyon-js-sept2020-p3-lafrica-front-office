@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
 import './CampaignsView.scss';
+import queryString from 'query-string';
+import { useForm } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
@@ -16,6 +18,8 @@ import { UserContext } from '../../context/UserContext';
 const CampaignsView = () => {
   moment.locale('fr');
 
+  const { register, handleSubmit } = useForm();
+
   const history = useHistory();
 
   const {
@@ -27,10 +31,26 @@ const CampaignsView = () => {
   } = useContext(UserContext);
   const [campaignId, setCampaignId] = useState();
 
+  const [totalCampaigns, setTotalCampaigns] = useState();
+
+  const searchParams = {
+    limit: 10,
+    offset: 0,
+    name: undefined,
+    ...queryString.parse(window.location.search),
+  };
+
+  const { limit, offset, name, sortby } = searchParams;
+
   useEffect(() => {
+    const clientQueryParams = queryString.stringify(searchParams);
+
     if (userDetails) {
-      API.get(`/users/${userDetails.id}/campaigns`)
-        .then((res) => setCampaignsList(res.data))
+      API.get(`/users/${userDetails.id}/campaigns?${clientQueryParams},`)
+        .then((res) => {
+          setCampaignsList(res.data.campaigns);
+          setTotalCampaigns(res.data.total);
+        })
         .catch((err) => {
           if (err.response.status === 401) {
             setLoggedIn(false);
@@ -39,14 +59,24 @@ const CampaignsView = () => {
           }
         });
     }
-  }, [userDetails]);
+  }, [userDetails, limit, offset, name, sortby]);
+
+  const currentPage = offset / limit + 1;
+  const lastPage = Math.ceil(totalCampaigns / limit);
+
+  const updateSearchUrl = (params) => {
+    const clientQueryParams = queryString.stringify(params);
+    history.push(`/?${clientQueryParams}`);
+  };
+
+  const setCurrentPage = (pageNum) => {
+    updateSearchUrl({
+      ...searchParams,
+      offset: parseInt(limit, 10) * (pageNum - 1),
+    });
+  };
 
   const showCampaignsList = () => {
-    // const updateDataset = (datasetIndex, newData) => {
-    //   chartInstance.data.datasets[datasetIndex].data = newData;
-    //   chartInstance.update();
-    // };
-
     return campaignsList.map((campaign) => {
       return (
         <tr key={campaign.id}>
@@ -56,9 +86,9 @@ const CampaignsView = () => {
               onClick={() => history.push(`/campaigns/${campaign.id}`)}
             />
           </td>
-          <td className="stylized-td">{campaign.name}</td>
+          <td className="stylized-td">{campaign.name || 'Ma campagne'}</td>
           <td className="stylized-td">
-            {moment(campaign.date).format('DD/MM/YYYY HH:mm')}
+            {campaign.date && moment(campaign.date).format('DD/MM/YYYY HH:mm')}
           </td>
           <td className="stylized-td">
             {campaign.sending_status === 2 ? (
@@ -133,19 +163,101 @@ const CampaignsView = () => {
       </article>
       <article>
         <div className="campaigns-list">
-          <table>
-            <thead>
-              <tr>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <th />
+          <div className="campaigns-list-table">
+            {/* <div className="campaigns-list-table-options"></div> */}
+            <table>
+              <thead>
+                <tr>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
+                  <th>
+                    <form className="table-campaign-search">
+                      <label htmlFor="name">
+                        <input
+                          name="name"
+                          id="name"
+                          type="text"
+                          defaultValue={searchParams.name}
+                          placeholder="Rechercher une campagne"
+                          ref={register}
+                        />
+                      </label>
 
-                <th className="stylized-th">Nom Campagne</th>
-                <th className="stylized-th">Date d'envoi</th>
-                <th className="stylized-th">Statut</th>
-              </tr>
-            </thead>
-            <tbody>{showCampaignsList()}</tbody>
-          </table>
+                      {/* <button type="submit">ok</button> */}
+                    </form>
+                  </th>
+                  <th>
+                    <form className="table-date-sort">
+                      <label htmlFor="sortby">
+                        <select
+                          name="sortby"
+                          id="sortby"
+                          ref={register}
+                          defaultValue={searchParams.sortby}
+                        >
+                          <option value="date.asc">Trier par date</option>
+                          <option value="date.asc">Croissant</option>
+                          <option value="date.desc">Décroissant</option>
+                        </select>
+                      </label>
+                    </form>{' '}
+                  </th>
+                  <th>
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className="table-search"
+                      onClick={handleSubmit(updateSearchUrl)}
+                      onKeyPress={() => {}}
+                    >
+                      Appliquer
+                    </div>
+                  </th>
+                </tr>
+                <tr>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
+                  <th className="stylized-th">Nom</th>
+                  <th className="stylized-th">Date d'envoi </th>
+                  <th className="stylized-th">Statut</th>
+                </tr>
+              </thead>
+              <tbody>{showCampaignsList()}</tbody>
+            </table>
+            {lastPage !== 1 && !!campaignsList.length && (
+              <div className="pagination">
+                <button
+                  type="button"
+                  disabled={currentPage <= 1}
+                  onClick={() => setCurrentPage(1)}
+                >
+                  Première page
+                </button>
+                <button
+                  type="button"
+                  disabled={currentPage <= 1}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                  Page précédente
+                </button>
+                {currentPage}/{lastPage}
+                <button
+                  type="button"
+                  disabled={currentPage === lastPage}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                  Page suivante
+                </button>
+                <button
+                  type="button"
+                  disabled={currentPage === lastPage}
+                  onClick={() => setCurrentPage(lastPage)}
+                >
+                  Dernière page
+                </button>
+              </div>
+            )}
+          </div>
           <div className="campaigns-chart">
             <CampaignsChart />
           </div>
