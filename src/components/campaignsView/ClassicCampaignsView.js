@@ -6,12 +6,18 @@ import { useForm } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { TiCancel } from 'react-icons/ti';
+import { MdDeleteForever } from 'react-icons/md';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
 import { useToasts } from 'react-toast-notifications';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import CampaignsChart from '../CampaignsChart/CampaignsChart';
 
 import API from '../../services/API';
@@ -19,9 +25,7 @@ import { UserContext } from '../../context/UserContext';
 
 const CampaignsView = () => {
   moment.locale('fr');
-
   const { register, handleSubmit } = useForm();
-
   const history = useHistory();
   const { addToast } = useToasts();
 
@@ -33,18 +37,23 @@ const CampaignsView = () => {
     setCampaignsList,
   } = useContext(UserContext);
   const [campaignId, setCampaignId] = useState();
-
-  const [totalCampaigns, setTotalCampaigns] = useState();
   const [deleteCampaignAlert, setDeleteCampaignAlert] = useState(false);
-
+  const [totalCampaigns, setTotalCampaigns] = useState();
   const searchParams = {
     limit: 10,
     offset: 0,
     name: undefined,
     ...queryString.parse(window.location.search),
   };
-
   const { limit, offset, name, sortby } = searchParams;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const clientQueryParams = queryString.stringify(searchParams);
@@ -71,6 +80,14 @@ const CampaignsView = () => {
   const updateSearchUrl = (params) => {
     const clientQueryParams = queryString.stringify(params);
     history.push(`/?${clientQueryParams}`);
+  };
+
+  const deleteCampaign = (campaignIdToDelete) => {
+    API.delete(`/users/${userDetails.id}/campaigns/${campaignIdToDelete}`).then(
+      () => {
+        setDeleteCampaignAlert(!deleteCampaignAlert);
+      }
+    );
   };
 
   const setCurrentPage = (pageNum) => {
@@ -133,6 +150,45 @@ const CampaignsView = () => {
           <td className="same-width-than-search-icon no-border">
             <TiCancel onClick={() => handleStopCampaign(campaign.id)} />
           </td>
+          {campaign.sending_status !== 2 && (
+            <td className="stop-campaign no-border">
+              {/* <MdDeleteForever onClick={() => deleteCampaign(campaign.id)} /> */}
+              <MdDeleteForever
+                className="deleteCampaign"
+                onClick={handleClickOpen}
+              />
+
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Etes-vous sûr de vouloir supprimer cette campagne ?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Non
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleClose();
+                      deleteCampaign(campaign.id);
+                    }}
+                    color="primary"
+                    autoFocus
+                  >
+                    Oui
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </td>
+          )}
+
+          <td className="same-width-than-search-icon no-border" />
         </tr>
       );
     });
