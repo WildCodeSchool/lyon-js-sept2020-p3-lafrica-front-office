@@ -47,12 +47,27 @@ const CampaignsView = () => {
   };
   const { limit, offset, name, sortby } = searchParams;
   const [open, setOpen] = React.useState(false);
+  const [stopOpen, setStopOpen] = useState(false);
+  const [stopCampaignId, setStopCampaignId] = useState();
+  const [deleteCampaignId, setDeleteCampaignId] = useState();
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
+    console.log(id);
     setOpen(true);
+    setDeleteCampaignId(id);
   };
   const handleClose = () => {
     setOpen(false);
+    setDeleteCampaignId();
+  };
+
+  const handleStopOpen = (id) => {
+    setStopOpen(true);
+    setStopCampaignId(id);
+  };
+  const handleStopClose = () => {
+    setStopOpen(false);
+    setStopCampaignId();
   };
 
   useEffect(() => {
@@ -83,11 +98,20 @@ const CampaignsView = () => {
   };
 
   const deleteCampaign = (campaignIdToDelete) => {
-    API.delete(`/users/${userDetails.id}/campaigns/${campaignIdToDelete}`).then(
-      () => {
+    API.delete(`/users/${userDetails.id}/campaigns/${campaignIdToDelete}`)
+      .then(() => {
         setDeleteCampaignAlert(!deleteCampaignAlert);
-      }
-    );
+        addToast('Campagne supprimée avec succès !', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch(() => {
+        addToast('Impossible de supprimer cette campagne.', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
   };
 
   const setCurrentPage = (pageNum) => {
@@ -106,9 +130,8 @@ const CampaignsView = () => {
           autoDismiss: true,
         });
       })
-      .catch((err) => {
-        console.log(err);
-        addToast('Cette campagne ne peut être modifiée.', {
+      .catch(() => {
+        addToast("Impossible d'interrompre cette campagne.", {
           appearance: 'error',
           autoDismiss: true,
         });
@@ -148,14 +171,45 @@ const CampaignsView = () => {
             )}
           </td>
           <td className="same-width-than-search-icon no-border">
-            <TiCancel onClick={() => handleStopCampaign(campaign.id)} />
+            {/* <TiCancel onClick={() => handleStopCampaign(campaign.id)} /> */}
+            <TiCancel
+              className="stop-campaign"
+              onClick={() => handleStopOpen(campaign.id)}
+            />
+            <Dialog
+              open={stopOpen}
+              onClose={handleStopClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Etes-vous sûr de vouloir interrompre cette campagne ?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleStopClose} color="primary">
+                  Non
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleStopCampaign(stopCampaignId);
+                    handleStopClose();
+                  }}
+                  color="primary"
+                  autoFocus
+                >
+                  Oui
+                </Button>
+              </DialogActions>
+            </Dialog>
           </td>
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
               {/* <MdDeleteForever onClick={() => deleteCampaign(campaign.id)} /> */}
               <MdDeleteForever
                 className="deleteCampaign"
-                onClick={handleClickOpen}
+                onClick={() => handleClickOpen(campaign.id)}
               />
 
               <Dialog
@@ -175,8 +229,8 @@ const CampaignsView = () => {
                   </Button>
                   <Button
                     onClick={() => {
+                      deleteCampaign(deleteCampaignId);
                       handleClose();
-                      deleteCampaign(campaign.id);
                     }}
                     color="primary"
                     autoFocus
