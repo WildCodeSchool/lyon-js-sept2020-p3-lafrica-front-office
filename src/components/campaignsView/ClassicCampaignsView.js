@@ -128,7 +128,10 @@ const CampaignsView = () => {
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
               {/* <MdDeleteForever onClick={() => deleteCampaign(campaign.id)} /> */}
-              <MdDeleteForever onClick={handleClickOpen} />
+              <MdDeleteForever
+                className="deleteCampaign"
+                onClick={handleClickOpen}
+              />
 
               <Dialog
                 open={open}
