@@ -36,6 +36,7 @@
   border: 4px solid var(--primary-color);
   padding: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   padding-top: 10px;
   background-color: white;
@@ -74,7 +75,7 @@
   border: 1px solid rgb(98, 186, 227);
   font-weight: normal;
   font-size: 14px;
-  width: 80%;
+  width: 100px;
   margin: 0px auto 5px;
   cursor: pointer;
 }
@@ -87,9 +88,16 @@
   }
 }
 
-.campaigns-list-table table {
-  border-collapse: collapse;
-  width: 100%;
+.campaigns-list-table {
+  width: 80%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
 }
 
 .same-width-than-search-icon {
@@ -211,7 +219,7 @@ h3 {
   }
 }
 
-@media screen and (min-device-width: 760px) and (max-device-width: 1024px) {
+@media screen and (min-width: 760px) and (max-device-width: 1024px) {
   .campaigns-list {
     width: 80%;
     margin: auto;
