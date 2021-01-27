@@ -3,8 +3,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import './CampaignDetails.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { BiExport } from 'react-icons/bi';
-import { RiDeleteBin5Line, RiFileEditLine } from 'react-icons/ri';
+import { RiFileEditLine } from 'react-icons/ri';
 import { useHistory } from 'react-router-dom';
+
 import moment from 'moment';
 import 'moment/locale/fr';
 import API from '../../services/API';
@@ -76,6 +77,7 @@ const CampaignDetail = (props) => {
             <h3>{currentCampaign && currentCampaign.name}</h3>
           </div>
         </div>
+
         <div className="campaign-information">
           <table className="campaign-table">
             <tbody>
@@ -98,44 +100,27 @@ const CampaignDetail = (props) => {
               </tr>
             </tbody>
           </table>
-        </div>
-
-        <div className="campaign-actions">
-          <div className="btn-container">
-            <div
-              type="button"
-              className="edit-campaign"
-              onClick={() =>
-                history.push(
-                  `/campaigns/editcampaign/${match.params.campaign_id}`
-                )
-              }
-              onKeyPress={() => {}}
-              role="button"
-              tabIndex="0"
-              /* <CampaignEditor campaignId={match.params.campaign_id} /> */
-            >
-              <RiFileEditLine className="edit-logo" />
-              <h3>Modifier ma campagne</h3>
-            </div>
-          </div>
-          <div className="btn-container">
+          <div className="campaign-actions">
             <div className="edit-campaign">
-              <RiDeleteBin5Line className="edit-logo" />
-              <h3>Suprimez ma campagne</h3>
+              <RiFileEditLine
+                className="edit-logo"
+                onClick={() =>
+                  history.push(
+                    `/campaigns/editcampaign/${match.params.campaign_id}`
+                  )
+                }
+              />
+              <p>Modifier ma campagne</p>
             </div>
-
-            <div className="export-stats">
+            <a
+              className="export-stats"
+              target="_blank"
+              rel="noreferrer"
+              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/exportStatistics`}
+            >
               <BiExport className="export-logo" />
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/exportStatistics`}
-              >
-                <BiExport className="export-logo" />
-                <p>Exporter mes statistiques</p>
-              </a>
-            </div>
+              <p>Exporter mes stats</p>
+            </a>
           </div>
         </div>
         <div className="stats">
