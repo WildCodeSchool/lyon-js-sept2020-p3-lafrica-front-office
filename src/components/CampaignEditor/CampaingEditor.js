@@ -28,7 +28,11 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { RiFileEditLine } from 'react-icons/ri';
 import API from '../../services/API';
-import { SpeedSlider, PitchSlider, VolumeSlider } from './CustomizedSlider';
+import {
+  SpeedSlider,
+  PitchSlider,
+  VolumeSlider,
+} from '../create campaign/subcomponents/CustomizedSlider';
 import { UserContext } from '../../context/UserContext';
 import ContactsView from '../create campaign/subcomponents/ContactsView';
 
