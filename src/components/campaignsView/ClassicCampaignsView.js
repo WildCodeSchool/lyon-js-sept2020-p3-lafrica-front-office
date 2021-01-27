@@ -44,7 +44,6 @@ const CampaignsView = () => {
 
   useEffect(() => {
     const clientQueryParams = queryString.stringify(searchParams);
-    console.log(clientQueryParams);
 
     if (userDetails) {
       API.get(`/users/${userDetails.id}/campaigns?${clientQueryParams},`)
@@ -172,10 +171,7 @@ const CampaignsView = () => {
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <th />
                   <th>
-                    <form
-                      className="table-campaign-search"
-                      onSubmit={handleSubmit(updateSearchUrl)}
-                    >
+                    <form className="table-campaign-search">
                       <label htmlFor="name">
                         <input
                           name="name"
