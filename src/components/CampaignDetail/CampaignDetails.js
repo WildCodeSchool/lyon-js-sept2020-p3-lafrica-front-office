@@ -15,11 +15,11 @@ import CampaignDetailsChart from './CampaignDetailsChart';
 const CampaignDetail = (props) => {
   moment.locale('fr');
 
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const { match } = props;
   const history = useHistory();
 
-  const [currentCampaign, setCurrentCampaign] = useState({
+  const [currentCampaign, setCurrentCampaign, setLoggedIn] = useState({
     id: 0,
     id_client_user: 0,
     name: '',
@@ -41,16 +41,30 @@ const CampaignDetail = (props) => {
   }, [currentCampaign]);
 
   useEffect(() => {
-    API.get(
-      `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`
-    ).then((res) => {
-      setCurrentCampaign(res.data);
-    });
+    API.get(`/users/${userDetails.id}/campaigns/${match.params.campaign_id}`)
+      .then((res) => {
+        setCurrentCampaign(res.data);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setLoggedIn(false);
+          setUserDetails({});
+          history.push('/signin');
+        }
+      });
     API.get(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts`
-    ).then((res2) => {
-      setCampaignContacts(res2.data);
-    });
+    )
+      .then((res2) => {
+        setCampaignContacts(res2.data);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setLoggedIn(false);
+          setUserDetails({});
+          history.push('/signin');
+        }
+      });
   }, []);
 
   return (
