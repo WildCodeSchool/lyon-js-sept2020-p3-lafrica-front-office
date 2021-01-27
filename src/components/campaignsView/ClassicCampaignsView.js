@@ -31,9 +31,12 @@ const CampaignsView = () => {
     if (userDetails) {
       API.get(`/users/${userDetails.id}/campaigns`)
         .then((res) => setCampaignsList(res.data))
-        .catch(() => {
-          setLoggedIn(false);
-          setUserDetails({});
+        .catch((err) => {
+          if (err.response.status === 401) {
+            setLoggedIn(false);
+            setUserDetails({});
+            history.push('/signin');
+          }
         });
     }
   }, [userDetails]);
@@ -89,7 +92,7 @@ const CampaignsView = () => {
 
   useEffect(() => {
     if (campaignId) {
-      history.push(`/campaigns/edit/${campaignId}`);
+      history.push(`/campaigns/create/${campaignId}`);
     }
   }, [campaignId]);
 
