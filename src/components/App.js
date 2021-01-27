@@ -33,7 +33,7 @@ function App() {
                 <Route path="/forgot" component={ForgetPassword} />
                 <Route path="/reset/:token" component={ResetPassword} />
                 <ProtectedRoute
-                  path="/campaigns/edit/:campaign_id"
+                  path="/campaigns/create/:campaign_id"
                   component={CreateCampaign}
                 />
 
