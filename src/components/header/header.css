@@ -146,3 +146,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
 #react-burger-menu-btn a:focus {
   border: none;
 }
+
+@media (max-width: 650px) {
+  .userTitle {
+    display: none;
+  }
+}
