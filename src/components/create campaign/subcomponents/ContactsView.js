@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/plain.css';
 import queryString from 'query-string';
-import { useHistory } from 'react-router-dom';
 import API from '../../../services/API';
 import Contact from './Contact';
 import { UserContext } from '../../../context/UserContext';
@@ -19,7 +19,7 @@ const ContactsView = (props) => {
 
   const history = useHistory();
 
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setLoggedIn, setUserDetails } = useContext(UserContext);
 
   const { contactsList, setContactsList, toggleContactsUpload } = props;
   const [newContact, setNewContact] = useState(initialNewContact);
@@ -101,7 +101,11 @@ const ContactsView = (props) => {
       //   getCollection();
       // })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          setLoggedIn(false);
+          setUserDetails({});
+          history.push('/signin');
+        }
       });
     setNewContact({
       lastname: '',

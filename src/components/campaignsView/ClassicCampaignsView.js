@@ -123,7 +123,7 @@ const CampaignsView = () => {
 
   useEffect(() => {
     if (campaignId) {
-      history.push(`/campaigns/edit/${campaignId}`);
+      history.push(`/campaigns/create/${campaignId}`);
     }
   }, [campaignId]);
 

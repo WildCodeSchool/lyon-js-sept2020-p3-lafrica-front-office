@@ -44,7 +44,11 @@ const Header = () => {
           </div>
           <Link to="/">ACCUEIL</Link>
 
-          {loggedIn && <Link to="/campaigns">CREER UNE CAMPAGNE</Link>}
+          {userDetails.role === 'admin' ? (
+            <Link to="/stats"> STATISTIQUES</Link>
+          ) : (
+            <Link to="/campaigns">CREER UNE CAMPAGNE</Link>
+          )}
         </Menu>
       </div>
       <div className="userTitle">

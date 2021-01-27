@@ -2,123 +2,364 @@ $primary-blue: rgb(98, 186, 227);
 $secondary-blue: #116490;
 
 .campaign-main-container {
+  h2,
+  h3 {
+    font-size: 2em;
+  }
+  h4 {
+    font-size: 1.2em;
+  }
+
+  p {
+    font-size: 1em;
+  }
   //   border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 80vw;
   margin: 50px auto;
-}
 
-.micro-logo {
-  width: 25%;
-  height: 80%;
-  color: $secondary-blue;
-}
-
-.campaign-intro {
-  align-self: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  width: 80vw;
-  margin-bottom: 50px;
-  align-items: center;
-  div {
-    h2,
-    h3 {
+  .campaign-intro {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 80vw;
+    margin-bottom: 5%;
+    align-items: center;
+    div {
+      h2,
+      h3 {
+        color: $secondary-blue;
+        text-align: left;
+      }
+    }
+    .micro-logo {
+      margin-right: 20px;
+      width: 8%;
+      height: 80%;
       color: $secondary-blue;
     }
   }
-}
 
-.campaign-information {
-  display: flex;
-  flex-direction: column;
-}
-
-.campaign-table {
-  //   border: 1px solid black;
-  width: 300px;
-  border-spacing: 15px;
-}
-
-.edit-campaign {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  color: $primary-blue;
-}
-
-.edit-logo {
-  width: 30px;
-  height: 30px;
-  color: black;
-}
-
-.statistiques {
-  display: flex;
-  flex-direction: column;
-  height: 800px;
-  border: 1px solid black;
-  width: 80vw;
-  margin-top: 50px;
-}
-
-.export-statistiques {
-  display: flex;
-  align-items: center;
-  color: $primary-blue;
-  align-self: center;
-  p {
-    margin-top: 30px;
-  }
-}
-
-.export-logo {
-  color: $primary-blue;
-  height: 60px;
-  width: 60px;
-}
-
-@media screen and (min-width: 768px) {
   .campaign-information {
+    display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    width: 80vw;
-  }
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
 
-  .campaign-intro {
-    div {
-      h2 {
-        font-size: 46px;
+    .campaign-table {
+      background-color: white;
+      width: 300px;
+      border-spacing: 15px;
+      td {
+        padding: 5px 10px;
       }
-      h3 {
-        font-size: 42px;
+    }
+
+    .campaign-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.4);
+      .edit-campaign {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: $primary-blue;
+        align-self: center;
+        margin-right: 30px;
+        margin-bottom: 10px;
+      }
+      .edit-logo {
+        color: $primary-blue;
+        height: 60px;
+        width: 60px;
+      }
+
+      .export-stats {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: $primary-blue;
+        align-self: center;
+        margin-bottom: 10px;
+      }
+      .export-logo {
+        color: $primary-blue;
+        height: 60px;
+        width: 60px;
       }
     }
   }
 
-  .edit-campaign {
+  .stats {
+    display: flex;
     flex-direction: column;
-    padding: 0;
-    margin-left: 50px;
-  }
+    height: 70vh;
+    border: 5px solid $primary-blue;
+    background-color: white;
+    width: 80vw;
+    height: 100%;
+    padding: 20px;
 
-  .edit-logo {
-    height: 100px;
-    width: 80px;
-  }
+    .stats-review {
+      display: flex;
+      justify-content: space-between;
+      padding-right: 10%;
+      margin-bottom: 20px;
+      .main-stats {
+        .calls-total {
+          text-decoration: underline;
+        }
+        .success {
+          margin-top: 10px;
+          margin-left: 10px;
+          display: flex;
+          align-items: center;
+          .calls-success-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(148, 228, 114, 1);
+            margin-right: 5px;
+          }
+          .calls-success {
+            color: rgba(148, 228, 114, 1);
+          }
+        }
+        .failed {
+          margin-top: 10px;
+          margin-left: 10px;
+          display: flex;
+          align-items: center;
+          .calls-failed-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(228, 114, 114, 1);
+            margin-right: 5px;
+          }
+          .calls-failed {
+            color: rgba(228, 114, 114, 1);
+          }
+        }
+        .ignored {
+          margin-top: 10px;
+          margin-left: 10px;
+          display: flex;
+          align-items: center;
+          .calls-ignored-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(228, 202, 114, 1);
+            margin-right: 5px;
+          }
+          .calls-ignored {
+            color: rgba(228, 202, 114, 1);
+          }
+        }
+      }
+      .win-rate {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        padding: 10px;
+        text-align: center;
+      }
+    }
 
-  .export-statistiques {
-    align-self: flex-end;
-    padding-right: 30px;
+    .stats-array {
+      display: none;
+    }
+
+    .stats-chart {
+      width: 100%;
+    }
+    .chart-container {
+      height: 60vh;
+    }
   }
 }
 
-@media screen and (min-width: 960px) {
-  .campaign-information {
-    width: 60vw;
+@media (max-width: 800px) {
+  .campaign-main-container {
+    h2,
+    h3 {
+      font-size: 1.5em;
+    }
+    h4 {
+      font-size: 1em;
+    }
+
+    p {
+      font-size: 0.8em;
+    }
+    .campaign-intro {
+      .micro-logo {
+      }
+    }
+
+    .campaign-information {
+      flex-direction: column;
+      justify-content: start;
+      align-items: flex-start;
+
+      .campaign-table {
+        margin-bottom: 20px;
+        width: 100%;
+        td {
+        }
+      }
+
+      .campaign-actions {
+        width: 100%;
+        .edit-campaign {
+        }
+        .edit-logo {
+          height: 50px;
+          width: 50px;
+        }
+
+        .export-stats {
+        }
+        .export-logo {
+          height: 50px;
+          width: 50px;
+        }
+      }
+    }
+
+    .stats {
+      .stats-review {
+        .main-stats {
+          .calls-total {
+          }
+          .success {
+            .calls-success-circle {
+            }
+            .calls-success {
+            }
+          }
+          .failed {
+            .calls-failed-circle {
+            }
+            .calls-failed {
+            }
+          }
+          .ignored {
+            .calls-ignored-circle {
+            }
+            .calls-ignored {
+            }
+          }
+        }
+        .win-rate {
+        }
+      }
+
+      .stats-array {
+      }
+
+      .stats-chart {
+      }
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .campaign-main-container {
+    h2,
+    h3 {
+      font-size: 1.2em;
+    }
+    h4 {
+      font-size: 0.9em;
+    }
+
+    p {
+      font-size: 0.8em;
+    }
+
+    .campaign-intro {
+      div {
+        h2,
+        h3 {
+        }
+      }
+      .micro-logo {
+      }
+    }
+
+    .campaign-information {
+      flex-direction: column;
+
+      .campaign-table {
+        td {
+        }
+      }
+
+      .campaign-actions {
+        .edit-campaign {
+        }
+        .edit-logo {
+          height: 40px;
+          width: 40px;
+        }
+
+        .export-stats {
+        }
+        .export-logo {
+          height: 40px;
+          width: 40px;
+        }
+      }
+    }
+
+    .stats {
+      .stats-review {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-right: 0;
+        .main-stats {
+          margin-bottom: 20px;
+          .calls-total {
+          }
+          .success {
+            .calls-success-circle {
+            }
+            .calls-success {
+            }
+          }
+          .failed {
+            .calls-failed-circle {
+            }
+            .calls-failed {
+            }
+          }
+          .ignored {
+            .calls-ignored-circle {
+            }
+            .calls-ignored {
+            }
+          }
+        }
+        .win-rate {
+        }
+      }
+
+      .stats-array {
+      }
+
+      .stats-chart {
+      }
+    }
   }
 }
