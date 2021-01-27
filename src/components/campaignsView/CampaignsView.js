@@ -87,9 +87,9 @@ const CampaignsView = () => {
               onClick={() => history.push(`/campaigns/${campaign.id}`)}
             />
           </td>
-          <td className="stylized-td">{campaign.name}</td>
+          <td className="stylized-td">{campaign.name || 'Ma campagne'}</td>
           <td className="stylized-td">
-            {moment(campaign.date).format('DD/MM/YYYY HH:mm')}
+            {campaign.date && moment(campaign.date).format('DD/MM/YYYY HH:mm')}
           </td>
           <td className="stylized-td">
             {campaign.sending_status === 2 ? (
@@ -165,45 +165,64 @@ const CampaignsView = () => {
       <article>
         <div className="campaigns-list">
           <div className="campaigns-list-table">
-            <form onSubmit={handleSubmit(updateSearchUrl)}>
-              <label htmlFor="name">
-                Campagne :
-                <input
-                  name="name"
-                  id="name"
-                  type="text"
-                  defaultValue={searchParams.name}
-                  ref={register}
-                />
-              </label>
-              <br />
-              <br />
-
-              <button type="submit">Filter</button>
-            </form>
-
-            <form>
-              <label htmlFor="sortby">
-                Trier par date :
-                <select
-                  name="sortby"
-                  id="sortby"
-                  ref={register}
-                  onChange={handleSubmit(updateSearchUrl)}
-                  defaultValue={searchParams.sortby}
-                >
-                  <option value="date.asc">Croissant</option>
-                  <option value="date.desc">Décroissant</option>
-                </select>
-              </label>
-            </form>
+            {/* <div className="campaigns-list-table-options"></div> */}
             <table>
               <thead>
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <th />
+                  <th>
+                    <form
+                      className="table-campaign-search"
+                      onSubmit={handleSubmit(updateSearchUrl)}
+                    >
+                      <label htmlFor="name">
+                        <input
+                          name="name"
+                          id="name"
+                          type="text"
+                          defaultValue={searchParams.name}
+                          placeholder="Rechercher une campagne"
+                          ref={register}
+                        />
+                      </label>
+
+                      {/* <button type="submit">ok</button> */}
+                    </form>
+                  </th>
+                  <th>
+                    <form className="table-date-sort">
+                      <label htmlFor="sortby">
+                        <select
+                          name="sortby"
+                          id="sortby"
+                          ref={register}
+                          defaultValue={searchParams.sortby}
+                        >
+                          <option value="date.asc">Trier par date</option>
+                          <option value="date.asc">Croissant</option>
+                          <option value="date.desc">Décroissant</option>
+                        </select>
+                      </label>
+                    </form>{' '}
+                  </th>
+                  <th>
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className="table-search"
+                      onClick={handleSubmit(updateSearchUrl)}
+                      onKeyPress={() => {}}
+                    >
+                      Appliquer
+                    </div>
+                  </th>
+                </tr>
+                <tr>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
                   <th className="stylized-th">Nom</th>
-                  <th className="stylized-th">Date d'envoi</th>
+                  <th className="stylized-th">Date d'envoi </th>
                   <th className="stylized-th">Statut</th>
                 </tr>
               </thead>

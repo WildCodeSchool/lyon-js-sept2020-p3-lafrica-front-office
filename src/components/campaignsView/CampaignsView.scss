@@ -38,6 +38,7 @@
   display: flex;
   justify-content: space-around;
   padding-top: 10px;
+  background-color: white;
 }
 
 .campaigns-chart {
@@ -45,8 +46,50 @@
   background-color: white;
 }
 
-.campaigns-list table {
+// .campaigns-list-table-options {
+//   display: grid;
+//   grid-gap: 10px;
+//   grid-template-columns: 1fr 1fr;
+//   grid-template-rows: 1fr;
+//   margin-bottom: 10px;
+//   margin-left: 20px;
+//   font-size: 14px;
+
+// }
+
+.table-campaign-search {
+  margin-bottom: 5px;
+  label {
+    width: 90%;
+  }
+  input {
+    border: 1px solid rgb(98, 186, 227);
+    width: 100%;
+    height: 20px;
+    padding: 2px;
+  }
+}
+
+.table-search {
+  border: 1px solid rgb(98, 186, 227);
+  font-weight: normal;
+  font-size: 14px;
+  width: 80%;
+  margin: 0px auto 5px;
+  cursor: pointer;
+}
+.table-date-sort {
+  margin-bottom: 5px;
+
+  select {
+    border: 1px solid rgb(98, 186, 227);
+    height: 20px;
+  }
+}
+
+.campaigns-list-table table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 .same-width-than-search-icon {
@@ -60,6 +103,7 @@
 .stylized-td {
   border: 1px solid grey;
   padding: 10px;
+  font-size: 14px;
 }
 
 /* td:nth-child(0n + 4) {
