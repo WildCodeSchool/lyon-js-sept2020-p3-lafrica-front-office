@@ -160,10 +160,6 @@ const Chart = () => {
 
   return (
     <div>
-      <button type="button" onClick={updateDatasChart}>
-        Randomize!
-      </button>
-
       <canvas ref={chartContainer} />
     </div>
   );
