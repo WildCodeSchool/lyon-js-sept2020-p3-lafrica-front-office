@@ -4,6 +4,8 @@ import './CampaignDetails.scss';
 import { FaMicrophone } from 'react-icons/fa';
 import { BiExport } from 'react-icons/bi';
 import { RiFileEditLine } from 'react-icons/ri';
+import { useHistory } from 'react-router-dom';
+
 import moment from 'moment';
 import 'moment/locale/fr';
 import API from '../../services/API';
@@ -15,6 +17,7 @@ const CampaignDetail = (props) => {
 
   const { userDetails } = useContext(UserContext);
   const { match } = props;
+  const history = useHistory();
 
   const [currentCampaign, setCurrentCampaign] = useState({
     id: 0,
@@ -85,7 +88,12 @@ const CampaignDetail = (props) => {
           </table>
           <div className="campaign-actions">
             <div className="edit-campaign">
-              <RiFileEditLine className="edit-logo" />
+              <RiFileEditLine
+                className="edit-logo"
+                onClick={() =>
+                  history.push(`/campaigns/edit/${match.params.campaign_id}`)
+                }
+              />
               <p>Modifier ma campagne</p>
             </div>
             <div className="export-stats">

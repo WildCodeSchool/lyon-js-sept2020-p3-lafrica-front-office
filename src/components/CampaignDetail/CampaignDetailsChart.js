@@ -29,7 +29,7 @@ const CampaignDetailsChart = (props) => {
       ],
     },
     options: {
-      maintainAspectRatio: false, // Don't maintain w/h ratio
+      maintainAspectRatio: false,
     },
   };
   const updateDataset = (datasetIndex, newData) => {
