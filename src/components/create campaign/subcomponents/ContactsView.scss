@@ -12,20 +12,19 @@ button:hover {
 
 table {
   border-collapse: collapse;
+  input,
+  button {
+    border: none;
+    padding: 10px;
+    background-color: white;
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 td {
   border: 1px solid grey;
-}
-
-input,
-button {
-  border: none;
-  padding: 10px;
-  background-color: white;
-  font-size: 14px;
-  width: 100%;
-  height: 100%;
 }
 
 .small-title {
@@ -52,6 +51,23 @@ button {
 
 .add-contact-form {
   margin-bottom: 30px;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  align-items: center;
+  width: 90%;
+  font-size: 14px;
+  button {
+    border: none;
+    padding: 10px;
+    background-color: white;
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 @media only screen and (max-width: 760px),

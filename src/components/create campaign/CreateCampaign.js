@@ -66,6 +66,7 @@ const CreateCampaign = (props) => {
     receivedFormatDifferentFromXlsxAndCsv,
     setReceivedFormatDifferentFromXlsxAndCsv,
   ] = useState(false);
+  const [toggleContactsUpload, setToggleContactsUpload] = useState(false);
 
   const { userDetails } = useContext(UserContext);
 
@@ -112,6 +113,7 @@ const CreateCampaign = (props) => {
           );
         }
         setContactsList(res.data);
+        setToggleContactsUpload(!toggleContactsUpload);
       })
       .catch((err) => {
         if (!receivedFormatDifferentFromXlsxAndCsv) {
@@ -425,9 +427,11 @@ const CreateCampaign = (props) => {
       <div className="option-vocalization-body">
         <h3 className="option-vocalization-title">Options de vocalisation</h3>
         <div className="option-vocalization-frame">
-          <div className="option-vocalization-grid">
-            <p>Type de voix</p>
-            <div className="option-vocalization-type">
+          <grid-container className="option-vocalization-grid">
+            <grid-item>
+              <p className="option-vocalization-text">Type de voix</p>
+            </grid-item>
+            <grid-item className="option-vocalization-type">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
@@ -440,12 +444,20 @@ const CreateCampaign = (props) => {
                 <option value="D">Homme 2</option>
                 <option value="E">Femme 3</option>
               </NativeSelect>
-            </div>
-            <p>Vitesse de la voix</p>
-
-            <SpeedSlider handleSliderAudioConfig={handleSliderAudioConfig} />
-            <p>Réalisme de la voix</p>
-            <div className="option-vocalization-realism">
+            </grid-item>
+            <grid-item>
+              <p className="option-vocalization-text">Vitesse de la voix</p>
+            </grid-item>
+            <grid-item>
+              <SpeedSlider
+                className="slider-speed"
+                handleSliderAudioConfig={handleSliderAudioConfig}
+              />
+            </grid-item>
+            <grid-item>
+              <p className="option-vocalization-text">Réalisme de la voix</p>
+            </grid-item>
+            <grid-item className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
@@ -455,13 +467,21 @@ const CreateCampaign = (props) => {
                 <option value="Standard">Standard</option>
                 <option value="WaveNet">Réaliste</option>
               </NativeSelect>
-            </div>
+            </grid-item>
 
-            <p>Hauteur de la voix</p>
-            <PitchSlider handleSliderAudioConfig={handleSliderAudioConfig} />
+            <grid-item>
+              <p className="option-vocalization-text">Hauteur de la voix</p>
+            </grid-item>
+            <grid-item>
+              <PitchSlider handleSliderAudioConfig={handleSliderAudioConfig} />
+            </grid-item>
 
-            <p>Format du fichier audio</p>
-            <div className="option-vocalization-realism">
+            <grid-item>
+              <p className="option-vocalization-text">
+                Format du fichier audio
+              </p>
+            </grid-item>
+            <grid-item className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
@@ -471,11 +491,12 @@ const CreateCampaign = (props) => {
                 <option value="MP3">mp3</option>
                 <option value="LINEAR16">wav</option>
               </NativeSelect>
-            </div>
-
-            <p>Volume de la voix</p>
+            </grid-item>
+            <grid-item>
+              <p className="option-vocalization-text">Volume de la voix</p>
+            </grid-item>
             <VolumeSlider handleSliderAudioConfig={handleSliderAudioConfig} />
-          </div>
+          </grid-container>
 
           {audioConfig.voiceType === 'WaveNet' && (
             <p className="alert-message">
@@ -556,7 +577,7 @@ const CreateCampaign = (props) => {
                 Télécharger le fichier audio
               </p>
             </div>
-            <div />
+            {/* <div /> */}
             <div className="vocalization-action-trySend">
               {lastVocalizedMessage === messageToVocalize &&
               messageToVocalize ? (
@@ -692,6 +713,8 @@ const CreateCampaign = (props) => {
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
+            setToggleContactsUpload={setToggleContactsUpload}
+            toggleContactsUpload={toggleContactsUpload}
             campaignId={match.params.campaign_id}
           />
         </div>

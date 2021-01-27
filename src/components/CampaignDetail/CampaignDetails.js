@@ -55,7 +55,7 @@ const CampaignDetail = (props) => {
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts`
     )
       .then((res2) => {
-        setCampaignContacts(res2.data);
+        setCampaignContacts(res2.data.contacts);
       })
       .catch((err) => {
         if (err.response.status === 401) {
@@ -172,7 +172,11 @@ const CampaignDetail = (props) => {
             <div
               className="win-rate"
               style={
-                winRate === 0
+                currentCampaign.sending_status !== 2
+                  ? { display: 'none' }
+                  : winRate.isNan
+                  ? { backgroundColor: 'rgba(228, 114, 114, 1)' }
+                  : winRate === 0
                   ? { backgroundColor: 'rgba(228, 114, 114, 1)' }
                   : winRate < 0.2
                   ? { backgroundColor: 'rgba(228, 114, 114, 1)' }
