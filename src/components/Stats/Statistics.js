@@ -85,6 +85,9 @@ const Statistics = () => {
         ],
       },
     ],
+    options: {
+      maintainAspectRatio: false,
+    },
   };
 
   return (
@@ -117,7 +120,7 @@ const Statistics = () => {
       </table>
       <div className="stats-charts">
         <h2>Nb Campagnes/Clts</h2>
-        <Pie data={data} />
+        <Pie data={data} options={{ maintainAspectRatio: false }} />
       </div>
     </div>
   );
