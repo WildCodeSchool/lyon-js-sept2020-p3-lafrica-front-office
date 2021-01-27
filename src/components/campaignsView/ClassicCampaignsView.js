@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
+import { AiOutlineStop } from 'react-icons/ai';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
@@ -30,6 +31,7 @@ const CampaignsView = () => {
     setCampaignsList,
   } = useContext(UserContext);
   const [campaignId, setCampaignId] = useState();
+  const [deleteCampaignAlter, setDeleteCampaignAlert] = useState(false);
 
   const [totalCampaigns, setTotalCampaigns] = useState();
 
@@ -59,7 +61,7 @@ const CampaignsView = () => {
           }
         });
     }
-  }, [userDetails, limit, offset, name, sortby]);
+  }, [userDetails, limit, offset, name, sortby, deleteCampaignAlter]);
 
   const currentPage = offset / limit + 1;
   const lastPage = Math.ceil(totalCampaigns / limit);
@@ -67,6 +69,14 @@ const CampaignsView = () => {
   const updateSearchUrl = (params) => {
     const clientQueryParams = queryString.stringify(params);
     history.push(`/?${clientQueryParams}`);
+  };
+
+  const deleteCampaign = (campaignIdToDelete) => {
+    API.delete(`/users/${userDetails.id}/campaigns/${campaignIdToDelete}`).then(
+      () => {
+        setDeleteCampaignAlert(!deleteCampaignAlter);
+      }
+    );
   };
 
   const setCurrentPage = (pageNum) => {
@@ -108,6 +118,12 @@ const CampaignsView = () => {
               </div>
             )}
           </td>
+          {campaign.sending_status !== 2 && (
+            <td className="stop-campaign no-border">
+              <AiOutlineStop onClick={() => deleteCampaign(campaign.id)} />
+            </td>
+          )}
+
           <td className="same-width-than-search-icon no-border" />
         </tr>
       );
