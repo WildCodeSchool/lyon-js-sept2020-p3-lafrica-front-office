@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
 import { MdDeleteForever } from 'react-icons/md';
-import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
+import { BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
@@ -164,6 +164,7 @@ const CampaignsView = () => {
           )}
 
           <td className="same-width-than-search-icon no-border" />
+          <td className="same-width-than-search-icon no-border" />
         </tr>
       );
     });
@@ -177,7 +178,7 @@ const CampaignsView = () => {
 
   useEffect(() => {
     if (campaignId) {
-      history.push(`/campaigns/create/${campaignId}`);
+      history.push(`/campaigns/createcampaign/${campaignId}`);
     }
   }, [campaignId]);
 
@@ -208,10 +209,6 @@ const CampaignsView = () => {
               > */}
               <h3>Créer une campagne</h3>
               {/* </Link> */}
-            </div>
-            <div className="edit">
-              <BiEdit className="btn-icon" />
-              <h3>Editer / ré-utiliser une campagne </h3>
             </div>
           </div>
         </div>

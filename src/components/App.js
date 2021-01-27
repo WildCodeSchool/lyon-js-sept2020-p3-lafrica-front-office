@@ -15,6 +15,7 @@ import ContactsView from './create campaign/subcomponents/ContactsView';
 import UserContextProvider from '../context/UserContext';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
 import AdminRoute from './ProtectedRoutes/AdminRoute';
+import CampaignEditor from './CampaignEditor/CampaingEditor';
 import Statistics from './Stats/Statistics';
 
 function App() {
@@ -37,8 +38,13 @@ function App() {
                 <Route path="/forgot" component={ForgetPassword} />
                 <Route path="/reset/:token" component={ResetPassword} />
                 <ProtectedRoute
-                  path="/campaigns/create/:campaign_id"
+                  path="/campaigns/createcampaign/:campaign_id"
                   component={CreateCampaign}
+                />
+
+                <ProtectedRoute
+                  path="/campaigns/editcampaign/:campaign_id"
+                  component={CampaignEditor}
                 />
 
                 <ProtectedRoute

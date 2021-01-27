@@ -105,15 +105,22 @@ const CampaignDetail = (props) => {
               <RiFileEditLine
                 className="edit-logo"
                 onClick={() =>
-                  history.push(`/campaigns/edit/${match.params.campaign_id}`)
+                  history.push(
+                    `/campaigns/editcampaign/${match.params.campaign_id}`
+                  )
                 }
               />
               <p>Modifier ma campagne</p>
             </div>
-            <div className="export-stats">
+            <a
+              className="export-stats"
+              target="_blank"
+              rel="noreferrer"
+              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportStatistics`}
+            >
               <BiExport className="export-logo" />
               <p>Exporter mes stats</p>
-            </div>
+            </a>
           </div>
         </div>
         <div className="stats">

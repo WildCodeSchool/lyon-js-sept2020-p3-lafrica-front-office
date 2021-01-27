@@ -29,6 +29,7 @@
 .btn-container {
   display: flex;
   justify-content: center;
+  cursor: pointer;
 }
 
 .campaigns-list {
@@ -140,8 +141,14 @@
 .search-icon {
   color: grey;
   cursor: pointer;
+  margin-right: 10px;
 }
 
+.edit-icon {
+  color: grey;
+  cursor: pointer;
+  margin-right: 20px;
+}
 .megaphone,
 .edit {
   display: flex;
