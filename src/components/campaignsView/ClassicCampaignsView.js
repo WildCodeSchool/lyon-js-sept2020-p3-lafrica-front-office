@@ -5,11 +5,13 @@ import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
+import { TiCancel } from 'react-icons/ti';
 import { BiEdit, BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
+import { useToasts } from 'react-toast-notifications';
 import CampaignsChart from '../CampaignsChart/CampaignsChart';
 
 import API from '../../services/API';
@@ -21,6 +23,7 @@ const CampaignsView = () => {
   const { register, handleSubmit } = useForm();
 
   const history = useHistory();
+  const { addToast } = useToasts();
 
   const {
     userDetails,
@@ -32,6 +35,7 @@ const CampaignsView = () => {
   const [campaignId, setCampaignId] = useState();
 
   const [totalCampaigns, setTotalCampaigns] = useState();
+  const [deleteCampaignAlert, setDeleteCampaignAlert] = useState(false);
 
   const searchParams = {
     limit: 10,
@@ -59,7 +63,7 @@ const CampaignsView = () => {
           }
         });
     }
-  }, [userDetails, limit, offset, name, sortby]);
+  }, [userDetails, limit, offset, name, sortby, deleteCampaignAlert]);
 
   const currentPage = offset / limit + 1;
   const lastPage = Math.ceil(totalCampaigns / limit);
@@ -74,6 +78,24 @@ const CampaignsView = () => {
       ...searchParams,
       offset: parseInt(limit, 10) * (pageNum - 1),
     });
+  };
+
+  const handleStopCampaign = (id) => {
+    API.put(`/users/${userDetails.id}/campaigns/${id}/stop`)
+      .then(() => {
+        setDeleteCampaignAlert(!deleteCampaignAlert);
+        addToast('Campagne interrompue avec succès !', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        addToast('Cette campagne ne peut être modifiée.', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
   };
 
   const showCampaignsList = () => {
@@ -108,7 +130,9 @@ const CampaignsView = () => {
               </div>
             )}
           </td>
-          <td className="same-width-than-search-icon no-border" />
+          <td className="same-width-than-search-icon no-border">
+            <TiCancel onClick={() => handleStopCampaign(campaign.id)} />
+          </td>
         </tr>
       );
     });
@@ -213,6 +237,8 @@ const CampaignsView = () => {
                       Appliquer
                     </div>
                   </th>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
                 </tr>
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -220,6 +246,8 @@ const CampaignsView = () => {
                   <th className="stylized-th">Nom</th>
                   <th className="stylized-th">Date d'envoi </th>
                   <th className="stylized-th">Statut</th>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
                 </tr>
               </thead>
               <tbody>{showCampaignsList()}</tbody>
