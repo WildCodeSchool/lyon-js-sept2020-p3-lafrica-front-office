@@ -507,7 +507,8 @@ const CreateCampaign = (props) => {
               </p>
             </div>
             <div className="vocalization-action-test">
-              {vocalisationFileName ? (
+              {lastVocalizedMessage === messageToVocalize &&
+              messageToVocalize ? (
                 <IoIosPlayCircle
                   onClick={play}
                   className="vocalization-action-icon"
@@ -515,7 +516,14 @@ const CreateCampaign = (props) => {
               ) : (
                 <IoIosPlayCircle className="vocalization-action-icon-grey" />
               )}
-              <p className={vocalisationFileName ? 'blue' : null}>
+              <p
+                className={
+                  lastVocalizedMessage === messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
                 Ecouter votre message
               </p>
               {playAudioTest()}
@@ -524,7 +532,8 @@ const CreateCampaign = (props) => {
               </p>
             </div>
             <div className="vocalization-action-download">
-              {vocalisationFileName ? (
+              {lastVocalizedMessage === messageToVocalize &&
+              messageToVocalize ? (
                 <div>
                   <a href={downloadAudioFilePath}>
                     <ImFolderDownload className="vocalization-action-icon" />
@@ -536,13 +545,21 @@ const CreateCampaign = (props) => {
                 </a>
               )}
 
-              <p className={vocalisationFileName ? 'blue' : null}>
+              <p
+                className={
+                  lastVocalizedMessage === messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
                 Télécharger le fichier audio
               </p>
             </div>
             <div />
             <div className="vocalization-action-trySend">
-              {vocalisationFileName ? (
+              {lastVocalizedMessage === messageToVocalize &&
+              messageToVocalize ? (
                 <FiPhoneIncoming
                   className="vocalization-action-icon"
                   onClick={handleClickOpen}
@@ -600,7 +617,16 @@ const CreateCampaign = (props) => {
                 </DialogActions>
               </Dialog>
 
-              <p>Tester un envoi</p>
+              <p
+                className={
+                  lastVocalizedMessage === messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
+                Tester un envoi
+              </p>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
-import API from '../../../services/API';
-import { UserContext } from '../../../context/UserContext';
+import API from '../../services/API';
+import { UserContext } from '../../context/UserContext';
 
 const ContactEditor = (props) => {
   const {

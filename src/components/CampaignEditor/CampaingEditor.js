@@ -27,9 +27,9 @@ import './CampaignEditor.scss';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { RiFileEditLine } from 'react-icons/ri';
-import API from '../../../services/API';
+import API from '../../services/API';
 import { SpeedSlider, PitchSlider, VolumeSlider } from './CustomizedSlider';
-import { UserContext } from '../../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import ContactsViewEditor from './ContactsViewEditor';
 
 const CampaignEditor = (props) => {
@@ -143,6 +143,7 @@ const CampaignEditor = (props) => {
           }
           if (res.data.text_message !== null) {
             setMessageToVocalize(res.data.text_message);
+            setLastVocalizedMessage(res.data.text_message);
           } else {
             setMessageToVocalize('');
           }
@@ -157,7 +158,6 @@ const CampaignEditor = (props) => {
           setDownloadAudioFilePath(
             `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data.vocal_message_file_url}`
           );
-          setLastVocalizedMessage(messageToVocalize);
         }
       }
     );
@@ -505,7 +505,8 @@ const CampaignEditor = (props) => {
               </p>
             </div>
             <div className="vocalization-action-test">
-              {vocalisationFileName ? (
+              {lastVocalizedMessage === messageToVocalize &&
+              messageToVocalize ? (
                 <IoIosPlayCircle
                   onClick={play}
                   className="vocalization-action-icon"
@@ -513,7 +514,14 @@ const CampaignEditor = (props) => {
               ) : (
                 <IoIosPlayCircle className="vocalization-action-icon-grey" />
               )}
-              <p className={vocalisationFileName ? 'blue' : null}>
+              <p
+                className={
+                  lastVocalizedMessage === messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
                 Ecouter votre message
               </p>
               {playAudioTest()}
@@ -522,7 +530,8 @@ const CampaignEditor = (props) => {
               </p>
             </div>
             <div className="vocalization-action-download">
-              {vocalisationFileName ? (
+              {lastVocalizedMessage === messageToVocalize &&
+              messageToVocalize ? (
                 <div>
                   <a href={downloadAudioFilePath}>
                     <ImFolderDownload className="vocalization-action-icon" />
@@ -534,13 +543,21 @@ const CampaignEditor = (props) => {
                 </a>
               )}
 
-              <p className={vocalisationFileName ? 'blue' : null}>
+              <p
+                className={
+                  lastVocalizedMessage === messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
                 Télécharger le fichier audio
               </p>
             </div>
             <div />
             <div className="vocalization-action-trySend">
-              {vocalisationFileName ? (
+              {lastVocalizedMessage === messageToVocalize &&
+              messageToVocalize ? (
                 <FiPhoneIncoming
                   className="vocalization-action-icon"
                   onClick={handleClickOpen}
@@ -598,7 +615,16 @@ const CampaignEditor = (props) => {
                 </DialogActions>
               </Dialog>
 
-              <p>Tester un envoi</p>
+              <p
+                className={
+                  lastVocalizedMessage === messageToVocalize &&
+                  messageToVocalize
+                    ? 'blue'
+                    : null
+                }
+              >
+                Tester un envoi
+              </p>
             </div>
           </div>
         </div>

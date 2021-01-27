@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
-import API from '../../../services/API';
+import API from '../../services/API';
 import ContactEditor from './ContactEditor';
-import { UserContext } from '../../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import './ContactsViewEditor.scss';
 
 const ContactsViewEditor = (props) => {
