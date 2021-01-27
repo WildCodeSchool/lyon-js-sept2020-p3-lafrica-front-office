@@ -176,33 +176,6 @@ const CampaignsView = () => {
               className="stop-campaign"
               onClick={() => handleStopOpen(campaign.id)}
             />
-            <Dialog
-              open={stopOpen}
-              onClose={handleStopClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Etes-vous sûr de vouloir interrompre cette campagne ?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleStopClose} color="primary">
-                  Non
-                </Button>
-                <Button
-                  onClick={() => {
-                    handleStopCampaign(stopCampaignId);
-                    handleStopClose();
-                  }}
-                  color="primary"
-                  autoFocus
-                >
-                  Oui
-                </Button>
-              </DialogActions>
-            </Dialog>
           </td>
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
@@ -211,34 +184,6 @@ const CampaignsView = () => {
                 className="deleteCampaign"
                 onClick={() => handleClickOpen(campaign.id)}
               />
-
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Etes-vous sûr de vouloir supprimer cette campagne ?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Non
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      deleteCampaign(deleteCampaignId);
-                      handleClose();
-                    }}
-                    color="primary"
-                    autoFocus
-                  >
-                    Oui
-                  </Button>
-                </DialogActions>
-              </Dialog>
             </td>
           )}
 
@@ -401,6 +346,61 @@ const CampaignsView = () => {
           </div>
         </div>
       </article>
+
+      <Dialog
+        open={stopOpen}
+        onClose={handleStopClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Etes-vous sûr de vouloir interrompre cette campagne ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleStopClose} color="primary">
+            Non
+          </Button>
+          <Button
+            onClick={() => {
+              handleStopCampaign(stopCampaignId);
+              handleStopClose();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Oui
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Etes-vous sûr de vouloir supprimer cette campagne ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Non
+          </Button>
+          <Button
+            onClick={() => {
+              deleteCampaign(deleteCampaignId);
+              handleClose();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Oui
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
