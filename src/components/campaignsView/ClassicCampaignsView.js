@@ -5,12 +5,14 @@ import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import { GoMegaphone } from 'react-icons/go';
+import { TiCancel } from 'react-icons/ti';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiSearchAlt2 } from 'react-icons/bi';
 // import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
+import { useToasts } from 'react-toast-notifications';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,6 +27,8 @@ const CampaignsView = () => {
   moment.locale('fr');
   const { register, handleSubmit } = useForm();
   const history = useHistory();
+  const { addToast } = useToasts();
+
   const {
     userDetails,
     setUserDetails,
@@ -43,12 +47,27 @@ const CampaignsView = () => {
   };
   const { limit, offset, name, sortby } = searchParams;
   const [open, setOpen] = React.useState(false);
+  const [stopOpen, setStopOpen] = useState(false);
+  const [stopCampaignId, setStopCampaignId] = useState();
+  const [deleteCampaignId, setDeleteCampaignId] = useState();
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
+    console.log(id);
     setOpen(true);
+    setDeleteCampaignId(id);
   };
   const handleClose = () => {
     setOpen(false);
+    setDeleteCampaignId();
+  };
+
+  const handleStopOpen = (id) => {
+    setStopOpen(true);
+    setStopCampaignId(id);
+  };
+  const handleStopClose = () => {
+    setStopOpen(false);
+    setStopCampaignId();
   };
 
   useEffect(() => {
@@ -79,11 +98,20 @@ const CampaignsView = () => {
   };
 
   const deleteCampaign = (campaignIdToDelete) => {
-    API.delete(`/users/${userDetails.id}/campaigns/${campaignIdToDelete}`).then(
-      () => {
+    API.delete(`/users/${userDetails.id}/campaigns/${campaignIdToDelete}`)
+      .then(() => {
         setDeleteCampaignAlert(!deleteCampaignAlert);
-      }
-    );
+        addToast('Campagne supprimée avec succès !', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch(() => {
+        addToast('Impossible de supprimer cette campagne.', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
   };
 
   const setCurrentPage = (pageNum) => {
@@ -91,6 +119,23 @@ const CampaignsView = () => {
       ...searchParams,
       offset: parseInt(limit, 10) * (pageNum - 1),
     });
+  };
+
+  const handleStopCampaign = (id) => {
+    API.put(`/users/${userDetails.id}/campaigns/${id}/stop`)
+      .then(() => {
+        setDeleteCampaignAlert(!deleteCampaignAlert);
+        addToast('Campagne interrompue avec succès !', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch(() => {
+        addToast("Impossible d'interrompre cette campagne.", {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      });
   };
 
   const showCampaignsList = () => {
@@ -125,41 +170,20 @@ const CampaignsView = () => {
               </div>
             )}
           </td>
+          <td className="same-width-than-search-icon no-border">
+            {/* <TiCancel onClick={() => handleStopCampaign(campaign.id)} /> */}
+            <TiCancel
+              className="stop-campaign"
+              onClick={() => handleStopOpen(campaign.id)}
+            />
+          </td>
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
               {/* <MdDeleteForever onClick={() => deleteCampaign(campaign.id)} /> */}
               <MdDeleteForever
                 className="deleteCampaign"
-                onClick={handleClickOpen}
+                onClick={() => handleClickOpen(campaign.id)}
               />
-
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Etes-vous sûr de vouloir supprimer cette campagne ?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Non
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      handleClose();
-                      deleteCampaign(campaign.id);
-                    }}
-                    color="primary"
-                    autoFocus
-                  >
-                    Oui
-                  </Button>
-                </DialogActions>
-              </Dialog>
             </td>
           )}
 
@@ -265,6 +289,8 @@ const CampaignsView = () => {
                       Appliquer
                     </div>
                   </th>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
                 </tr>
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -272,6 +298,8 @@ const CampaignsView = () => {
                   <th className="stylized-th">Nom</th>
                   <th className="stylized-th">Date d'envoi </th>
                   <th className="stylized-th">Statut</th>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <th />
                 </tr>
               </thead>
               <tbody>{showCampaignsList()}</tbody>
@@ -315,6 +343,61 @@ const CampaignsView = () => {
           </div>
         </div>
       </article>
+
+      <Dialog
+        open={stopOpen}
+        onClose={handleStopClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Etes-vous sûr de vouloir interrompre cette campagne ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleStopClose} color="primary">
+            Non
+          </Button>
+          <Button
+            onClick={() => {
+              handleStopCampaign(stopCampaignId);
+              handleStopClose();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Oui
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Etes-vous sûr de vouloir supprimer cette campagne ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Non
+          </Button>
+          <Button
+            onClick={() => {
+              deleteCampaign(deleteCampaignId);
+              handleClose();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Oui
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

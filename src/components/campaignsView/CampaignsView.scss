@@ -102,7 +102,9 @@
 }
 
 .same-width-than-search-icon {
-  width: 16px;
+  color: orange;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .no-border {
@@ -114,6 +116,7 @@
 .deleteCampaign {
   color: red;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .stylized-td {
