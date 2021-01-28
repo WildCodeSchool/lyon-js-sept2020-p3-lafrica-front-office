@@ -52,7 +52,6 @@ const CampaignsView = () => {
   const [deleteCampaignId, setDeleteCampaignId] = useState();
 
   const handleClickOpen = (id) => {
-    console.log(id);
     setOpen(true);
     setDeleteCampaignId(id);
   };
