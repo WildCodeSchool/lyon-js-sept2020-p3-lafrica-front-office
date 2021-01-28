@@ -316,3 +316,32 @@ h3 {
     margin: auto;
   }
 }
+
+@media screen and (max-width: 760px) and (orientation: portrait) {
+  .landscape {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    p {
+      text-align: center;
+      font-size: 18px;
+      color: red;
+    }
+    img {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .landscape {
+    display: none;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .landscape {
+    display: none;
+  }
+}

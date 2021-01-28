@@ -8,6 +8,7 @@ import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
+import Landscape from '../../images/turn_your_phone.gif';
 
 import API from '../../services/API';
 
@@ -126,6 +127,10 @@ const CampaignsView = () => {
         </div>
       </article>
       <article>
+        <div className="landscape">
+          <img className="landscape-img" src={Landscape} alt="landscape" />
+          <p>Veuillez tourner votre appareil au format paysage</p>
+        </div>
         <div className="admin-campaigns-list">
           <table>
             <thead>
