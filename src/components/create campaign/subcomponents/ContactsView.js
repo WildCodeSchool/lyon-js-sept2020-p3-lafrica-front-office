@@ -7,6 +7,8 @@ import API from '../../../services/API';
 import Contact from './Contact';
 import { UserContext } from '../../../context/UserContext';
 import './ContactsView.scss';
+// import Landscape from '../../../images/rotate_img_proj.gif';
+import Landscape from '../../../images/turn_your_phone.gif';
 
 const ContactsView = (props) => {
   const initialNewContact = {
@@ -116,6 +118,10 @@ const ContactsView = (props) => {
 
   return (
     <div className="contacts-view-container">
+      <div className="landscape">
+        <img className="landscape-img" src={Landscape} alt="landscape" />
+        <p>Veuillez tourner votre appareil au format paysage</p>
+      </div>
       <h4 className="small-title">
         Ajouter un contact à votre liste de diffusion
       </h4>
@@ -181,11 +187,10 @@ const ContactsView = (props) => {
       ) : (
         <table>
           <thead>
-            <tr>
-              <th>Id</th>
-              <th>Nom de famille</th>
+            <tr className="table-header">
+              <th>Nom</th>
               <th>Prénom</th>
-              <th>Numéro de télephone</th>
+              <th>Numéro</th>
             </tr>
           </thead>
           <tbody>
