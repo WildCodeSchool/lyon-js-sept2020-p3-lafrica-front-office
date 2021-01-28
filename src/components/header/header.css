@@ -107,11 +107,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
   font-size: 1.15em;
 }
 
-.bm-menu a {
-  text-decoration: none;
-  color: white;
-}
-
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
   fill: #373a47;
@@ -151,4 +146,14 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .userTitle {
     display: none;
   }
+}
+
+.bm-menu a {
+  text-decoration: none;
+  color: white;
+}
+
+.bm-menu a:visited {
+  text-decoration: none;
+  color: white;
 }
