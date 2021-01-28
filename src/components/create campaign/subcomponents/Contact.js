@@ -59,14 +59,16 @@ const Contact = (props) => {
       <td>
         <input
           type="text"
-          value={contactLastname}
+          value={contactLastname.toUpperCase()}
           onChange={handleChangeLastname}
         />
       </td>
       <td>
         <input
           type="text"
-          value={contactFirstname}
+          value={
+            contactFirstname.charAt(0).toUpperCase() + contactFirstname.slice(1)
+          }
           onChange={handleChangeFirstname}
         />
       </td>
@@ -92,7 +94,7 @@ const Contact = (props) => {
           type="button"
           onClick={() => deleteContact(id)}
         >
-          Suprimer
+          Supprimer
         </button>
       </td>
     </tr>

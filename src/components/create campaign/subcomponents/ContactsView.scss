@@ -40,14 +40,37 @@ button:hover {
 
 table {
   border-collapse: collapse;
-  input,
-  button {
+  width: 80%;
+  margin: 0px auto;
+  input {
     border: none;
     padding: 10px;
     background-color: white;
     font-size: 12px;
     width: 100%;
     height: 100%;
+  }
+  .create-and-modify-contact-btn {
+    border: none;
+    padding: 10px;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    background-color: light grey !important;
+    &:hover {
+      background-color: #aed581;
+    }
+  }
+  .delete-contact-btn {
+    border: none;
+    padding: 10px;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    background-color: light grey !important;
+    &:hover {
+      background-color: #f4511e;
+    }
   }
 }
 
@@ -70,12 +93,11 @@ td {
   font-size: 0.9em;
 }
 
-.delete-contact-btn:hover {
-  background-color: #f4511e;
-}
-
-.create-and-modify-contact-btn:hover {
-  background-color: #aed581;
+.create-and-modify-contact-btn {
+  background-color: light grey;
+  &:hover {
+    background-color: #aed581;
+  }
 }
 
 .add-contact-form {
@@ -87,7 +109,7 @@ td {
   flex-direction: row;
   margin-top: 20px;
   align-items: center;
-  width: 90%;
+  width: 80%;
   font-size: 14px;
   button {
     border: none;
