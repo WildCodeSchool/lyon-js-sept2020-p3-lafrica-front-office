@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import Chartjs from 'chart.js';
 import moment from 'moment';
 import 'moment/locale/fr';
+import './CampaignsChart.scss';
+import API from '../../services/API';
 
 import { UserContext } from '../../context/UserContext';
 
 // const randomInt = () => Math.floor(Math.random() * (10 - 1 + 1)) + 1;
 
 const Chart = () => {
-  const { campaignsList } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   moment.locale('en');
 
   const [monthlySentCampaigns, setMonthlySentCampaigns] = useState({
@@ -79,6 +81,8 @@ const Chart = () => {
       ],
     },
     options: {
+      maintainAspectRatio: false,
+
       scales: {
         yAxes: [
           {
@@ -92,6 +96,7 @@ const Chart = () => {
   };
   const chartContainer = useRef(null);
   const [chartInstance, setChartInstance] = useState(null);
+  const [campaignsListChart, setCampaignsListChart] = useState([]);
 
   const countCampaignsPerMonth = () => {
     const campaignsByMonth = {
@@ -109,9 +114,9 @@ const Chart = () => {
       December: 0,
     };
 
-    for (let i = 0; i < campaignsList.length; i += 1) {
-      if (campaignsList[i].sending_status === 2) {
-        const campaignMonth = moment(campaignsList[i].date).format('MMMM');
+    for (let i = 0; i < campaignsListChart.length; i += 1) {
+      if (campaignsListChart[i].sending_status === 2) {
+        const campaignMonth = moment(campaignsListChart[i].date).format('MMMM');
         campaignsByMonth[campaignMonth] += 1;
       }
     }
@@ -143,7 +148,7 @@ const Chart = () => {
 
   useEffect(() => {
     countCampaignsPerMonth();
-  }, [campaignsList]);
+  }, [campaignsListChart]);
 
   useEffect(() => {
     if (chartContainer && chartContainer.current) {
@@ -158,8 +163,14 @@ const Chart = () => {
     }
   }, [monthlySentCampaigns]);
 
+  useEffect(() => {
+    API.get(`/users/${userDetails.id}/campaigns?limit=10000,`).then((res) => {
+      setCampaignsListChart(res.data.campaigns);
+    });
+  }, []);
+
   return (
-    <div>
+    <div className="chart-container">
       <canvas ref={chartContainer} />
     </div>
   );
