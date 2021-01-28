@@ -58,6 +58,8 @@ const CampaignEditor = (props) => {
   const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
+  const [toggleContactsUpload, setToggleContactsUpload] = useState(false);
+
   const [
     receivedFormatDifferentFromTxtAndDocx,
     setReceivedFormatDifferentFromTxtAndDocx,
@@ -105,13 +107,14 @@ const CampaignEditor = (props) => {
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
       formData
     )
-      .then((res) => {
+      .then(() => {
+        setToggleContactsUpload(!toggleContactsUpload);
+
         if (receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
         }
-        setContactsList(res.data);
       })
       .catch((err) => {
         if (!receivedFormatDifferentFromXlsxAndCsv) {
@@ -695,6 +698,8 @@ const CampaignEditor = (props) => {
             contactsList={contactsList}
             setContactsList={setContactsList}
             campaignId={match.params.campaign_id}
+            setToggleContactsUpload={setToggleContactsUpload}
+            toggleContactsUpload={toggleContactsUpload}
           />
         </div>
       </div>
