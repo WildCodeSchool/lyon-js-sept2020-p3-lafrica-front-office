@@ -20,20 +20,24 @@
 
 .title {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
   color: var(--primary-color);
+  width: 80%;
 }
 
 .btn-container {
   display: flex;
   justify-content: center;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
+article {
+  margin-bottom: 20px;
+}
 .campaigns-list {
-  margin: 10px;
   border: 4px solid var(--primary-color);
   padding: 10px;
   display: flex;
