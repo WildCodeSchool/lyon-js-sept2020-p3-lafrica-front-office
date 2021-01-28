@@ -13,7 +13,10 @@
 }
 
 .stats-container th {
-  border: 1px solid black;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--secondary-color);
+  padding: 10px;
 }
 
 .stats-container p {

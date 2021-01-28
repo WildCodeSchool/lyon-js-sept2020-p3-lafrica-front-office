@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
@@ -7,6 +8,7 @@ import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
+import Landscape from '../../images/turn_your_phone.gif';
 
 import API from '../../services/API';
 
@@ -91,15 +93,20 @@ const CampaignsView = () => {
             {campaign.date && moment(campaign.date).format('DD/MM/YYYY HH:mm')}
           </td>
           <td className="stylized-td">
-            {campaign.sending_status ? (
+            {campaign.sending_status === 2 ? (
               <div className="cell-campaign-status">
                 <span className="status finished-status" />
                 <p>Envoyée</p>
               </div>
-            ) : (
+            ) : campaign.sending_status === 1 ? (
               <div className="cell-campaign-status">
                 <span className="status in-progress-status" />
                 <p>En attente</p>
+              </div>
+            ) : (
+              <div className="cell-campaign-status">
+                <span className="status in-creation-status" />
+                <p>En création</p>
               </div>
             )}
           </td>
@@ -120,7 +127,11 @@ const CampaignsView = () => {
         </div>
       </article>
       <article>
-        <div className="campaigns-list">
+        <div className="landscape">
+          <img className="landscape-img" src={Landscape} alt="landscape" />
+          <p>Veuillez tourner votre appareil au format paysage</p>
+        </div>
+        <div className="admin-campaigns-list">
           <table>
             <thead>
               <tr>

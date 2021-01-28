@@ -85,6 +85,7 @@ const CampaignDetail = (props) => {
                 <td>Date d'envoi</td>
                 <td>
                   {currentCampaign &&
+                    currentCampaign.date &&
                     moment(currentCampaign.date).format('DD/MM/YYYY HH:mm')}
                 </td>
               </tr>

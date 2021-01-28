@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core';
 
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { GrCloudDownload, GrSend } from 'react-icons/gr';
 import { FaMicrophone } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
@@ -58,6 +60,8 @@ const CampaignEditor = (props) => {
   const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
+  const [toggleContactsUpload, setToggleContactsUpload] = useState(false);
+
   const [
     receivedFormatDifferentFromTxtAndDocx,
     setReceivedFormatDifferentFromTxtAndDocx,
@@ -70,6 +74,7 @@ const CampaignEditor = (props) => {
   const { userDetails } = useContext(UserContext);
 
   const { addToast } = useToasts();
+  const history = useHistory();
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
@@ -105,13 +110,14 @@ const CampaignEditor = (props) => {
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
       formData
     )
-      .then((res) => {
+      .then(() => {
+        setToggleContactsUpload(!toggleContactsUpload);
+
         if (receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
         }
-        setContactsList(res.data);
       })
       .catch((err) => {
         if (!receivedFormatDifferentFromXlsxAndCsv) {
@@ -280,10 +286,6 @@ const CampaignEditor = (props) => {
     setSendingLoader(true);
     setTimeout(() => {
       setSendingLoader(false);
-      addToast('Vos modifications ont été enregistrées !', {
-        appearance: 'success',
-        autoDismiss: true,
-      });
     }, 3000);
 
     const campainAndContactsListDatas = [
@@ -299,8 +301,12 @@ const CampaignEditor = (props) => {
     await API.put(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
       campainAndContactsListDatas
-    ).then((res) => {
-      console.log(res);
+    ).then(() => {
+      addToast('Vos modifications ont été enregistrées !', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+      history.push('/');
     });
   };
 
@@ -321,10 +327,12 @@ const CampaignEditor = (props) => {
 
   return (
     <div className="create-campaign-body">
-      <div className="title-page">
+      <div className="title-page-edit">
         <RiFileEditLine className="edit-logo-no-border" />
-        <h2 className="title-page-title">Modifiez votre campagne</h2>
-        <p> : {campaignName} </p>
+        <div className="title-page-div-edit">
+          <h2 className="title-page-title-edit">Modifiez votre campagne</h2>
+          <p> {campaignName} </p>
+        </div>
       </div>
 
       <div className="vocal-campaign-body">
@@ -427,9 +435,11 @@ const CampaignEditor = (props) => {
       <div className="option-vocalization-body">
         <h3 className="option-vocalization-title">Options de vocalisation</h3>
         <div className="option-vocalization-frame">
-          <div className="option-vocalization-grid">
-            <p>Type de voix</p>
-            <div className="option-vocalization-type">
+          <grid-container className="option-vocalization-grid">
+            <grid-item>
+              <p className="option-vocalization-text">Type de voix</p>
+            </grid-item>
+            <grid-item className="option-vocalization-type">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
@@ -442,12 +452,20 @@ const CampaignEditor = (props) => {
                 <option value="D">Homme 2</option>
                 <option value="E">Femme 3</option>
               </NativeSelect>
-            </div>
-            <p>Vitesse de la voix</p>
-
-            <SpeedSlider handleSliderAudioConfig={handleSliderAudioConfig} />
-            <p>Réalisme de la voix</p>
-            <div className="option-vocalization-realism">
+            </grid-item>
+            <grid-item>
+              <p className="option-vocalization-text">Vitesse de la voix</p>
+            </grid-item>
+            <grid-item>
+              <SpeedSlider
+                className="slider-speed"
+                handleSliderAudioConfig={handleSliderAudioConfig}
+              />
+            </grid-item>
+            <grid-item>
+              <p className="option-vocalization-text">Réalisme de la voix</p>
+            </grid-item>
+            <grid-item className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
@@ -457,13 +475,21 @@ const CampaignEditor = (props) => {
                 <option value="Standard">Standard</option>
                 <option value="WaveNet">Réaliste</option>
               </NativeSelect>
-            </div>
+            </grid-item>
 
-            <p>Hauteur de la voix</p>
-            <PitchSlider handleSliderAudioConfig={handleSliderAudioConfig} />
+            <grid-item>
+              <p className="option-vocalization-text">Hauteur de la voix</p>
+            </grid-item>
+            <grid-item>
+              <PitchSlider handleSliderAudioConfig={handleSliderAudioConfig} />
+            </grid-item>
 
-            <p>Format du fichier audio</p>
-            <div className="option-vocalization-realism">
+            <grid-item>
+              <p className="option-vocalization-text">
+                Format du fichier audio
+              </p>
+            </grid-item>
+            <grid-item className="option-vocalization-realism">
               <InputLabel htmlFor="select" />
               <NativeSelect
                 id="select"
@@ -473,11 +499,12 @@ const CampaignEditor = (props) => {
                 <option value="MP3">mp3</option>
                 <option value="LINEAR16">wav</option>
               </NativeSelect>
-            </div>
-
-            <p>Volume de la voix</p>
+            </grid-item>
+            <grid-item>
+              <p className="option-vocalization-text">Volume de la voix</p>
+            </grid-item>
             <VolumeSlider handleSliderAudioConfig={handleSliderAudioConfig} />
-          </div>
+          </grid-container>
 
           {audioConfig.voiceType === 'WaveNet' && (
             <p className="alert-message">
@@ -558,7 +585,6 @@ const CampaignEditor = (props) => {
                 Télécharger le fichier audio
               </p>
             </div>
-            <div />
             <div className="vocalization-action-trySend">
               {lastVocalizedMessage === messageToVocalize &&
               messageToVocalize ? (
@@ -639,7 +665,7 @@ const CampaignEditor = (props) => {
           <div className="broadcast-list-title">
             <MdPermContactCalendar className="broadcast-icon" />
             <h2>Gérer votre liste de diffusion</h2>
-            <h3>Ajoutez, modifiez ou suprimez un contact</h3>
+            <h3>Ajoutez, modifiez ou supprimez un contact</h3>
           </div>
 
           <div className="broadcast-list-grid">
@@ -683,18 +709,31 @@ const CampaignEditor = (props) => {
             <a
               target="_blank"
               rel="noreferrer"
-              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportContacts`}
+              href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportContacts`}
               className="broadcast-list-export"
             >
               <AiOutlineExport className="broadcast-list-icon" />
-              <p>Exporter une liste de diffusion</p>
+              <p className="fileNotYetUploaded">
+                Exporter une liste de diffusion
+              </p>
             </a>
           </div>
+          <a
+            href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/template`}
+            className="template"
+          >
+            Modèle téléchargeable
+          </a>
+          <p className="alert-phone-number">
+            Pensez à vérifier les indicateurs téléphoniques de vos contacts
+          </p>
           <ContactsView
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
             campaignId={match.params.campaign_id}
+            setToggleContactsUpload={setToggleContactsUpload}
+            toggleContactsUpload={toggleContactsUpload}
           />
         </div>
       </div>
