@@ -154,18 +154,20 @@ const SignIn = () => {
           >
             S'identifier
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/forgot" variant="body2">
-                Mot de passe oublié ?
-              </Link>
+          <div className="MuiGrid-container-signIn">
+            <Grid container>
+              <Grid item xs>
+                <Link href="/forgot" variant="body2">
+                  Mot de passe oublié ?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/signup" variant="body2">
+                  Pas de compte ? Inscrivez-vous !
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                Pas de compte ? Inscrivez-vous !
-              </Link>
-            </Grid>
-          </Grid>
+          </div>
         </form>
       </div>
     </Container>

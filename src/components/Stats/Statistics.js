@@ -22,7 +22,6 @@ const Statistics = () => {
   };
 
   const mappingForTotalSendCampaignsPerUser = () => {
-    console.log(totalSendCampaignsPerUsers);
     return totalSendCampaignsPerUsers.map((el) => {
       return (
         <tbody>
@@ -102,8 +101,8 @@ const Statistics = () => {
         </thead>
         <tbody>
           <tr>
-            <th>{sendCallCount}</th>
-            <th>{totalSendCampaigns}</th>
+            <td>{sendCallCount}</td>
+            <td>{totalSendCampaigns}</td>
           </tr>
         </tbody>
       </table>
