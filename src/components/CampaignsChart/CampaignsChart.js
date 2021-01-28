@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import Chartjs from 'chart.js';
 import moment from 'moment';
 import 'moment/locale/fr';
+import './CampaignsChart.scss';
 
 import { UserContext } from '../../context/UserContext';
 
@@ -79,6 +80,8 @@ const Chart = () => {
       ],
     },
     options: {
+      maintainAspectRatio: false,
+
       scales: {
         yAxes: [
           {
@@ -159,7 +162,7 @@ const Chart = () => {
   }, [monthlySentCampaigns]);
 
   return (
-    <div>
+    <div className="chart-container">
       <canvas ref={chartContainer} />
     </div>
   );

@@ -170,17 +170,18 @@ const CampaignsView = () => {
               </div>
             )}
           </td>
-          <td className="same-width-than-search-icon no-border">
-            {/* <TiCancel onClick={() => handleStopCampaign(campaign.id)} /> */}
-            <TiCancel
-              className="stop-campaign"
-              onClick={() => handleStopOpen(campaign.id)}
-            />
-          </td>
+          {campaign.sending_status !== 2 && (
+            <td className="same-width-than-search-icon no-border">
+              <TiCancel
+                className="stop-icon"
+                onClick={() => handleStopOpen(campaign.id)}
+              />
+            </td>
+          )}
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
               <MdDeleteForever
-                className="deleteCampaign"
+                className="delete-icon"
                 onClick={() => handleClickOpen(campaign.id)}
               />
             </td>
@@ -222,7 +223,7 @@ const CampaignsView = () => {
               role="button"
               tabIndex="0"
             >
-              <GoMegaphone className="btn-icon" />
+              <GoMegaphone className="megaphone-icon" />
 
               {/* <Link to={`/campaigns/${campaignId}`}>
               </Link>
@@ -245,7 +246,7 @@ const CampaignsView = () => {
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <th />
-                  <th>
+                  <th className="name">
                     <form className="table-campaign-search">
                       <label htmlFor="name">
                         <input
@@ -261,7 +262,7 @@ const CampaignsView = () => {
                       {/* <button type="submit">ok</button> */}
                     </form>
                   </th>
-                  <th>
+                  <th className="sortby">
                     <form className="table-date-sort">
                       <label htmlFor="sortby">
                         <select
@@ -277,7 +278,7 @@ const CampaignsView = () => {
                       </label>
                     </form>{' '}
                   </th>
-                  <th>
+                  <th className="table-search-button">
                     <div
                       role="button"
                       tabIndex={0}
