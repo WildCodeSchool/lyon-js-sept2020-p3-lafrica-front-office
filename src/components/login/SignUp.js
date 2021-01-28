@@ -166,7 +166,7 @@ const SignUp = () => {
                     placeholder="Numéro de téléphone"
                     inputRef={register}
                     inputStyle={{
-                      width: '368px',
+                      width: '100%',
                       height: '56px',
                       fontSize: '15px',
                       paddingLeft: '60px',
@@ -250,11 +250,13 @@ const SignUp = () => {
           </Button>
 
           <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/signIn" variant="body2">
-                Vous avez déja un compte ? Connectez-vous !
-              </Link>
-            </Grid>
+            <div className="MuiGrid-container-signUp">
+              <Grid item>
+                <Link href="/signIn" variant="body2">
+                  Vous avez déja un compte ? Connectez-vous !
+                </Link>
+              </Grid>
+            </div>
           </Grid>
         </form>
       </div>

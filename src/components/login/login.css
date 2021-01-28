@@ -1,0 +1,13 @@
+.MuiGrid-container-signIn .MuiGrid-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.MuiGrid-container-signIn a {
+  color: #3f51b5 !important;
+}
+
+.MuiGrid-container-signUp a {
+  color: #3f51b5 !important;
+}

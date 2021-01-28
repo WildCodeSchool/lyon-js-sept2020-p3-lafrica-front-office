@@ -22,7 +22,6 @@ const Statistics = () => {
   };
 
   const mappingForTotalSendCampaignsPerUser = () => {
-    console.log(totalSendCampaignsPerUsers);
     return totalSendCampaignsPerUsers.map((el) => {
       return (
         <tbody>
