@@ -126,7 +126,7 @@ const CampaignsView = () => {
         </div>
       </article>
       <article>
-        <div className="campaigns-list">
+        <div className="admin-campaigns-list">
           <table>
             <thead>
               <tr>
