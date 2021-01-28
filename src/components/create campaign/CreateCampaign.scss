@@ -264,6 +264,10 @@
   }
 }
 
+.flexForm {
+  display: flex;
+}
+
 .alert-message {
   color: red;
   text-align: center;
@@ -372,6 +376,20 @@
 .blue {
   color: rgb(98, 186, 227);
 }
+
+.alert-phone-number {
+  margin-left: 68px;
+  font-size: 12px;
+  font-style: italic;
+}
+.template {
+  margin-left: 68px;
+  font-size: 12px;
+  color: rgb(98, 186, 227);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
 @media screen and (min-width: 768px) {
   .create-campaign-body {
     .vocal-campaign-body {
@@ -450,6 +468,15 @@
     h3 {
       font-size: 18px;
     }
+  }
+  .alert-phone-number {
+    margin-left: 68px;
+    font-size: 12px;
+    font-style: italic;
+    width: 35%;
+  }
+  .template {
+    width: 30%;
   }
 }
 
