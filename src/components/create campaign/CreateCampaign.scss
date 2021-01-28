@@ -15,6 +15,8 @@
     border: solid lightgray 2px;
     padding: 5px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-color: white;
     img {
@@ -30,6 +32,7 @@
     p {
       display: inline-block;
       color: rgb(98, 186, 227);
+      text-align: center;
     }
   }
 
@@ -47,17 +50,24 @@
     }
     .vocal-campaign-grid {
       max-width: 400px;
+      margin-left: 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
       p {
         margin: 10px;
       }
       .vocal-campaign-name {
         margin: 5px;
         padding-left: 5px;
+        width: 70%;
       }
       .vocal-campaign-date {
         margin: 10px;
+        // width: 70%;
+        .textField {
+          width: 70%;
+        }
       }
     }
   }
@@ -223,7 +233,8 @@
     }
     .broadcast-list-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
       .broadcast-list-icon {
         cursor: pointer;
         width: 35px;
@@ -236,11 +247,10 @@
         padding: 15px;
       }
       .broadcast-list-export {
+        color: black;
         display: flex;
         padding: 15px;
-        p {
-          padding-left: 20px;
-        }
+        align-items: center;
       }
       .broadcast-list-download {
         display: flex;
@@ -252,6 +262,10 @@
       }
     }
   }
+}
+
+.flexForm {
+  display: flex;
 }
 
 .alert-message {
@@ -274,6 +288,8 @@
   font-size: 1.2em;
   .sendCampaign-loader-on {
     display: block;
+    padding-left: 5px;
+    // width: 5px;
   }
   .sendCampaign-loader-off {
     display: none;
@@ -281,32 +297,36 @@
   .sendCampaignIcon {
     width: 35px;
     height: 35px;
-    margin-right: 20px;
+    margin: 0 20px 0px 10px;
     color: rgb(98, 186, 227);
   }
-}
-
-@media screen and (max-width: 768px) {
-  .broadcast-list-frame {
-    align-items: center;
-  }
-
-  .title-page {
-    flex-direction: column;
+  h3 {
+    font-size: 16px;
   }
 }
 
-.flexForm {
-  display: flex;
-}
 .fileNotYetUploaded {
   cursor: pointer;
-  width: 20vw;
+  width: 40vw;
   border: 1px solid rgb(98, 186, 227);
   text-align: center;
   border-radius: 5px;
   em {
     font-size: 0.8em;
+  }
+
+  @media screen and (max-width: 768px) {
+    .broadcast-list-frame {
+      align-items: center;
+    }
+
+    .title-page {
+      flex-direction: column;
+    }
+  }
+
+  .flexForm {
+    display: flex;
   }
 }
 .fileUploaded {
@@ -356,8 +376,38 @@
 .blue {
   color: rgb(98, 186, 227);
 }
+
+.alert-phone-number {
+  margin-left: 68px;
+  font-size: 12px;
+  font-style: italic;
+}
+.template {
+  margin-left: 68px;
+  font-size: 12px;
+  color: rgb(98, 186, 227);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
 @media screen and (min-width: 768px) {
   .create-campaign-body {
+    .vocal-campaign-body {
+      .vocal-campaign-grid {
+        max-width: 400px;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        .vocal-campaign-name {
+          width: 100%;
+        }
+        .vocal-campaign-date {
+          width: 100%;
+        }
+      }
+    }
+
     .option-vocalization-body {
       .option-vocalization-frame {
         grid-container {
@@ -392,6 +442,41 @@
         }
       }
     }
+    .broadcast-list-body {
+      .broadcast-list-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+      }
+    }
+    .title-page {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      img {
+        width: 100px;
+        margin: 5px 20px;
+      }
+    }
+    .fileNotYetUploaded {
+      cursor: pointer;
+      width: 20vw;
+    }
+  }
+
+  .sendCampaign {
+    h3 {
+      font-size: 18px;
+    }
+  }
+  .alert-phone-number {
+    margin-left: 68px;
+    font-size: 12px;
+    font-style: italic;
+    width: 35%;
+  }
+  .template {
+    width: 30%;
   }
 }
 
@@ -430,6 +515,11 @@
           grid-column-end: 2;
         }
       }
+    }
+  }
+  .sendCampaign {
+    h3 {
+      font-size: 12px;
     }
   }
 }

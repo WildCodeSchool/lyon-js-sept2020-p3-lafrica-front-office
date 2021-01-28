@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GrCloudDownload, GrSend } from 'react-icons/gr';
 import { FaMicrophone } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
@@ -71,6 +72,7 @@ const CreateCampaign = (props) => {
   const { userDetails } = useContext(UserContext);
 
   const { addToast } = useToasts();
+  const history = useHistory();
 
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
@@ -281,10 +283,6 @@ const CreateCampaign = (props) => {
     setSendingLoader(true);
     setTimeout(() => {
       setSendingLoader(false);
-      addToast('Votre campagne a bien été enregistrée !', {
-        appearance: 'success',
-        autoDismiss: true,
-      });
     }, 3000);
 
     const campainAndContactsListDatas = [
@@ -300,8 +298,12 @@ const CreateCampaign = (props) => {
     await API.put(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
       campainAndContactsListDatas
-    ).then((res) => {
-      console.log(res);
+    ).then(() => {
+      addToast('Votre campagne a bien été enregistrée !', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+      history.push('/');
     });
   };
 
@@ -325,7 +327,7 @@ const CreateCampaign = (props) => {
       <div className="title-page">
         <img src={textToSpeechIcon} alt="push vocal icon" />
         <h2 className="title-page-title">PUSH VOCAL</h2>
-        <p> : élargir votre audience en envoyant des messages vocaux </p>
+        <p> élargir votre audience en envoyant des messages vocaux </p>
       </div>
 
       <div className="vocal-campaign-body">
@@ -333,6 +335,7 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
+
             <input
               type="text"
               className="vocal-campaign-name"
@@ -341,6 +344,7 @@ const CreateCampaign = (props) => {
                 setCampaignName(e.target.value);
               }}
             />
+
             <p>Date d'envoi</p>
             <form className="vocal-campaign-date" noValidate>
               <TextField
@@ -702,13 +706,25 @@ const CreateCampaign = (props) => {
             <a
               target="_blank"
               rel="noreferrer"
-              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportContacts`}
+              href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportContacts`}
               className="broadcast-list-export"
             >
               <AiOutlineExport className="broadcast-list-icon" />
-              <p>Exporter une liste de diffusion</p>
+              <p className="fileNotYetUploaded">
+                Exporter une liste de diffusion
+              </p>
             </a>
           </div>
+          <a
+            href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/template`}
+            className="template"
+          >
+            Modèle téléchargeable
+          </a>
+          <p className="alert-phone-number">
+            Pensez à vérifier les indicateurs téléphoniques de vos contacts
+          </p>
+
           <ContactsView
             className="broadcast-list-array"
             contactsList={contactsList}
