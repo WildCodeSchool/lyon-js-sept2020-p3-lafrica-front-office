@@ -325,7 +325,7 @@ const CreateCampaign = (props) => {
       <div className="title-page">
         <img src={textToSpeechIcon} alt="push vocal icon" />
         <h2 className="title-page-title">PUSH VOCAL</h2>
-        <p> : élargir votre audience en envoyant des messages vocaux </p>
+        <p> élargir votre audience en envoyant des messages vocaux </p>
       </div>
 
       <div className="vocal-campaign-body">
@@ -333,6 +333,7 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
+
             <input
               type="text"
               className="vocal-campaign-name"
@@ -341,6 +342,7 @@ const CreateCampaign = (props) => {
                 setCampaignName(e.target.value);
               }}
             />
+
             <p>Date d'envoi</p>
             <form className="vocal-campaign-date" noValidate>
               <TextField
@@ -706,7 +708,9 @@ const CreateCampaign = (props) => {
               className="broadcast-list-export"
             >
               <AiOutlineExport className="broadcast-list-icon" />
-              <p>Exporter une liste de diffusion</p>
+              <p className="fileNotYetUploaded">
+                Exporter une liste de diffusion
+              </p>
             </a>
           </div>
           <ContactsView

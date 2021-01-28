@@ -56,7 +56,6 @@ const Contact = (props) => {
 
   return (
     <tr key={id}>
-      <td className="id">{id}</td>
       <td>
         <input
           type="text"
