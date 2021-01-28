@@ -1,16 +1,13 @@
 import React from 'react';
 import './login.css';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/material.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -53,24 +50,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = () => {
+const ResetPassword = (props) => {
   const classes = useStyles();
+  const { match } = props;
 
   const { addToast } = useToasts();
 
   const schema = Joi.object({
-    firstname: Joi.string().max(50).required(),
-    lastname: Joi.string().max(50).required(),
-    phone_number: Joi.string().pattern(
-      new RegExp(/^[0-9]?()[0-9](\s|\S)(\d[0-9]{0,})$/)
-    ),
-    email: Joi.string()
-      .required()
-      .pattern(
-        new RegExp(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
-      ),
     password: Joi.string()
       .required()
       .pattern(
@@ -79,7 +65,7 @@ const SignUp = () => {
     password_confirmation: Joi.ref('password'),
   }).with('password', 'password_confirmation');
 
-  const { control, errors, register, handleSubmit } = useForm({
+  const { errors, register, handleSubmit } = useForm({
     resolver: joiResolver(schema),
     mode: 'onBlur',
   });
@@ -91,16 +77,15 @@ const SignUp = () => {
   };
 
   const submitUserData = async (data) => {
-    console.log(data);
     try {
-      await API.post('/users/signUp', data);
-      addToast('Bienvenue sur LAfricamobile !', {
+      await API.post(`/auth/reset/${match.params.token}`, data);
+      addToast('Mot de passe réinitialisé avec succès!', {
         appearance: 'success',
         autoDismiss: true,
       });
       handleRedirect();
     } catch {
-      addToast("L'inscription a echouée !", {
+      addToast('La réinitialisation du mot de passe a échoué', {
         appearance: 'error',
         autoDismiss: true,
       });
@@ -115,7 +100,7 @@ const SignUp = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          S'enregistrer
+          Réinitialisation du mot de passe
         </Typography>
         <form
           className={classes.form}
@@ -123,85 +108,6 @@ const SignUp = () => {
           onSubmit={handleSubmit(submitUserData)}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstname"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstname"
-                label="Prénom"
-                autoFocus
-                inputRef={register}
-                error={!!errors.firstname}
-                helperText={errors.firstname && 'Un prénom est obligatoire'}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastname"
-                label="Nom"
-                name="lastname"
-                autoComplete="lname"
-                inputRef={register}
-                helperText={errors.lastname && 'Un nom est obligatoire'}
-                error={!!errors.lastname}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                render={(props) => (
-                  <PhoneInput
-                    regions={['europe', 'africa']}
-                    masks={{
-                      fr: '. .. .. .. ..',
-                      sn: '.. ... ....',
-                      cg: '... .. ..',
-                    }}
-                    isValid={(v) => v.length > 5}
-                    placeholder="Numéro de téléphone"
-                    inputRef={register}
-                    inputStyle={{
-                      width: '100%',
-                      height: '56px',
-                      fontSize: '15px',
-                      paddingLeft: '60px',
-                      borderRadius: '5px',
-                    }}
-                    inputProps={{
-                      name: 'phone_number',
-                      required: true,
-                    }}
-                    id="phone_number"
-                    specialLabel="Telephone"
-                    name="phone_number"
-                    autoComplete="phone_number"
-                    onChange={(value) => props.onChange(value)}
-                  />
-                )}
-                defaultValue=""
-                name="phone_number"
-                control={control}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Adresse e-mail"
-                name="email"
-                autoComplete="email"
-                inputRef={register}
-                error={!!errors.email}
-                helperText={errors.email && 'Adresse email invalide'}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -246,22 +152,12 @@ const SignUp = () => {
             color="primary"
             className={classes.submit}
           >
-            S'enregistrer
+            Enregistrer le nouveau mot de passe{' '}
           </Button>
-
-          <Grid container justify="flex-end">
-            <div className="MuiGrid-container-signUp">
-              <Grid item>
-                <Link href="/signIn" variant="body2">
-                  Vous avez déja un compte ? Connectez-vous !
-                </Link>
-              </Grid>
-            </div>
-          </Grid>
         </form>
       </div>
     </Container>
   );
 };
 
-export default SignUp;
+export default ResetPassword;

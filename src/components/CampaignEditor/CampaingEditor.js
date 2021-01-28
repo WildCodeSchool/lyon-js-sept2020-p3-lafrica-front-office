@@ -12,6 +12,7 @@ import {
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import { GrCloudDownload, GrSend } from 'react-icons/gr';
 import { FaMicrophone } from 'react-icons/fa';
 import { IoIosPlayCircle } from 'react-icons/io';
@@ -24,20 +25,20 @@ import {
 } from 'react-icons/ai';
 import { MdPermContactCalendar } from 'react-icons/md';
 import { useToasts } from 'react-toast-notifications';
-import './CreateCampaign.scss';
+import './CampaignEditor.scss';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { RiFileEditLine } from 'react-icons/ri';
 import API from '../../services/API';
-import textToSpeechIcon from '../../images/text_to_speech.png';
 import {
   SpeedSlider,
   PitchSlider,
   VolumeSlider,
-} from './subcomponents/CustomizedSlider';
+} from '../create campaign/subcomponents/CustomizedSlider';
 import { UserContext } from '../../context/UserContext';
-import ContactsView from './subcomponents/ContactsView';
+import ContactsView from '../create campaign/subcomponents/ContactsView';
 
-const CreateCampaign = (props) => {
+const CampaignEditor = (props) => {
   const dateNow = new Date();
   const [campaignName, setCampaignName] = useState('');
   const [campaignDate, setCampaignDate] = useState(dateNow);
@@ -59,6 +60,8 @@ const CreateCampaign = (props) => {
   const { match } = props;
   const [audioDuration, setAudioDuration] = useState();
   const [messageCounter, setMessageCounter] = useState(1);
+  const [toggleContactsUpload, setToggleContactsUpload] = useState(false);
+
   const [
     receivedFormatDifferentFromTxtAndDocx,
     setReceivedFormatDifferentFromTxtAndDocx,
@@ -67,7 +70,6 @@ const CreateCampaign = (props) => {
     receivedFormatDifferentFromXlsxAndCsv,
     setReceivedFormatDifferentFromXlsxAndCsv,
   ] = useState(false);
-  const [toggleContactsUpload, setToggleContactsUpload] = useState(false);
 
   const { userDetails } = useContext(UserContext);
 
@@ -108,14 +110,14 @@ const CreateCampaign = (props) => {
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/upload`,
       formData
     )
-      .then((res) => {
+      .then(() => {
+        setToggleContactsUpload(!toggleContactsUpload);
+
         if (receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
         }
-        setContactsList(res.data);
-        setToggleContactsUpload(!toggleContactsUpload);
       })
       .catch((err) => {
         if (!receivedFormatDifferentFromXlsxAndCsv) {
@@ -152,6 +154,7 @@ const CreateCampaign = (props) => {
         }
         if (res.data.text_message !== null) {
           setMessageToVocalize(res.data.text_message);
+          setLastVocalizedMessage(res.data.text_message);
         } else {
           setMessageToVocalize('');
         }
@@ -299,7 +302,7 @@ const CreateCampaign = (props) => {
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
       campainAndContactsListDatas
     ).then(() => {
-      addToast('Votre campagne a bien été enregistrée !', {
+      addToast('Vos modifications ont été enregistrées !', {
         appearance: 'success',
         autoDismiss: true,
       });
@@ -324,10 +327,12 @@ const CreateCampaign = (props) => {
 
   return (
     <div className="create-campaign-body">
-      <div className="title-page">
-        <img src={textToSpeechIcon} alt="push vocal icon" />
-        <h2 className="title-page-title">PUSH VOCAL</h2>
-        <p> élargir votre audience en envoyant des messages vocaux </p>
+      <div className="title-page-edit">
+        <RiFileEditLine className="edit-logo-no-border" />
+        <div className="title-page-div-edit">
+          <h2 className="title-page-title-edit">Modifiez votre campagne</h2>
+          <p> {campaignName} </p>
+        </div>
       </div>
 
       <div className="vocal-campaign-body">
@@ -335,16 +340,15 @@ const CreateCampaign = (props) => {
         <div className="vocal-campaign-frame">
           <div className="vocal-campaign-grid">
             <p>Nom de campagne</p>
-
             <input
               type="text"
               className="vocal-campaign-name"
               placeholder="Votre nom de campagne"
+              value={campaignName}
               onChange={(e) => {
                 setCampaignName(e.target.value);
               }}
             />
-
             <p>Date d'envoi</p>
             <form className="vocal-campaign-date" noValidate>
               <TextField
@@ -366,7 +370,7 @@ const CreateCampaign = (props) => {
 
       <div className="vocalization-body">
         <h3 className="vocalization-title">
-          Saisissez votre message à vocaliser
+          Modifiez votre message à vocaliser
         </h3>
         <div className="vocalization-frame">
           <form>
@@ -581,7 +585,6 @@ const CreateCampaign = (props) => {
                 Télécharger le fichier audio
               </p>
             </div>
-            {/* <div /> */}
             <div className="vocalization-action-trySend">
               {lastVocalizedMessage === messageToVocalize &&
               messageToVocalize ? (
@@ -724,14 +727,13 @@ const CreateCampaign = (props) => {
           <p className="alert-phone-number">
             Pensez à vérifier les indicateurs téléphoniques de vos contacts
           </p>
-
           <ContactsView
             className="broadcast-list-array"
             contactsList={contactsList}
             setContactsList={setContactsList}
+            campaignId={match.params.campaign_id}
             setToggleContactsUpload={setToggleContactsUpload}
             toggleContactsUpload={toggleContactsUpload}
-            campaignId={match.params.campaign_id}
           />
         </div>
       </div>
@@ -745,10 +747,10 @@ const CreateCampaign = (props) => {
           <CircularProgress />
         </div>
         <GrSend className="sendCampaignIcon" />
-        <h3>Créer ma campagne d'envoi de message</h3>
+        <h3>Sauvegarder vos modifications</h3>
       </button>
     </div>
   );
 };
 
-export default CreateCampaign;
+export default CampaignEditor;

@@ -6,12 +6,17 @@ import CampaignDetail from './CampaignDetail/CampaignDetails';
 import Footer from './footer/Footer';
 import Header from './header/Header';
 import SignIn from './login/SignIn';
+import ForgetPassword from './login/ForgetPassword';
+import ResetPassword from './login/ResetPassword';
 // import Home from './home/Home';
 import SignUp from './login/SignUp';
-import CampaignsView from './campaignsView/CampaignsView';
+import CampaignsView from './campaignsView/AdminCampaignsView';
 import ContactsView from './create campaign/subcomponents/ContactsView';
 import UserContextProvider from '../context/UserContext';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
+import AdminRoute from './ProtectedRoutes/AdminRoute';
+import CampaignEditor from './CampaignEditor/CampaingEditor';
+import Statistics from './Stats/Statistics';
 
 function App() {
   return (
@@ -22,15 +27,24 @@ function App() {
             <Header />
             <main>
               <Switch>
+                <AdminRoute path="/stats" component={Statistics} />
+
                 <Route path="/signin">
                   <SignIn />
                 </Route>
                 <Route path="/signup">
                   <SignUp />
                 </Route>
+                <Route path="/forgot" component={ForgetPassword} />
+                <Route path="/reset/:token" component={ResetPassword} />
                 <ProtectedRoute
-                  path="/campaigns/edit/:campaign_id"
+                  path="/campaigns/createcampaign/:campaign_id"
                   component={CreateCampaign}
+                />
+
+                <ProtectedRoute
+                  path="/campaigns/editcampaign/:campaign_id"
+                  component={CampaignEditor}
                 />
 
                 <ProtectedRoute
@@ -38,7 +52,7 @@ function App() {
                   component={CampaignDetail}
                 />
 
-                <ProtectedRoute exact path="/" component={CampaignsView} />
+                <AdminRoute exact path="/" component={CampaignsView} />
                 <ProtectedRoute
                   path="/users/:user_id/contacts"
                   component={ContactsView}

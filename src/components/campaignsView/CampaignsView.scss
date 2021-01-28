@@ -1,0 +1,347 @@
+:root {
+  --primary-color: rgb(98, 186, 227);
+  --secondary-color: rgb(33, 36, 36);
+}
+
+.compaigns-view-container {
+  height: 100%;
+}
+
+.campaings-editor-view-container {
+  display: flex;
+}
+
+.campaigns-editor-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  color: var(--primary-color);
+  width: 80%;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+article {
+  margin-bottom: 20px;
+}
+.campaigns-list {
+  border: 4px solid var(--primary-color);
+  padding: 10px 0px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: white;
+}
+
+.campaigns-chart {
+  width: 100%;
+  background-color: white;
+}
+
+// .campaigns-list-table-options {
+//   display: grid;
+//   grid-gap: 10px;
+//   grid-template-columns: 1fr 1fr;
+//   grid-template-rows: 1fr;
+//   margin-bottom: 10px;
+//   margin-left: 20px;
+//   font-size: 14px;
+
+// }
+
+.table-campaign-search {
+  margin-bottom: 5px;
+  label {
+    width: 90%;
+  }
+  input {
+    border: 1px solid rgb(98, 186, 227);
+    width: 99%;
+    height: 20px;
+    padding: 2px;
+  }
+}
+
+.table-search {
+  min-height: 20px;
+  border: 1px solid rgb(98, 186, 227);
+  font-weight: normal;
+  font-size: 14px;
+  width: 100px;
+  margin: 0px auto 5px;
+  background-color: white;
+  cursor: pointer;
+}
+.table-date-sort {
+  margin-bottom: 5px;
+
+  select {
+    border: 1px solid rgb(98, 186, 227);
+    height: 20px;
+  }
+}
+
+.campaigns-list-table {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px auto;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+}
+
+.no-border {
+  border: none;
+  text-align: center;
+  width: 30px;
+}
+.stop-icon {
+  color: orange;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.delete-icon {
+  color: red;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.stylized-td {
+  border: 1px solid grey;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* td:nth-child(0n + 4) {
+  width: 150px;
+} */
+
+.cell-campaign-status {
+  display: flex;
+  align-items: center;
+}
+
+.stylized-th {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--secondary-color);
+  padding: 10px;
+}
+
+.search-icon {
+  color: grey;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.edit-icon {
+  color: grey;
+  cursor: pointer;
+  margin-right: 20px;
+}
+.megaphone,
+.edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 50%;
+}
+
+a:visited {
+  color: black;
+}
+
+.megaphone-icon {
+  display: block;
+  border: 5px solid var(--primary-color);
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 100px;
+}
+
+h2,
+h3 {
+  text-align: center;
+}
+
+.microphone-icon {
+  font-size: 100px;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+}
+.finished-status {
+  background: #aed581;
+}
+
+.in-progress-status {
+  background: #ddb637;
+}
+
+.in-creation-status {
+  background: #747474;
+}
+
+.awaiting-status {
+  background: #f4511e;
+}
+
+@media only screen and (max-width: 400px) {
+  h2 {
+    font-size: 0.9em;
+  }
+  h3 {
+    font-size: 0.7em;
+  }
+  td,
+  th,
+  .stylized-th,
+  .stylized-td {
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 0.6em;
+    width: auto;
+  }
+  .megaphone-icon,
+  .microphone-icon {
+    font-size: 400%;
+  }
+  .pagination {
+    width: 100%;
+    font-size: 0.6em;
+    button {
+      font-size: 1em;
+    }
+  }
+  .campaigns-list {
+    margin: 7px;
+  }
+  .admin-campaigns-list {
+    display: none;
+  }
+
+  .campaigns-list-table {
+    width: 90%;
+    table {
+      thead,
+      td,
+      th,
+      select,
+      div,
+      input,
+      .stylized-td {
+        max-width: 80px;
+        font-size: 0.6em;
+      }
+      .stylized-td {
+        min-width: 79px;
+      }
+      p {
+        font-size: 1.2em;
+      }
+    }
+  }
+  .table-search {
+    padding-top: 5px;
+  }
+}
+
+@media only screen and (min-device-width: 400px) and (max-device-width: 760px) {
+  .campaigns-list {
+    margin: 7px;
+    width: 90%;
+    margin: auto;
+  }
+  h2 {
+    font-size: 1.1em;
+  }
+  h3 {
+    font-size: 0.9em;
+  }
+
+  td,
+  th,
+  .stylized-th,
+  .stylized-td {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 0.8em;
+  }
+  .megaphone-icon,
+  .microphone-icon {
+    font-size: 400%;
+  }
+  .pagination {
+    width: 100%;
+    font-size: 0.8em;
+    button {
+      font-size: 1em;
+    }
+  }
+}
+
+@media screen and (min-width: 760px) and (max-device-width: 1024px) {
+  .campaigns-list {
+    width: 90%;
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .campaigns-list {
+    width: 90%;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 760px) and (orientation: portrait) {
+  .landscape {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    p {
+      text-align: center;
+      font-size: 18px;
+      color: red;
+    }
+    img {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .landscape {
+    display: none;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .landscape {
+    display: none;
+  }
+}

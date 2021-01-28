@@ -1,8 +1,11 @@
 import { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import API from '../../../services/API';
 import { UserContext } from '../../../context/UserContext';
 
 const Contact = (props) => {
+  const history = useHistory();
+
   const {
     id,
     lastname,
@@ -16,7 +19,7 @@ const Contact = (props) => {
   const [contactLastname, setContactLastname] = useState(lastname);
   const [contactFirstname, setContactFirstname] = useState(firstname);
   const [contactPhoneNumber, setContactPhoneNumber] = useState(phoneNumber);
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setLoggedIn, setUserDetails } = useContext(UserContext);
 
   const handleChangeLastname = (e) => {
     setContactLastname(e.target.value);
@@ -43,24 +46,29 @@ const Contact = (props) => {
         setContactsList([...contactsList]);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          setLoggedIn(false);
+          setUserDetails({});
+          history.push('/signin');
+        }
       });
   };
 
   return (
     <tr key={id}>
-      <td className="id">{id}</td>
       <td>
         <input
           type="text"
-          value={contactLastname}
+          value={contactLastname.toUpperCase()}
           onChange={handleChangeLastname}
         />
       </td>
       <td>
         <input
           type="text"
-          value={contactFirstname}
+          value={
+            contactFirstname.charAt(0).toUpperCase() + contactFirstname.slice(1)
+          }
           onChange={handleChangeFirstname}
         />
       </td>
@@ -86,7 +94,7 @@ const Contact = (props) => {
           type="button"
           onClick={() => deleteContact(id)}
         >
-          Suprimer
+          Supprimer
         </button>
       </td>
     </tr>
