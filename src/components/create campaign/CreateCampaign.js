@@ -658,7 +658,7 @@ const CreateCampaign = (props) => {
           <div className="broadcast-list-title">
             <MdPermContactCalendar className="broadcast-icon" />
             <h2>Gérer votre liste de diffusion</h2>
-            <h3>Ajoutez, modifiez ou suprimez un contact</h3>
+            <h3>Ajoutez, modifiez ou supprimez un contact</h3>
           </div>
 
           <div className="broadcast-list-grid">

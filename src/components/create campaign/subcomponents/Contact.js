@@ -93,7 +93,7 @@ const Contact = (props) => {
           type="button"
           onClick={() => deleteContact(id)}
         >
-          Suprimer
+          Supprimer
         </button>
       </td>
     </tr>
