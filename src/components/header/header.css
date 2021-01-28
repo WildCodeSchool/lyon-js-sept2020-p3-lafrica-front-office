@@ -44,6 +44,9 @@ header {
   text-decoration: none;
   color: black;
   font-size: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 }
 
 .menuBtn a:hover {
@@ -63,7 +66,7 @@ header {
 }
 /* Position and sizing of burger button */
 .bm-burger-button {
-  position: fixed;
+  position: absolute;
   width: 26px;
   height: 20px;
   left: 25px;
@@ -107,11 +110,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
   font-size: 1.15em;
 }
 
-.bm-menu a {
-  text-decoration: none;
-  color: white;
-}
-
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
   fill: #373a47;
@@ -145,6 +143,16 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
 #react-burger-menu-btn a:focus {
   border: none;
+}
+
+.bm-menu a {
+  text-decoration: none;
+  color: white;
+}
+
+.bm-menu a:visited {
+  text-decoration: none;
+  color: white;
 }
 
 @media (max-width: 650px) {
