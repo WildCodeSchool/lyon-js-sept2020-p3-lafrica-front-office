@@ -732,6 +732,7 @@ const CreateCampaign = (props) => {
             setToggleContactsUpload={setToggleContactsUpload}
             toggleContactsUpload={toggleContactsUpload}
             campaignId={match.params.campaign_id}
+            route="createcampaign"
           />
         </div>
       </div>

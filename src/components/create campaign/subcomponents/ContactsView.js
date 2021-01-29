@@ -17,7 +17,7 @@ const ContactsView = (props) => {
     phoneNumber: '',
   };
 
-  const { campaignId } = props;
+  const { campaignId, route } = props;
 
   const history = useHistory();
 
@@ -39,7 +39,7 @@ const ContactsView = (props) => {
 
   const updateSearchUrl = (params) => {
     const clientQueryParams = queryString.stringify(params);
-    history.push(`/campaigns/edit/${campaignId}?${clientQueryParams}`);
+    history.push(`/campaigns/${route}/${campaignId}?${clientQueryParams}`);
   };
 
   const setCurrentPage = (pageNum) => {

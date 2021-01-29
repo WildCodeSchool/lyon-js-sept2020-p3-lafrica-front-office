@@ -734,6 +734,7 @@ const CampaignEditor = (props) => {
             campaignId={match.params.campaign_id}
             setToggleContactsUpload={setToggleContactsUpload}
             toggleContactsUpload={toggleContactsUpload}
+            route="editcampaign"
           />
         </div>
       </div>
