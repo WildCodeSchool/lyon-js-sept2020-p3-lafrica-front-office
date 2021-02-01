@@ -285,19 +285,26 @@ const CreateCampaign = (props) => {
       setSendingLoader(false);
     }, 3000);
 
-    const campainAndContactsListDatas = [
-      {
-        user_id: userDetails.id,
-        campaign_name: campaignName,
-        campaign_text: messageToVocalize,
-        campaign_vocal: vocalisationFileName,
-        campaign_date: campaignDate,
-      },
-      contactsList,
-    ];
+    // const campainAndContactsListDatas = [
+    //   {
+    //     user_id: userDetails.id,
+    //     campaign_name: campaignName,
+    //     campaign_text: messageToVocalize,
+    //     campaign_vocal: vocalisationFileName,
+    //     campaign_date: campaignDate,
+    //   },
+    //   contactsList,
+    // ];
+    const campaignData = {
+      user_id: userDetails.id,
+      campaign_name: campaignName,
+      campaign_text: messageToVocalize,
+      campaign_vocal: vocalisationFileName,
+      campaign_date: campaignDate,
+    };
     await API.put(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
-      campainAndContactsListDatas
+      campaignData
     ).then(() => {
       addToast('Votre campagne a bien été enregistrée !', {
         appearance: 'success',
