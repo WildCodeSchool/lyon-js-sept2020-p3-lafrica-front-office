@@ -257,7 +257,7 @@ const CreateCampaign = (props) => {
       // loaderON A RAJOUTER
       // setPhoneNumber('Message envoyé') A RAJOUTER;
 
-      await API.post('/voice/sendVocalMessage/test', {
+      await API.post('/voice/test', {
         phoneNumber,
         vocalisationFileName,
       });
@@ -285,19 +285,26 @@ const CreateCampaign = (props) => {
       setSendingLoader(false);
     }, 3000);
 
-    const campainAndContactsListDatas = [
-      {
-        user_id: userDetails.id,
-        campaign_name: campaignName,
-        campaign_text: messageToVocalize,
-        campaign_vocal: vocalisationFileName,
-        campaign_date: campaignDate,
-      },
-      contactsList,
-    ];
+    // const campainAndContactsListDatas = [
+    //   {
+    //     user_id: userDetails.id,
+    //     campaign_name: campaignName,
+    //     campaign_text: messageToVocalize,
+    //     campaign_vocal: vocalisationFileName,
+    //     campaign_date: campaignDate,
+    //   },
+    //   contactsList,
+    // ];
+    const campaignData = {
+      user_id: userDetails.id,
+      campaign_name: campaignName,
+      campaign_text: messageToVocalize,
+      campaign_vocal: vocalisationFileName,
+      campaign_date: campaignDate,
+    };
     await API.put(
       `/users/${userDetails.id}/campaigns/${match.params.campaign_id}`,
-      campainAndContactsListDatas
+      campaignData
     ).then(() => {
       addToast('Votre campagne a bien été enregistrée !', {
         appearance: 'success',
@@ -716,7 +723,7 @@ const CreateCampaign = (props) => {
             </a>
           </div>
           <a
-            href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/template`}
+            href={`${process.env.REACT_APP_API_BASE_URL}/template`}
             className="template"
           >
             Modèle téléchargeable
@@ -732,6 +739,7 @@ const CreateCampaign = (props) => {
             setToggleContactsUpload={setToggleContactsUpload}
             toggleContactsUpload={toggleContactsUpload}
             campaignId={match.params.campaign_id}
+            route="createcampaign"
           />
         </div>
       </div>
