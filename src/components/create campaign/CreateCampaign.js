@@ -257,7 +257,7 @@ const CreateCampaign = (props) => {
       // loaderON A RAJOUTER
       // setPhoneNumber('Message envoyé') A RAJOUTER;
 
-      await API.post('/voice/sendVocalMessage/test', {
+      await API.post('/voice/test', {
         phoneNumber,
         vocalisationFileName,
       });
@@ -723,7 +723,7 @@ const CreateCampaign = (props) => {
             </a>
           </div>
           <a
-            href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/template`}
+            href={`${process.env.REACT_APP_API_BASE_URL}/template`}
             className="template"
           >
             Modèle téléchargeable

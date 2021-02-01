@@ -117,7 +117,7 @@ const CampaignDetail = (props) => {
               className="export-stats"
               target="_blank"
               rel="noreferrer"
-              href={`http://localhost:5000/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportStatistics`}
+              href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/${match.params.campaign_id}/contacts/exportStatistics`}
             >
               <BiExport className="export-logo" />
               <p>Exporter mes stats</p>

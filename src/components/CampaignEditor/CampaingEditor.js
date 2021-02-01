@@ -257,14 +257,11 @@ const CampaignEditor = (props) => {
       setPhoneNumberTestCheck(false);
     } else {
       setPhoneNumberTestCheck(true);
-      // loaderON A RAJOUTER
-      // setPhoneNumber('Message envoyé') A RAJOUTER;
 
-      await API.post('/voice/sendVocalMessage/test', {
+      await API.post('/voice/test', {
         phoneNumber,
         vocalisationFileName,
       });
-      // LoaderOFF A RAJOUTER
     }
   };
 
@@ -726,7 +723,7 @@ const CampaignEditor = (props) => {
             </a>
           </div>
           <a
-            href={`${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/template`}
+            href={`${process.env.REACT_APP_API_BASE_URL}/template`}
             className="template"
           >
             Modèle téléchargeable
