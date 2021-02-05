@@ -183,7 +183,7 @@ const CampaignsView = () => {
               <MdDeleteForever
                 className="delete-icon"
                 onClick={() => handleClickOpen(campaign.id)}
-                title="Suprimer une campagne"
+                title="Supprimer la campagne"
               />
             </td>
           )}
