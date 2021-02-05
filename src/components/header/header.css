@@ -17,6 +17,11 @@ header li {
   display: none;
 }
 
+.create-campaign {
+  color: white;
+  cursor: pointer;
+}
+
 header {
   display: flex;
   justify-content: space-between;
