@@ -174,6 +174,7 @@ const CampaignsView = () => {
               <TiCancel
                 className="stop-icon"
                 onClick={() => handleStopOpen(campaign.id)}
+                title="Stopper la campagne"
               />
             </td>
           )}
@@ -182,6 +183,7 @@ const CampaignsView = () => {
               <MdDeleteForever
                 className="delete-icon"
                 onClick={() => handleClickOpen(campaign.id)}
+                title="Supprimer la campagne"
               />
             </td>
           )}

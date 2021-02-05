@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './header.css';
 import { slide as Menu } from 'react-burger-menu';
 import { BsFillPersonFill } from 'react-icons/bs';
@@ -13,6 +13,8 @@ const Header = () => {
   const { userDetails, setUserDetails, loggedIn, setLoggedIn } = useContext(
     UserContext
   );
+
+  const [campaignId, setCampaignId] = useState();
 
   const handleLogOut = async () => {
     try {
@@ -32,6 +34,18 @@ const Header = () => {
     }
   };
 
+  const createCampaignInDatabase = async () => {
+    await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
+      setCampaignId(res.data.campaign_id);
+    });
+  };
+
+  useEffect(() => {
+    if (campaignId) {
+      history.push(`/campaigns/createcampaign/${campaignId}`);
+    }
+  }, [campaignId]);
+
   return (
     <header>
       <div className={loggedIn ? 'logoutBtn-true' : 'logoutBtn-false'}>
@@ -47,7 +61,16 @@ const Header = () => {
           {userDetails.role === 'admin' ? (
             <Link to="/stats"> STATISTIQUES</Link>
           ) : (
-            <Link to="/campaigns">CREER UNE CAMPAGNE</Link>
+            <div
+              className="create-campaign"
+              onClick={createCampaignInDatabase}
+              type="button"
+              onKeyPress={() => {}}
+              role="button"
+              tabIndex="0"
+            >
+              CREER UNE CAMPAGNE
+            </div>
           )}
         </Menu>
       </div>
