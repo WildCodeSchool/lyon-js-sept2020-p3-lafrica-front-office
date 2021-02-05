@@ -133,6 +133,15 @@ const SignIn = () => {
             })}
             error={!!errors.password}
             helperText={errors.password && errors.password.message}
+            onCut={(e) => {
+              e.preventDefault();
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+            }}
+            onPaste={(e) => {
+              e.preventDefault();
+            }}
           />
           <FormControlLabel
             control={
