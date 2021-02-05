@@ -18,6 +18,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+
 import CampaignsChart from '../CampaignsChart/CampaignsChart';
 
 import API from '../../services/API';
@@ -171,20 +174,30 @@ const CampaignsView = () => {
           </td>
           {campaign.sending_status !== 2 && (
             <td className="same-width-than-search-icon no-border">
-              <TiCancel
-                className="stop-icon"
-                onClick={() => handleStopOpen(campaign.id)}
-                title="Stopper la campagne"
-              />
+              <Tooltip title="Stopper" placement="bottom" aria-label="stop">
+                <IconButton aria-label="stop">
+                  <TiCancel
+                    className="stop-icon"
+                    onClick={() => handleStopOpen(campaign.id)}
+                    title="Stopper la campagne"
+                  />
+                </IconButton>
+              </Tooltip>
             </td>
           )}
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
-              <MdDeleteForever
-                className="delete-icon"
-                onClick={() => handleClickOpen(campaign.id)}
-                title="Suprimer une campagne"
-              />
+              <Tooltip title="Supprimer" placement="bottom" aria-label="delete">
+                <IconButton aria-label="delete">
+                  <MdDeleteForever
+                    className="delete-icon"
+                    onClick={() => handleClickOpen(campaign.id)}
+                    title="Suprimer une campagne"
+                  >
+                    <title>Supprimer une campagne</title>
+                  </MdDeleteForever>
+                </IconButton>
+              </Tooltip>
             </td>
           )}
 
