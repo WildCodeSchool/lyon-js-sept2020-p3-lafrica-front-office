@@ -218,6 +218,15 @@ const SignUp = () => {
                   errors.password &&
                   "Votre mot de passe doit être d'au moins 6 caractères et doit contenir un chiffre, un caractère majuscule, un caractère minuscule et un caractère spécial"
                 }
+                onCut={(e) => {
+                  e.preventDefault();
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -236,6 +245,15 @@ const SignUp = () => {
                   errors.password_confirmation &&
                   'Le mot de passe et la confirmation ne sont pas identiques'
                 }
+                onCut={(e) => {
+                  e.preventDefault();
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                }}
               />
             </Grid>
           </Grid>
