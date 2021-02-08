@@ -5,7 +5,6 @@
 
 .compaigns-view-container {
   height: 100%;
-  margin-bottom: 90px;
 }
 
 .campaings-editor-view-container {
@@ -23,9 +22,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 20px;
   color: var(--primary-color);
   width: 80%;
+  margin-top: 50px;
 }
 
 .btn-container {
@@ -53,7 +53,18 @@ article {
   margin-top: 30px;
 }
 
-.table-campaign-search {
+// .campaigns-list-table-options {
+//   display: grid;
+//   grid-gap: 10px;
+//   grid-template-columns: 1fr 1fr;
+//   grid-template-rows: 1fr;
+//   margin-bottom: 10px;
+//   margin-left: 20px;
+//   font-size: 14px;
+
+// }
+
+.table-user-search {
   margin-bottom: 5px;
   label {
     width: 90%;
@@ -94,6 +105,7 @@ article {
   table {
     border-collapse: collapse;
     width: 100%;
+    margin: 20px auto;
   }
 }
 
@@ -120,6 +132,16 @@ article {
   font-size: 14px;
 }
 
+.stylized-td-confirmation-btn {
+  border: 1px solid grey;
+  // padding: 0px;
+  font-size: 14px;
+}
+
+/* td:nth-child(0n + 4) {
+  width: 150px;
+} */
+
 .cell-campaign-status {
   display: flex;
   align-items: center;
@@ -129,11 +151,12 @@ article {
   padding: 5px 0;
 }
 
-.stylized-th {
+.users-stylized-th {
   background-color: var(--primary-color);
   color: #fff;
   border: 1px solid var(--secondary-color);
   padding: 10px;
+  width: 25%;
 }
 
 .search-icon {
@@ -209,7 +232,7 @@ h3 {
   }
   td,
   th,
-  .stylized-th,
+  .users-stylized-th,
   .stylized-td {
     padding-left: 2px;
     padding-right: 2px;
@@ -295,13 +318,6 @@ h3 {
 }
 
 @media screen and (min-width: 760px) and (max-device-width: 1024px) {
-  .campaigns-list {
-    width: 90%;
-    margin: auto;
-  }
-}
-
-@media screen and (min-width: 1024px) {
   .campaigns-list {
     width: 90%;
     margin: auto;

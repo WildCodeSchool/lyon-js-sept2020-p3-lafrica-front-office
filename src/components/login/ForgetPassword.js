@@ -70,7 +70,6 @@ const ForgetPassword = () => {
   });
 
   const submitUserData = async (data) => {
-    console.log(data);
     try {
       await API.post(`/auth/forgot`, data);
       addToast(

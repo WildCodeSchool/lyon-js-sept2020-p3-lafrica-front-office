@@ -8,7 +8,6 @@ import { GoMegaphone } from 'react-icons/go';
 import { TiCancel } from 'react-icons/ti';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiSearchAlt2 } from 'react-icons/bi';
-// import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
@@ -20,9 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-
 import CampaignsChart from '../CampaignsChart/CampaignsChart';
-
 import API from '../../services/API';
 import { UserContext } from '../../context/UserContext';
 
@@ -175,12 +172,11 @@ const CampaignsView = () => {
           {campaign.sending_status !== 2 && (
             <td className="same-width-than-search-icon no-border">
               <Tooltip title="Stopper" placement="bottom" aria-label="stop">
-                <IconButton aria-label="stop">
-                  <TiCancel
-                    className="stop-icon"
-                    onClick={() => handleStopOpen(campaign.id)}
-                    title="Stopper la campagne"
-                  />
+                <IconButton
+                  aria-label="stop"
+                  onClick={() => handleStopOpen(campaign.id)}
+                >
+                  <TiCancel className="stop-icon" title="Stopper la campagne" />
                 </IconButton>
               </Tooltip>
             </td>
@@ -188,10 +184,12 @@ const CampaignsView = () => {
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
               <Tooltip title="Supprimer" placement="bottom" aria-label="delete">
-                <IconButton aria-label="delete">
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => handleClickOpen(campaign.id)}
+                >
                   <MdDeleteForever
                     className="delete-icon"
-                    onClick={() => handleClickOpen(campaign.id)}
                     title="Suprimer une campagne"
                   >
                     <title>Supprimer une campagne</title>
@@ -209,9 +207,21 @@ const CampaignsView = () => {
   };
 
   const createCampaignInDatabase = async () => {
-    await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
-      setCampaignId(res.data.campaign_id);
-    });
+    await API.post(`/users/${userDetails.id}/campaigns`)
+      .then((res) => {
+        setCampaignId(res.data.campaign_id);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          addToast(
+            "Votre compte est en attente de validation par l'administrateur",
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        }
+      });
   };
 
   useEffect(() => {
@@ -239,14 +249,7 @@ const CampaignsView = () => {
             >
               <GoMegaphone className="megaphone-icon" />
 
-              {/* <Link to={`/campaigns/${campaignId}`}>
-              </Link>
-              <Link
-                to={`/campaigns/${campaignId}`}
-                onClick={createCampaignInDatabase}
-              > */}
               <h3>Créer une campagne</h3>
-              {/* </Link> */}
             </div>
           </div>
         </div>
@@ -254,13 +257,12 @@ const CampaignsView = () => {
       <article>
         <div className="campaigns-list">
           <div className="campaigns-list-table">
-            {/* <div className="campaigns-list-table-options"></div> */}
             <table>
               <thead>
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <th />
-                  <th className="name">
+                  <th className="search-th">
                     <form className="table-campaign-search">
                       <label htmlFor="name">
                         <input
@@ -272,11 +274,9 @@ const CampaignsView = () => {
                           ref={register}
                         />
                       </label>
-
-                      {/* <button type="submit">ok</button> */}
                     </form>
                   </th>
-                  <th className="sortby">
+                  <th className="search-th">
                     <form className="table-date-sort">
                       <label htmlFor="sortby">
                         <select
@@ -292,7 +292,7 @@ const CampaignsView = () => {
                       </label>
                     </form>{' '}
                   </th>
-                  <th className="table-search-button">
+                  <th className="search-th">
                     <div
                       role="button"
                       tabIndex={0}
