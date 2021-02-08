@@ -43,7 +43,6 @@ const CreateCampaign = (props) => {
   const [campaignName, setCampaignName] = useState('');
   const [campaignDate, setCampaignDate] = useState(dateNow);
   const [messageToVocalize, setMessageToVocalize] = useState('');
-  const [lastVocalizedMessage, setLastVocalizedMessage] = useState('');
   const [audioFilePath, setAudioFilePath] = useState('');
   const [downloadAudioFilePath, setDownloadAudioFilePath] = useState('');
   const [textToUpload, setTextToUpload] = useState('');
@@ -76,8 +75,19 @@ const CreateCampaign = (props) => {
   const { addToast } = useToasts();
   const history = useHistory();
 
+  const [toggleColorButton, setToggleColorButton] = useState(false);
+
+  const handleColorButton = () => {
+    setToggleColorButton(true);
+  };
+
+  const resetColorButton = () => {
+    setToggleColorButton(false);
+  };
+
   const handleChange = (e) => {
     setMessageToVocalize(e.target.value);
+    handleColorButton();
   };
 
   const submitTextToUpload = () => {
@@ -204,11 +214,13 @@ const CreateCampaign = (props) => {
     setAudioConfig((prevConfig) => {
       return { ...prevConfig, [name]: value };
     });
+    handleColorButton();
   };
   const handleSelectAudioConfig = (e) => {
     setAudioConfig((prevConfig) => {
       return { ...prevConfig, [e.target.name]: e.target.value };
     });
+    handleColorButton();
   };
 
   const sendToGTTS = () => {
@@ -217,8 +229,8 @@ const CreateCampaign = (props) => {
       audioConfig,
     })
       .then((res) => {
+        resetColorButton();
         setVocalisationFileName(res.data);
-        setLastVocalizedMessage(messageToVocalize);
         setAudioFilePath(
           `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
         );
@@ -576,8 +588,7 @@ const CreateCampaign = (props) => {
 
             <div className="vocalization-action">
               <div className="vocalization-action-vocalize">
-                {lastVocalizedMessage !== messageToVocalize &&
-                messageToVocalize ? (
+                {toggleColorButton && messageToVocalize ? (
                   <FaMicrophone
                     className="vocalization-action-icon"
                     onClick={sendToGTTS}
@@ -588,18 +599,14 @@ const CreateCampaign = (props) => {
 
                 <p
                   className={
-                    lastVocalizedMessage !== messageToVocalize &&
-                    messageToVocalize
-                      ? 'blue'
-                      : null
+                    toggleColorButton && messageToVocalize ? 'blue' : null
                   }
                 >
                   Vocaliser votre message
                 </p>
               </div>
               <div className="vocalization-action-test">
-                {lastVocalizedMessage === messageToVocalize &&
-                messageToVocalize ? (
+                {!toggleColorButton && messageToVocalize ? (
                   <IoIosPlayCircle
                     onClick={play}
                     className="vocalization-action-icon"
@@ -609,10 +616,7 @@ const CreateCampaign = (props) => {
                 )}
                 <p
                   className={
-                    lastVocalizedMessage === messageToVocalize &&
-                    messageToVocalize
-                      ? 'blue'
-                      : null
+                    !toggleColorButton && messageToVocalize ? 'blue' : null
                   }
                 >
                   Ecouter votre message
@@ -624,8 +628,7 @@ const CreateCampaign = (props) => {
                 </p>
               </div>
               <div className="vocalization-action-download">
-                {lastVocalizedMessage === messageToVocalize &&
-                messageToVocalize ? (
+                {!toggleColorButton && messageToVocalize ? (
                   <div>
                     <a href={downloadAudioFilePath}>
                       <ImFolderDownload className="vocalization-action-icon" />
@@ -639,10 +642,7 @@ const CreateCampaign = (props) => {
 
                 <p
                   className={
-                    lastVocalizedMessage === messageToVocalize &&
-                    messageToVocalize
-                      ? 'blue'
-                      : null
+                    !toggleColorButton && messageToVocalize ? 'blue' : null
                   }
                 >
                   Télécharger le fichier audio
@@ -650,8 +650,7 @@ const CreateCampaign = (props) => {
               </div>
               {/* <div /> */}
               <div className="vocalization-action-trySend">
-                {lastVocalizedMessage === messageToVocalize &&
-                messageToVocalize ? (
+                {!toggleColorButton && messageToVocalize ? (
                   <FiPhoneIncoming
                     className="vocalization-action-icon"
                     onClick={handleClickOpen}
@@ -712,10 +711,7 @@ const CreateCampaign = (props) => {
 
                 <p
                   className={
-                    lastVocalizedMessage === messageToVocalize &&
-                    messageToVocalize
-                      ? 'blue'
-                      : null
+                    !toggleColorButton && messageToVocalize ? 'blue' : null
                   }
                 >
                   Tester un envoi
