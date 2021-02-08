@@ -2,6 +2,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import './Users.scss';
 import { useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
@@ -9,7 +12,20 @@ import Landscape from '../../images/turn_your_phone.gif';
 import API from '../../services/API';
 import { UserContext } from '../../context/UserContext';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    fontSize: '10px',
+    backgroundColor: 'green',
+    '&:hover': {
+      backgroundColor: '#398E3C',
+    },
+  },
+}));
+
 const Users = () => {
+  const classes = useStyles();
+
   const history = useHistory();
   const { addToast } = useToasts();
 
@@ -94,8 +110,8 @@ const Users = () => {
                 </div>
               )}
             </td>
-            <td className="stylized-td">
-              {user.user_confirmed === 0 ? (
+            {user.user_confirmed === 0 ? (
+              <td className="stylized-td-confirmation-btn">
                 <div className="cell-campaign-status">
                   <span
                     onClick={() => handleUserConfirmation(user.id, user.email)}
@@ -104,13 +120,22 @@ const Users = () => {
                     tabIndex="0"
                     style={{ cursor: 'pointer' }}
                   >
-                    Confirmer l'inscription
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<VerifiedUserIcon />}
+                    >
+                      Confirmer l'inscription
+                    </Button>
                   </span>
                 </div>
-              ) : (
+              </td>
+            ) : (
+              <td className="stylized-td">
                 <div className="cell-campaign-status" />
-              )}
-            </td>
+              </td>
+            )}
           </tr>
         );
       })
@@ -193,7 +218,7 @@ const Users = () => {
                         <option value="user_confirmed.asc">
                           Trier par statut
                         </option>
-                        <option value="user_confirmed.desc">Validé</option>
+                        <option value="user_confirmed.desc">Confirmé</option>
                         <option value="user_confirmed.asc">En attente</option>
                       </select>
                     </label>
