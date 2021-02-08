@@ -202,10 +202,6 @@ $secondary-blue: #116490;
     p {
       font-size: 0.8em;
     }
-    .campaign-intro {
-      .micro-logo {
-      }
-    }
 
     .campaign-information {
       flex-direction: column;
@@ -215,60 +211,20 @@ $secondary-blue: #116490;
       .campaign-table {
         margin-bottom: 20px;
         width: 100%;
-        td {
-        }
       }
 
       .campaign-actions {
         width: 100%;
-        .edit-campaign {
-        }
+
         .edit-logo {
           height: 50px;
           width: 50px;
         }
 
-        .export-stats {
-        }
         .export-logo {
           height: 50px;
           width: 50px;
         }
-      }
-    }
-
-    .stats {
-      .stats-review {
-        .main-stats {
-          .calls-total {
-          }
-          .success {
-            .calls-success-circle {
-            }
-            .calls-success {
-            }
-          }
-          .failed {
-            .calls-failed-circle {
-            }
-            .calls-failed {
-            }
-          }
-          .ignored {
-            .calls-ignored-circle {
-            }
-            .calls-ignored {
-            }
-          }
-        }
-        .win-rate {
-        }
-      }
-
-      .stats-array {
-      }
-
-      .stats-chart {
       }
     }
   }
@@ -288,33 +244,15 @@ $secondary-blue: #116490;
       font-size: 0.8em;
     }
 
-    .campaign-intro {
-      div {
-        h2,
-        h3 {
-        }
-      }
-      .micro-logo {
-      }
-    }
-
     .campaign-information {
       flex-direction: column;
 
-      .campaign-table {
-        td {
-        }
-      }
-
       .campaign-actions {
-        .edit-campaign {
-        }
         .edit-logo {
           height: 40px;
           width: 40px;
         }
-        .export-stats {
-        }
+
         .export-logo {
           height: 40px;
           width: 40px;
@@ -330,35 +268,7 @@ $secondary-blue: #116490;
         padding-right: 0;
         .main-stats {
           margin-bottom: 20px;
-          .calls-total {
-          }
-          .success {
-            .calls-success-circle {
-            }
-            .calls-success {
-            }
-          }
-          .failed {
-            .calls-failed-circle {
-            }
-            .calls-failed {
-            }
-          }
-          .ignored {
-            .calls-ignored-circle {
-            }
-            .calls-ignored {
-            }
-          }
         }
-        .win-rate {
-        }
-      }
-
-      .stats-array {
-      }
-
-      .stats-chart {
       }
     }
   }

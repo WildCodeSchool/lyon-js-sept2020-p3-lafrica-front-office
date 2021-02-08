@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './statistics.css';
+import './statistics.scss';
 import { Pie } from 'react-chartjs-2';
 import API from '../../services/API';
 import { UserContext } from '../../context/UserContext';
@@ -24,13 +24,11 @@ const Statistics = () => {
   const mappingForTotalSendCampaignsPerUser = () => {
     return totalSendCampaignsPerUsers.map((el) => {
       return (
-        <tbody>
-          <tr>
-            <td>{el.firstname}</td>
-            <td>{el.lastname}</td>
-            <td>{el.total}</td>
-          </tr>
-        </tbody>
+        <tr key={el.id_client_user}>
+          <td>{el.firstname}</td>
+          <td>{el.lastname}</td>
+          <td>{el.total}</td>
+        </tr>
       );
     });
   };
@@ -51,7 +49,7 @@ const Statistics = () => {
 
   const mappingNameForChart = () => {
     return totalSendCampaignsPerUsers.map((el) => {
-      return el.firstname + el.lastname;
+      return `${el.firstname} ${el.lastname}`;
     });
   };
 
@@ -90,36 +88,41 @@ const Statistics = () => {
   };
 
   return (
-    <div className="stats-container">
-      <p>Données au Global</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre total d'appels envoyées</th>
-            <th>Nombre total de Campagnes envoyées</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{sendCallCount}</td>
-            <td>{totalSendCampaigns}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>Données au détail</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Prénom Client</th>
-            <th>Nom Client</th>
-            <th>Nombre de Campagnes envoyées</th>
-          </tr>
-        </thead>
-        {mappingForTotalSendCampaignsPerUser()}
-      </table>
-      <div className="stats-charts">
-        <h2>Nb Campagnes/Clts</h2>
-        <Pie data={data} options={{ maintainAspectRatio: false }} />
+    <div className="stats-view-container">
+      <div className="title">
+        <h2>Statistiques</h2>
+      </div>
+      <div className="stats-container">
+        <h4>Données globales</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre total d'appels envoyés</th>
+              <th>Nombre total de Campagnes envoyées</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{sendCallCount}</td>
+              <td>{totalSendCampaigns}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4>Données détaillées</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Prénom</th>
+              <th>Nom </th>
+              <th>Nombre de Campagnes envoyées</th>
+            </tr>
+          </thead>
+          <tbody>{mappingForTotalSendCampaignsPerUser()}</tbody>
+        </table>
+        <div className="stats-charts">
+          <h4>Campagnes / Clients</h4>
+          <Pie data={data} options={{ maintainAspectRatio: false }} />
+        </div>
       </div>
     </div>
   );
