@@ -17,6 +17,7 @@ import ProtectedRoute from './ProtectedRoutes/ProtectedRoutes';
 import AdminRoute from './ProtectedRoutes/AdminRoute';
 import CampaignEditor from './CampaignEditor/CampaingEditor';
 import Statistics from './Stats/Statistics';
+import Users from './Users/Users';
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
             <main>
               <Switch>
                 <AdminRoute path="/stats" component={Statistics} />
-
+                <AdminRoute path="/users" component={Users} />
                 <Route path="/signin">
                   <SignIn />
                 </Route>
@@ -41,17 +42,14 @@ function App() {
                   path="/campaigns/createcampaign/:campaign_id"
                   component={CreateCampaign}
                 />
-
                 <ProtectedRoute
                   path="/campaigns/editcampaign/:campaign_id"
                   component={CampaignEditor}
                 />
-
                 <ProtectedRoute
                   path="/campaigns/:campaign_id"
                   component={CampaignDetail}
                 />
-
                 <AdminRoute exact path="/" component={CampaignsView} />
                 <ProtectedRoute
                   path="/users/:user_id/contacts"

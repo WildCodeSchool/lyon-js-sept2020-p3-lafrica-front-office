@@ -2,51 +2,56 @@
 import React, { useContext, useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
-import './CampaignsView.scss';
-import { BiSearchAlt2 } from 'react-icons/bi';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import './Users.scss';
 import { useHistory } from 'react-router-dom';
-import moment from 'moment';
-import 'moment/locale/fr';
+import { useToasts } from 'react-toast-notifications';
 import Landscape from '../../images/turn_your_phone.gif';
-
 import API from '../../services/API';
-
 import { UserContext } from '../../context/UserContext';
 
-const CampaignsView = () => {
-  moment.locale('fr');
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    fontSize: '10px',
+    backgroundColor: 'green',
+    '&:hover': {
+      backgroundColor: '#398E3C',
+    },
+  },
+}));
+
+const Users = () => {
+  const classes = useStyles();
 
   const history = useHistory();
+  const { addToast } = useToasts();
 
   const { register, handleSubmit } = useForm();
+  const { setLoggedIn, setUserDetails } = useContext(UserContext);
 
-  const {
-    userDetails,
-    setUserDetails,
-    setLoggedIn,
-    campaignsList,
-    setCampaignsList,
-  } = useContext(UserContext);
-
-  const [totalCampaigns, setTotalCampaigns] = useState();
+  const [totalusers, setTotalUsers] = useState();
+  const [users, setUsers] = useState();
 
   const searchParams = {
     limit: 10,
     offset: 0,
-    name: undefined,
     firstname: undefined,
     lastname: undefined,
+    email: undefined,
     ...queryString.parse(window.location.search),
   };
 
-  const { limit, offset, name, sortby, firstname, lastname } = searchParams;
+  const { limit, offset, sortby, firstname, lastname, email } = searchParams;
 
   const currentPage = offset / limit + 1;
-  const lastPage = Math.ceil(totalCampaigns / limit);
+  const lastPage = Math.ceil(totalusers / limit);
 
   const updateSearchUrl = (params) => {
     const clientQueryParams = queryString.stringify(params);
-    history.push(`/?${clientQueryParams}`);
+    history.push(`/users?${clientQueryParams}`);
   };
 
   const setCurrentPage = (pageNum) => {
@@ -56,63 +61,85 @@ const CampaignsView = () => {
     });
   };
 
+  const handleUserConfirmation = (userId, userEmail) => {
+    API.put(`/users/${userId}`, { email: userEmail }).then(() => {
+      const clientQueryParams = queryString.stringify(searchParams);
+      history.push(`/users?${clientQueryParams}`);
+      addToast('Inscription confirmée !', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    });
+  };
+
   useEffect(() => {
     const clientQueryParams = queryString.stringify(searchParams);
+    API.get(`/users?${clientQueryParams}`)
+      .then((res) => {
+        setUsers(res.data.users);
+        setTotalUsers(res.data.total);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setLoggedIn(false);
+          setUserDetails({});
+          history.push('/signin');
+        }
+      });
+  }, [limit, offset, sortby, firstname, lastname, email]);
 
-    if (userDetails) {
-      API.get(`/users/${userDetails.id}/campaigns?${clientQueryParams}`)
-        .then((res) => {
-          setCampaignsList(res.data.campaigns);
-          setTotalCampaigns(res.data.total);
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            setLoggedIn(false);
-            setUserDetails({});
-            history.push('/signin');
-          }
-        });
-    }
-  }, [userDetails, limit, offset, name, sortby, firstname, lastname]);
-
-  const showCampaignsList = () => {
-    return campaignsList.map((campaign) => {
-      return (
-        <tr key={campaign.id}>
-          <td className="no-border">
-            <BiSearchAlt2
-              className="search-icon"
-              onClick={() => history.push(`/campaigns/${campaign.id}`)}
-            />
-          </td>
-          <td className="stylized-td">{campaign.firstname}</td>
-          <td className="stylized-td">{campaign.lastname}</td>
-          <td className="stylized-td">{campaign.name || 'Ma campagne'}</td>
-          <td className="stylized-td">
-            {campaign.date && moment(campaign.date).format('DD/MM/YYYY HH:mm')}
-          </td>
-          <td className="stylized-td">
-            {campaign.sending_status === 2 ? (
-              <div className="cell-campaign-status">
-                <span className="status finished-status" />
-                <p>Envoyée</p>
-              </div>
-            ) : campaign.sending_status === 1 ? (
-              <div className="cell-campaign-status">
-                <span className="status in-progress-status" />
-                <p>En attente</p>
-              </div>
+  const showUsersList = () => {
+    return (
+      users &&
+      users.map((user) => {
+        return (
+          <tr key={user.id}>
+            <td className="stylized-td">{user.firstname}</td>
+            <td className="stylized-td">{user.lastname}</td>
+            <td className="stylized-td">{user.email || 'Ma campagne'}</td>
+            <td className="stylized-td">
+              {user.user_confirmed === 0 ? (
+                <div className="cell-campaign-status">
+                  <span className="status in-progress-status" />
+                  <p>En attente </p>
+                </div>
+              ) : (
+                <div className="cell-campaign-status">
+                  <span className="status finished-status" />
+                  <p>Confirmé</p>
+                </div>
+              )}
+            </td>
+            {user.user_confirmed === 0 ? (
+              <td className="stylized-td-confirmation-btn">
+                <div className="cell-campaign-status">
+                  <span
+                    onClick={() => handleUserConfirmation(user.id, user.email)}
+                    role="button"
+                    onKeyDown={() => {}}
+                    tabIndex="0"
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<VerifiedUserIcon />}
+                    >
+                      Confirmer l'inscription
+                    </Button>
+                  </span>
+                </div>
+              </td>
             ) : (
-              <div className="cell-campaign-status">
-                <span className="status in-creation-status" />
-                <p>En création</p>
-              </div>
+              <td className="stylized-td">
+                <div className="cell-campaign-status" />
+              </td>
             )}
-          </td>
-          <td className="same-width-than-search-icon no-border" />
-        </tr>
-      );
-    });
+          </tr>
+        );
+      })
+    );
   };
 
   return (
@@ -120,7 +147,7 @@ const CampaignsView = () => {
       <article className="campaings-editor-view-container">
         <div className="campaigns-editor-view">
           <div className="title">
-            <h2>Liste des Campagnes</h2>
+            <h2>Gestion des Utilisateurs</h2>
           </div>
         </div>
       </article>
@@ -133,10 +160,8 @@ const CampaignsView = () => {
           <table>
             <thead>
               <tr>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <th />
                 <th className="search-th">
-                  <form className="table-campaign-search">
+                  <form className="table-user-search">
                     <label htmlFor="firstname">
                       <input
                         name="firstname"
@@ -147,12 +172,10 @@ const CampaignsView = () => {
                         ref={register}
                       />
                     </label>
-
-                    {/* <button type="submit">ok</button> */}
                   </form>
                 </th>
                 <th className="search-th">
-                  <form className="table-campaign-search">
+                  <form className="table-user-search">
                     <label htmlFor="lastname">
                       <input
                         name="lastname"
@@ -163,20 +186,24 @@ const CampaignsView = () => {
                         ref={register}
                       />
                     </label>
+
+                    {/* <button type="submit">ok</button> */}
                   </form>
                 </th>
                 <th className="search-th">
-                  <form className="table-campaign-search">
-                    <label htmlFor="name">
+                  <form className="table-user-search">
+                    <label htmlFor="email">
                       <input
-                        name="name"
-                        id="name"
+                        name="email"
+                        id="email"
                         type="text"
-                        defaultValue={searchParams.name}
-                        placeholder="Rechercher une campagne"
+                        defaultValue={searchParams.email}
+                        placeholder="Rechercher par email"
                         ref={register}
                       />
                     </label>
+
+                    {/* <button type="submit">ok</button> */}
                   </form>
                 </th>
                 <th className="search-th">
@@ -188,9 +215,11 @@ const CampaignsView = () => {
                         ref={register}
                         defaultValue={searchParams.sortby}
                       >
-                        <option value="date.asc">Trier par date</option>
-                        <option value="date.asc">Croissant</option>
-                        <option value="date.desc">Décroissant</option>
+                        <option value="user_confirmed.asc">
+                          Trier par statut
+                        </option>
+                        <option value="user_confirmed.desc">Confirmé</option>
+                        <option value="user_confirmed.asc">En attente</option>
                       </select>
                     </label>
                   </form>{' '}
@@ -208,19 +237,16 @@ const CampaignsView = () => {
                 </th>
               </tr>
               <tr>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <th />
-
-                <th className="stylized-th">Prénom Client</th>
-                <th className="stylized-th">Nom Client</th>
-                <th className="stylized-th">Nom Campagne</th>
-                <th className="stylized-th">Date d'envoi</th>
-                <th className="stylized-th">Statut</th>
+                <th className="users-stylized-th">Prénom</th>
+                <th className="users-stylized-th">Nom </th>
+                <th className="users-stylized-th">Email</th>
+                <th className="users-stylized-th">Statut</th>
+                <th className="users-stylized-th">Action</th>
               </tr>
             </thead>
-            <tbody>{showCampaignsList()}</tbody>
+            <tbody>{showUsersList()}</tbody>
           </table>
-          {lastPage !== 1 && !!campaignsList.length && (
+          {lastPage !== 1 && users && !!users.length && (
             <div className="pagination">
               <button
                 type="button"
@@ -259,4 +285,4 @@ const CampaignsView = () => {
   );
 };
 
-export default CampaignsView;
+export default Users;
