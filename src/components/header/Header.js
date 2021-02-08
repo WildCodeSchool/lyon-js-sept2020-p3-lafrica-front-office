@@ -35,9 +35,21 @@ const Header = () => {
   };
 
   const createCampaignInDatabase = async () => {
-    await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
-      setCampaignId(res.data.campaign_id);
-    });
+    await API.post(`/users/${userDetails.id}/campaigns`)
+      .then((res) => {
+        setCampaignId(res.data.campaign_id);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          addToast(
+            "Votre compte est en attente de validation par l'administrateur",
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        }
+      });
   };
 
   useEffect(() => {
