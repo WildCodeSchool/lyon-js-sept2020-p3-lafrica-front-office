@@ -7,8 +7,6 @@ import API from '../../services/API';
 
 import { UserContext } from '../../context/UserContext';
 
-// const randomInt = () => Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-
 const Chart = () => {
   const { userDetails } = useContext(UserContext);
   moment.locale('en');

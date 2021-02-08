@@ -91,7 +91,6 @@ const SignUp = () => {
   };
 
   const submitUserData = async (data) => {
-    console.log(data);
     try {
       await API.post('/users/signup', data);
       addToast('Bienvenue sur LAfricamobile !', {

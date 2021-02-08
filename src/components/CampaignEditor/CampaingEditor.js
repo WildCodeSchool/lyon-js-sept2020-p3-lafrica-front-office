@@ -92,14 +92,12 @@ const CampaignEditor = (props) => {
         }
         setMessageToVocalize(res.data);
       })
-      .catch((err) => {
+      .catch(() => {
         if (!receivedFormatDifferentFromTxtAndDocx) {
           setReceivedFormatDifferentFromTxtAndDocx(
             !receivedFormatDifferentFromTxtAndDocx
           );
         }
-
-        console.log(err);
       });
   };
 
@@ -119,14 +117,12 @@ const CampaignEditor = (props) => {
           );
         }
       })
-      .catch((err) => {
+      .catch(() => {
         if (!receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
         }
-
-        console.log(err);
       });
   };
 
@@ -200,20 +196,16 @@ const CampaignEditor = (props) => {
     API.post(`/users/${userDetails.id}/campaigns/TTS`, {
       message: messageToVocalize,
       audioConfig,
-    })
-      .then((res) => {
-        setVocalisationFileName(res.data);
-        setLastVocalizedMessage(messageToVocalize);
-        setAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
-        );
-        setDownloadAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      setVocalisationFileName(res.data);
+      setLastVocalizedMessage(messageToVocalize);
+      setAudioFilePath(
+        `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
+      );
+      setDownloadAudioFilePath(
+        `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data}`
+      );
+    });
   };
 
   const handleFileUpload = (e) => {
@@ -285,16 +277,6 @@ const CampaignEditor = (props) => {
       setSendingLoader(false);
     }, 3000);
 
-    // const campainAndContactsListDatas = [
-    //   {
-    //     user_id: userDetails.id,
-    //     campaign_name: campaignName,
-    //     campaign_text: messageToVocalize,
-    //     campaign_vocal: vocalisationFileName,
-    //     campaign_date: campaignDate,
-    //   },
-    //   contactsList,
-    // ];
     const campaignData = {
       user_id: userDetails.id,
       campaign_name: campaignName,

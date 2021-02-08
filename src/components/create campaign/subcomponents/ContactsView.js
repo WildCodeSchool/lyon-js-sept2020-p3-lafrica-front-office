@@ -7,7 +7,6 @@ import API from '../../../services/API';
 import Contact from './Contact';
 import { UserContext } from '../../../context/UserContext';
 import './ContactsView.scss';
-// import Landscape from '../../../images/rotate_img_proj.gif';
 import Landscape from '../../../images/turn_your_phone.gif';
 
 const ContactsView = (props) => {
@@ -52,14 +51,10 @@ const ContactsView = (props) => {
   const getCollection = async () => {
     await API.get(
       `/users/${userDetails.id}/campaigns/${campaignId}/contacts?limit=${limit}&offset=${offset}`
-    )
-      .then((res) => {
-        setContactsList(res.data.contacts);
-        setTotalContacts(res.data.total);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    ).then((res) => {
+      setContactsList(res.data.contacts);
+      setTotalContacts(res.data.total);
+    });
   };
 
   useEffect(() => {
@@ -98,17 +93,13 @@ const ContactsView = (props) => {
           phone_number: newContact.phoneNumber,
         },
       ]
-    )
-      // .then(() => {
-      //   getCollection();
-      // })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          setLoggedIn(false);
-          setUserDetails({});
-          history.push('/signin');
-        }
-      });
+    ).catch((err) => {
+      if (err.response.status === 401) {
+        setLoggedIn(false);
+        setUserDetails({});
+        history.push('/signin');
+      }
+    });
     setNewContact({
       lastname: '',
       firstname: '',

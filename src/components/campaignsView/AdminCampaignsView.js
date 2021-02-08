@@ -163,8 +163,6 @@ const CampaignsView = () => {
                         ref={register}
                       />
                     </label>
-
-                    {/* <button type="submit">ok</button> */}
                   </form>
                 </th>
                 <th className="search-th">
@@ -179,8 +177,6 @@ const CampaignsView = () => {
                         ref={register}
                       />
                     </label>
-
-                    {/* <button type="submit">ok</button> */}
                   </form>
                 </th>
                 <th className="search-th">

@@ -90,14 +90,12 @@ const CreateCampaign = (props) => {
         }
         setMessageToVocalize(res.data);
       })
-      .catch((err) => {
+      .catch(() => {
         if (!receivedFormatDifferentFromTxtAndDocx) {
           setReceivedFormatDifferentFromTxtAndDocx(
             !receivedFormatDifferentFromTxtAndDocx
           );
         }
-
-        console.log(err);
       });
   };
 
@@ -117,14 +115,12 @@ const CreateCampaign = (props) => {
         setContactsList(res.data);
         setToggleContactsUpload(!toggleContactsUpload);
       })
-      .catch((err) => {
+      .catch(() => {
         if (!receivedFormatDifferentFromXlsxAndCsv) {
           setReceivedFormatDifferentFromXlsxAndCsv(
             !receivedFormatDifferentFromXlsxAndCsv
           );
         }
-
-        console.log(err);
       });
   };
 
@@ -197,20 +193,16 @@ const CreateCampaign = (props) => {
     API.post(`/users/${userDetails.id}/campaigns/TTS`, {
       message: messageToVocalize,
       audioConfig,
-    })
-      .then((res) => {
-        setVocalisationFileName(res.data);
-        setLastVocalizedMessage(messageToVocalize);
-        setAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
-        );
-        setDownloadAudioFilePath(
-          `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      setVocalisationFileName(res.data);
+      setLastVocalizedMessage(messageToVocalize);
+      setAudioFilePath(
+        `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/audio?audio=${res.data}`
+      );
+      setDownloadAudioFilePath(
+        `${process.env.REACT_APP_API_BASE_URL}/users/${userDetails.id}/campaigns/downloadaudio?audio=${res.data}`
+      );
+    });
   };
 
   const handleFileUpload = (e) => {
@@ -254,14 +246,11 @@ const CreateCampaign = (props) => {
       setPhoneNumberTestCheck(false);
     } else {
       setPhoneNumberTestCheck(true);
-      // loaderON A RAJOUTER
-      // setPhoneNumber('Message envoyé') A RAJOUTER;
 
       await API.post('/voice/test', {
         phoneNumber,
         vocalisationFileName,
       });
-      // LoaderOFF A RAJOUTER
     }
   };
 
@@ -285,16 +274,6 @@ const CreateCampaign = (props) => {
       setSendingLoader(false);
     }, 3000);
 
-    // const campainAndContactsListDatas = [
-    //   {
-    //     user_id: userDetails.id,
-    //     campaign_name: campaignName,
-    //     campaign_text: messageToVocalize,
-    //     campaign_vocal: vocalisationFileName,
-    //     campaign_date: campaignDate,
-    //   },
-    //   contactsList,
-    // ];
     const campaignData = {
       user_id: userDetails.id,
       campaign_name: campaignName,

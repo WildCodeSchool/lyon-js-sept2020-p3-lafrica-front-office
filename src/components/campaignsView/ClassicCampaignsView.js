@@ -8,7 +8,6 @@ import { GoMegaphone } from 'react-icons/go';
 import { TiCancel } from 'react-icons/ti';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiSearchAlt2 } from 'react-icons/bi';
-// import { useHistory, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
@@ -20,9 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-
 import CampaignsChart from '../CampaignsChart/CampaignsChart';
-
 import API from '../../services/API';
 import { UserContext } from '../../context/UserContext';
 
@@ -252,14 +249,7 @@ const CampaignsView = () => {
             >
               <GoMegaphone className="megaphone-icon" />
 
-              {/* <Link to={`/campaigns/${campaignId}`}>
-              </Link>
-              <Link
-                to={`/campaigns/${campaignId}`}
-                onClick={createCampaignInDatabase}
-              > */}
               <h3>Créer une campagne</h3>
-              {/* </Link> */}
             </div>
           </div>
         </div>
@@ -267,7 +257,6 @@ const CampaignsView = () => {
       <article>
         <div className="campaigns-list">
           <div className="campaigns-list-table">
-            {/* <div className="campaigns-list-table-options"></div> */}
             <table>
               <thead>
                 <tr>
@@ -285,8 +274,6 @@ const CampaignsView = () => {
                           ref={register}
                         />
                       </label>
-
-                      {/* <button type="submit">ok</button> */}
                     </form>
                   </th>
                   <th className="search-th">

@@ -64,7 +64,6 @@
       }
       .vocal-campaign-date {
         margin: 10px;
-        // width: 70%;
         .textField {
           width: 70%;
         }
@@ -223,7 +222,6 @@
     .broadcast-list-frame {
       height: 100%;
       display: flex;
-      // flex-wrap: wrap;
       flex-direction: column;
       justify-content: center;
       margin-bottom: 10px;
@@ -289,7 +287,6 @@
   .sendCampaign-loader-on {
     display: block;
     padding-left: 5px;
-    // width: 5px;
   }
   .sendCampaign-loader-off {
     display: none;
@@ -332,7 +329,6 @@
 .fileUploaded {
   cursor: pointer;
   border: 1px solid #63e26a;
-  /* background-color: #aed581; */
   text-align: center;
   width: 20vw;
   border-radius: 5px;
