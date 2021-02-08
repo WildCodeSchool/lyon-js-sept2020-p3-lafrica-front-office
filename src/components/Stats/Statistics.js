@@ -24,13 +24,11 @@ const Statistics = () => {
   const mappingForTotalSendCampaignsPerUser = () => {
     return totalSendCampaignsPerUsers.map((el) => {
       return (
-        <tbody>
-          <tr>
-            <td>{el.firstname}</td>
-            <td>{el.lastname}</td>
-            <td>{el.total}</td>
-          </tr>
-        </tbody>
+        <tr key={el.id_client_user}>
+          <td>{el.firstname}</td>
+          <td>{el.lastname}</td>
+          <td>{el.total}</td>
+        </tr>
       );
     });
   };
@@ -119,16 +117,11 @@ const Statistics = () => {
               <th>Nombre de Campagnes envoyées</th>
             </tr>
           </thead>
-          {mappingForTotalSendCampaignsPerUser()}
+          <tbody>{mappingForTotalSendCampaignsPerUser()}</tbody>
         </table>
         <div className="stats-charts">
           <h4>Campagnes / Clients</h4>
-          <Pie
-            data={data}
-            options={{ maintainAspectRatio: false }}
-            width="30%"
-            height={5}
-          />
+          <Pie data={data} options={{ maintainAspectRatio: false }} />
         </div>
       </div>
     </div>
