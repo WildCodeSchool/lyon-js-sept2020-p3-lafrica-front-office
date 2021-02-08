@@ -175,12 +175,11 @@ const CampaignsView = () => {
           {campaign.sending_status !== 2 && (
             <td className="same-width-than-search-icon no-border">
               <Tooltip title="Stopper" placement="bottom" aria-label="stop">
-                <IconButton aria-label="stop">
-                  <TiCancel
-                    className="stop-icon"
-                    onClick={() => handleStopOpen(campaign.id)}
-                    title="Stopper la campagne"
-                  />
+                <IconButton
+                  aria-label="stop"
+                  onClick={() => handleStopOpen(campaign.id)}
+                >
+                  <TiCancel className="stop-icon" title="Stopper la campagne" />
                 </IconButton>
               </Tooltip>
             </td>
@@ -188,10 +187,12 @@ const CampaignsView = () => {
           {campaign.sending_status !== 2 && (
             <td className="stop-campaign no-border">
               <Tooltip title="Supprimer" placement="bottom" aria-label="delete">
-                <IconButton aria-label="delete">
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => handleClickOpen(campaign.id)}
+                >
                   <MdDeleteForever
                     className="delete-icon"
-                    onClick={() => handleClickOpen(campaign.id)}
                     title="Suprimer une campagne"
                   >
                     <title>Supprimer une campagne</title>
@@ -209,9 +210,21 @@ const CampaignsView = () => {
   };
 
   const createCampaignInDatabase = async () => {
-    await API.post(`/users/${userDetails.id}/campaigns`).then((res) => {
-      setCampaignId(res.data.campaign_id);
-    });
+    await API.post(`/users/${userDetails.id}/campaigns`)
+      .then((res) => {
+        setCampaignId(res.data.campaign_id);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          addToast(
+            "Votre compte est en attente de validation par l'administrateur",
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
+        }
+      });
   };
 
   useEffect(() => {

@@ -14,6 +14,21 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+// instance.interceptors.response.use(
+//   function (response) {
+//     // Any status code that lie within the range of 2xx cause this function to trigger
+//     // Do something with response data
+//     return response;
+//   },
+//   function (error) {
+//     if (error.response.status === 403) {
+//       return Promise.reject(error);
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
+
 const makeCancellable = (method, url, data, config) => {
   return new Promise((resolve, reject, onCancel) => {
     const source = CancelToken.source();
