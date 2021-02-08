@@ -58,6 +58,10 @@ const Header = () => {
           </div>
           <Link to="/">ACCUEIL</Link>
 
+          {userDetails.role === 'admin' && (
+            <Link to="/users"> UTILISATEURS</Link>
+          )}
+
           {userDetails.role === 'admin' ? (
             <Link to="/stats"> STATISTIQUES</Link>
           ) : (

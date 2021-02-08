@@ -63,7 +63,7 @@ article {
 
 // }
 
-.table-campaign-search {
+.table-user-search {
   margin-bottom: 5px;
   label {
     width: 90%;
@@ -104,6 +104,7 @@ article {
   table {
     border-collapse: collapse;
     width: 100%;
+    margin: 20px auto;
   }
 }
 
@@ -143,11 +144,12 @@ article {
   padding: 5px 0;
 }
 
-.stylized-th {
+.users-stylized-th {
   background-color: var(--primary-color);
   color: #fff;
   border: 1px solid var(--secondary-color);
   padding: 10px;
+  width: 25%;
 }
 
 .search-icon {
@@ -223,7 +225,7 @@ h3 {
   }
   td,
   th,
-  .stylized-th,
+  .users-stylized-th,
   .stylized-td {
     padding-left: 2px;
     padding-right: 2px;
@@ -289,7 +291,7 @@ h3 {
 
   td,
   th,
-  .stylized-th,
+  .users-stylized-th,
   .stylized-td {
     padding-left: 5px;
     padding-right: 5px;
@@ -309,13 +311,6 @@ h3 {
 }
 
 @media screen and (min-width: 760px) and (max-device-width: 1024px) {
-  .campaigns-list {
-    width: 90%;
-    margin: auto;
-  }
-}
-
-@media screen and (min-width: 1024px) {
   .campaigns-list {
     width: 90%;
     margin: auto;

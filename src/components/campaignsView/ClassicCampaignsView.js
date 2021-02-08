@@ -273,7 +273,7 @@ const CampaignsView = () => {
                 <tr>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <th />
-                  <th className="name">
+                  <th className="search-th">
                     <form className="table-campaign-search">
                       <label htmlFor="name">
                         <input
@@ -289,7 +289,7 @@ const CampaignsView = () => {
                       {/* <button type="submit">ok</button> */}
                     </form>
                   </th>
-                  <th className="sortby">
+                  <th className="search-th">
                     <form className="table-date-sort">
                       <label htmlFor="sortby">
                         <select
@@ -305,7 +305,7 @@ const CampaignsView = () => {
                       </label>
                     </form>{' '}
                   </th>
-                  <th className="table-search-button">
+                  <th className="search-th">
                     <div
                       role="button"
                       tabIndex={0}
