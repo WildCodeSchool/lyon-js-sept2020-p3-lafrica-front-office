@@ -122,7 +122,7 @@ const Users = () => {
       <article className="campaings-editor-view-container">
         <div className="campaigns-editor-view">
           <div className="title">
-            <h2>Liste des Utilisateurs</h2>
+            <h2>Gestion des Utilisateurs</h2>
           </div>
         </div>
       </article>

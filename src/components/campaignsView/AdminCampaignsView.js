@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { useForm } from 'react-hook-form';
 import './CampaignsView.scss';
-import { FaMicrophone } from 'react-icons/fa';
 import { BiSearchAlt2 } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
@@ -121,7 +120,6 @@ const CampaignsView = () => {
       <article className="campaings-editor-view-container">
         <div className="campaigns-editor-view">
           <div className="title">
-            <FaMicrophone className="microphone-icon" />
             <h2>Liste des Campagnes</h2>
           </div>
         </div>
