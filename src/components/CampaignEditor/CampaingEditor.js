@@ -370,7 +370,7 @@ const CampaignEditor = (props) => {
           onClose={handleCloseVideoModal}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Viéo tutoriel</DialogTitle>
+          <DialogTitle id="form-dialog-title">Vidéo tutoriel</DialogTitle>
           <DialogContent>
             <DialogContentText className="textVideoModal">
               Besoin d'aide ? Voici une courte vidéo pour vous aider à vous
